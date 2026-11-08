@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
+use App\Enums\AccountStatus;
+use App\Enums\UserRole;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasUuids, Notifiable;
 
@@ -15,6 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'full_name',
         'email',
+        'email_verified_at',
         'phone',
         'profile_picture',
         'password',
@@ -34,6 +40,28 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'deletion_requested_at' => 'datetime',
             'password' => 'hashed',
+            'role' => UserRole::class,
+            'status' => AccountStatus::class,
         ];
+    }
+
+    public function company(): HasOne
+    {
+        return $this->hasOne(Company::class, 'owner_id');
+    }
+
+    public function resume(): HasOne
+    {
+        return $this->hasOne(Resume::class);
+    }
+
+    public function applications(): HasMany
+    {
+        return $this->hasMany(Application::class);
+    }
+
+    public function savedJobs(): HasMany
+    {
+        return $this->hasMany(SavedJob::class);
     }
 }
