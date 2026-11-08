@@ -15,6 +15,12 @@ return new class extends Migration
             $table->json('data');
             $table->timestamp('read_at')->nullable();
             $table->timestamps();
+
+            // Only users are notifiable, so a real FK + cascade is safe (matches the ERD)
+            $table->foreign('notifiable_id')
+                ->references('id')
+                ->on('users')
+                ->cascadeOnDelete();
         });
     }
 
