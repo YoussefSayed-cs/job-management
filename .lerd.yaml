@@ -1,4 +1,5 @@
 domains:
+  - job-management
   - shagalni-v2
 php_version: "8.5"
 node_version: "22"
