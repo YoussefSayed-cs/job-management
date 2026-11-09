@@ -1,16 +1,18 @@
 <x-layouts::auth :title="__('Log in')">
     <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" />
+        <div class="flex flex-col gap-2">
+            <p class="text-xs font-semibold tracking-[0.16em] text-indigo-600 uppercase dark:text-indigo-400">Welcome back</p>
+            <h2 class="text-3xl font-semibold tracking-tight text-slate-900 dark:text-white">Sign in to Shagalni</h2>
+            <p class="text-sm leading-6 text-slate-500 dark:text-slate-400">Enter your account details to continue to your workspace.</p>
+        </div>
 
-        <!-- Session Status -->
         <x-auth-session-status class="text-center" :status="session('status')" />
 
         <x-passkey-verify />
 
-        <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-6">
+        <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-5">
             @csrf
 
-            <!-- Email Address -->
             <flux:input
                 name="email"
                 :label="__('Email address')"
@@ -22,7 +24,6 @@
                 placeholder="email@example.com"
             />
 
-            <!-- Password -->
             <div class="relative">
                 <flux:input
                     name="password"
@@ -41,19 +42,18 @@
                 @endif
             </div>
 
-            <!-- Remember Me -->
             <flux:checkbox name="remember" :label="__('Remember me')" :checked="old('remember')" />
 
-            <div class="flex items-center justify-end">
-                <flux:button variant="primary" type="submit" class="w-full" data-test="login-button">
-                    {{ __('Log in') }}
+            <div class="flex items-center justify-end pt-1">
+                <flux:button variant="primary" type="submit" class="w-full !rounded-lg !bg-indigo-600 hover:!bg-indigo-700" data-test="login-button">
+                    {{ __('Sign in') }}
                 </flux:button>
             </div>
         </form>
 
-        <div class="space-x-1 text-sm text-center rtl:space-x-reverse text-zinc-600 dark:text-zinc-400">
+        <div class="border-t border-slate-100 pt-5 text-center text-sm text-slate-500 dark:border-slate-800 dark:text-slate-400">
             <span>{{ __('Don\'t have an account?') }}</span>
-            <flux:link :href="route('register')" wire:navigate>{{ __('Sign up') }}</flux:link>
+            <flux:link class="font-semibold text-indigo-700 dark:text-indigo-400" :href="route('register')" wire:navigate>{{ __('Create an account') }}</flux:link>
         </div>
     </div>
 </x-layouts::auth>

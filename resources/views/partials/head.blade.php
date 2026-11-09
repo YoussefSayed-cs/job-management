@@ -1,6 +1,22 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+<script>
+    (() => {
+        let appearance = window.localStorage.getItem('flux.appearance');
+
+        if (appearance === null) {
+            appearance = 'light';
+            window.localStorage.setItem('flux.appearance', appearance);
+        }
+
+        const isDark = appearance === 'dark'
+            || (appearance === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+        document.documentElement.classList.toggle('dark', isDark);
+    })();
+</script>
+
 <title>
     {{ filled($title ?? null) ? $title.' - '.config('app.name', 'Laravel') : config('app.name', 'Laravel') }}
 </title>

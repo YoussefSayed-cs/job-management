@@ -1,25 +1,37 @@
 <x-layouts::auth :title="__('Register')">
     <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Create an account')" :description="__('Enter your details below to create your account')" />
+        <div class="flex flex-col gap-2">
+            <p class="text-xs font-semibold tracking-[0.16em] text-indigo-600 uppercase dark:text-indigo-400">Get started</p>
+            <h2 class="text-3xl font-semibold tracking-tight text-slate-900 dark:text-white">Create your account</h2>
+            <p class="text-sm leading-6 text-slate-500 dark:text-slate-400">A few details and you’ll be ready to join Shagalni.</p>
+        </div>
 
-        <!-- Session Status -->
         <x-auth-session-status class="text-center" :status="session('status')" />
 
-        <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-6">
+        <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-4">
             @csrf
-            <!-- Name -->
+
             <flux:input
-                name="name"
-                :label="__('Name')"
-                :value="old('name')"
+                name="full_name"
+                :label="__('Full name')"
+                :value="old('full_name')"
                 type="text"
                 required
                 autofocus
                 autocomplete="name"
-                :placeholder="__('Full name')"
+                placeholder="Your full name"
             />
 
-            <!-- Email Address -->
+            <flux:input
+                name="phone"
+                :label="__('Phone number')"
+                :value="old('phone')"
+                type="tel"
+                required
+                autocomplete="tel"
+                placeholder="+1 555 000 0000"
+            />
+
             <flux:input
                 name="email"
                 :label="__('Email address')"
@@ -30,7 +42,6 @@
                 placeholder="email@example.com"
             />
 
-            <!-- Password -->
             <flux:input
                 name="password"
                 :label="__('Password')"
@@ -42,7 +53,6 @@
                 viewable
             />
 
-            <!-- Confirm Password -->
             <flux:input
                 name="password_confirmation"
                 :label="__('Confirm password')"
@@ -54,16 +64,20 @@
                 viewable
             />
 
-            <div class="flex items-center justify-end">
-                <flux:button type="submit" variant="primary" class="w-full" data-test="register-user-button">
+            <p class="text-xs leading-5 text-slate-500 dark:text-slate-400">
+                New accounts are created with Job Seeker access. Verify your email to continue.
+            </p>
+
+            <div class="flex items-center justify-end pt-1">
+                <flux:button type="submit" variant="primary" class="w-full !rounded-lg !bg-indigo-600 hover:!bg-indigo-700" data-test="register-user-button">
                     {{ __('Create account') }}
                 </flux:button>
             </div>
         </form>
 
-        <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
+        <div class="border-t border-slate-100 pt-5 text-center text-sm text-slate-500 dark:border-slate-800 dark:text-slate-400">
             <span>{{ __('Already have an account?') }}</span>
-            <flux:link :href="route('login')" wire:navigate>{{ __('Log in') }}</flux:link>
+            <flux:link class="font-semibold text-indigo-700 dark:text-indigo-400" :href="route('login')" wire:navigate>{{ __('Sign in') }}</flux:link>
         </div>
     </div>
 </x-layouts::auth>
