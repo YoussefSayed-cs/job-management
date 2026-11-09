@@ -1,0 +1,32 @@
+[
+  {
+    "id": "c153c876-5cc6-5d9c-9841-e3b6f1b330e5",
+    "user_id": "5288a031-3717-5b2d-bc47-f2dafb3b798d",
+    "job_vacancy_id": "76fd8911-1334-5f60-8fef-75860fc90c35"
+  },
+  {
+    "id": "dd7e1135-5839-55f7-832e-f8e0cbcdebc0",
+    "user_id": "5288a031-3717-5b2d-bc47-f2dafb3b798d",
+    "job_vacancy_id": "6898d567-1cc5-5e3e-86e9-7896fd5b13d0"
+  },
+  {
+    "id": "f2aa7195-3a90-5ce9-ba48-c31f437bffa0",
+    "user_id": "8a9a4ea9-a830-5023-abe4-7b38c16148c3",
+    "job_vacancy_id": "97d027f3-5a87-5b80-adce-ea5e1bdd5659"
+  },
+  {
+    "id": "db5365ea-e978-509d-8344-714eca022c22",
+    "user_id": "8a9a4ea9-a830-5023-abe4-7b38c16148c3",
+    "job_vacancy_id": "fd9062db-89bf-50da-8876-d43915979bd1"
+  },
+  {
+    "id": "6536dc8a-fa6a-55f1-9776-6a019eb98222",
+    "user_id": "efc169eb-f917-5c05-9c94-1aaff74e0893",
+    "job_vacancy_id": "97d027f3-5a87-5b80-adce-ea5e1bdd5659"
+  },
+  {
+    "id": "280d527f-426e-5402-8379-56e077cdb730",
+    "user_id": "f79e794a-1335-5606-9e76-d68a277c66c1",
+    "job_vacancy_id": "aaae4680-e23d-507b-b6d0-9aedee176299"
+  }
+]

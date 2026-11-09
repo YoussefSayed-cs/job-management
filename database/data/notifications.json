@@ -1,0 +1,75 @@
+[
+  {
+    "id": "fa85d058-dcc5-5522-a4d0-8063fad9fc3d",
+    "type": "App\\Notifications\\NewApplicationNotification",
+    "notifiable_type": "App\\Models\\User",
+    "notifiable_id": "1710bb81-38eb-5578-82b2-1a35b51aec4a",
+    "data": {
+      "application_id": "fecf6361-264e-5986-a4ec-68f579984c93",
+      "job_title": "Laravel Backend Developer",
+      "applicant_name": "Mariam Khaled"
+    },
+    "read_at": null
+  },
+  {
+    "id": "623080be-78d5-5839-a966-b7654de3bd90",
+    "type": "App\\Notifications\\ApplicationStatusNotification",
+    "notifiable_type": "App\\Models\\User",
+    "notifiable_id": "5288a031-3717-5b2d-bc47-f2dafb3b798d",
+    "data": {
+      "application_id": "cde93e76-d243-586e-a24c-3b73ac08c09b",
+      "job_title": "Laravel Backend Developer",
+      "status": "interview",
+      "message": "We would like to invite you to an interview next week."
+    },
+    "read_at": null
+  },
+  {
+    "id": "db871ad2-b854-5cc1-89ca-8357f188d679",
+    "type": "App\\Notifications\\ApplicationStatusNotification",
+    "notifiable_type": "App\\Models\\User",
+    "notifiable_id": "8a9a4ea9-a830-5023-abe4-7b38c16148c3",
+    "data": {
+      "application_id": "bc0be9d5-1bd1-5438-90a5-0149f819f16e",
+      "job_title": "Clinic Receptionist",
+      "status": "accepted",
+      "message": "Welcome to the team!"
+    },
+    "read_at": "2026-10-30 10:00:00"
+  },
+  {
+    "id": "7c874039-e0c6-5985-b609-540bf7986170",
+    "type": "App\\Notifications\\ApplicationWithdrawnNotification",
+    "notifiable_type": "App\\Models\\User",
+    "notifiable_id": "1710bb81-38eb-5578-82b2-1a35b51aec4a",
+    "data": {
+      "application_id": "77331b2b-7a4d-5984-8642-5a5741db387e",
+      "job_title": "Data Analyst Intern",
+      "applicant_name": "Ahmed Samir"
+    },
+    "read_at": "2026-11-04 09:00:00"
+  },
+  {
+    "id": "195eff4d-c3f3-56df-8a75-bb0bfbbbe66d",
+    "type": "App\\Notifications\\CompanyRegistrationNotification",
+    "notifiable_type": "App\\Models\\User",
+    "notifiable_id": "eef40a2a-94ee-5cee-9ff6-1cf9314d51d3",
+    "data": {
+      "company": "Delta Health",
+      "status": "approved"
+    },
+    "read_at": "2026-10-03 12:00:00"
+  },
+  {
+    "id": "058fbb43-93fa-5691-bcc4-f4f9f7cb6145",
+    "type": "App\\Notifications\\CompanyRegistrationNotification",
+    "notifiable_type": "App\\Models\\User",
+    "notifiable_id": "64d45310-47b0-52ad-83ee-f89568a50247",
+    "data": {
+      "company": "Pixel Studio",
+      "status": "rejected",
+      "reason": "Company details are incomplete. Please add a website or a valid business registration."
+    },
+    "read_at": null
+  }
+]

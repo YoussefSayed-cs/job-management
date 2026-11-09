@@ -1,0 +1,29 @@
+[
+  {
+    "id": "0f31ef21-9fd8-5f72-b485-c490b3f723ed",
+    "company_id": "fe2d7661-4b69-5494-9cda-9fa6bec264db",
+    "new_name": "TechNile Solutions",
+    "new_industry": null,
+    "status": "pending",
+    "reviewed_by": null,
+    "reviewed_at": null
+  },
+  {
+    "id": "85a1623a-0f65-5d02-8ed6-2b4f6ba7a4aa",
+    "company_id": "54e91a81-ebc5-562e-adf3-896e2aff7432",
+    "new_name": null,
+    "new_industry": "Medical Services",
+    "status": "approved",
+    "reviewed_by": "80a723c2-02e4-56d4-9cbe-918baf6c92e9",
+    "reviewed_at": "2026-10-20 10:00:00"
+  },
+  {
+    "id": "fd22a2d3-6303-5495-8517-809de9b5f5d7",
+    "company_id": "fe2d7661-4b69-5494-9cda-9fa6bec264db",
+    "new_name": null,
+    "new_industry": "Fintech",
+    "status": "rejected",
+    "reviewed_by": "80a723c2-02e4-56d4-9cbe-918baf6c92e9",
+    "reviewed_at": "2026-10-12 16:00:00"
+  }
+]

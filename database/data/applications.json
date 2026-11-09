@@ -1,0 +1,74 @@
+[
+  {
+    "id": "cde93e76-d243-586e-a24c-3b73ac08c09b",
+    "job_vacancy_id": "97d027f3-5a87-5b80-adce-ea5e1bdd5659",
+    "user_id": "5288a031-3717-5b2d-bc47-f2dafb3b798d",
+    "status": "interview",
+    "job_title": "Laravel Backend Developer",
+    "company_name": "TechNile",
+    "submitted_at": "2026-11-02 10:30:00"
+  },
+  {
+    "id": "fecf6361-264e-5986-a4ec-68f579984c93",
+    "job_vacancy_id": "97d027f3-5a87-5b80-adce-ea5e1bdd5659",
+    "user_id": "8a9a4ea9-a830-5023-abe4-7b38c16148c3",
+    "status": "pending",
+    "job_title": "Laravel Backend Developer",
+    "company_name": "TechNile",
+    "submitted_at": "2026-11-08 18:10:00"
+  },
+  {
+    "id": "d5601e21-3ed4-5af6-a409-7ab0f3edc0fb",
+    "job_vacancy_id": "97d027f3-5a87-5b80-adce-ea5e1bdd5659",
+    "user_id": "efc169eb-f917-5c05-9c94-1aaff74e0893",
+    "status": "rejected",
+    "job_title": "Laravel Backend Developer",
+    "company_name": "TechNile",
+    "submitted_at": "2026-10-28 13:00:00"
+  },
+  {
+    "id": "77331b2b-7a4d-5984-8642-5a5741db387e",
+    "job_vacancy_id": "6898d567-1cc5-5e3e-86e9-7896fd5b13d0",
+    "user_id": "5288a031-3717-5b2d-bc47-f2dafb3b798d",
+    "status": "withdrawn",
+    "job_title": "Data Analyst Intern",
+    "company_name": "TechNile",
+    "submitted_at": "2026-11-03 09:00:00"
+  },
+  {
+    "id": "d61d864f-8368-5f2b-9d21-13ccaa934fef",
+    "job_vacancy_id": "6898d567-1cc5-5e3e-86e9-7896fd5b13d0",
+    "user_id": "5288a031-3717-5b2d-bc47-f2dafb3b798d",
+    "status": "pending",
+    "job_title": "Data Analyst Intern",
+    "company_name": "TechNile",
+    "submitted_at": "2026-11-06 20:15:00"
+  },
+  {
+    "id": "bc0be9d5-1bd1-5438-90a5-0149f819f16e",
+    "job_vacancy_id": "aaae4680-e23d-507b-b6d0-9aedee176299",
+    "user_id": "8a9a4ea9-a830-5023-abe4-7b38c16148c3",
+    "status": "accepted",
+    "job_title": "Clinic Receptionist",
+    "company_name": "Delta Health",
+    "submitted_at": "2026-10-25 11:00:00"
+  },
+  {
+    "id": "467d2e5b-9ed2-5dc5-95bc-a74b90023a11",
+    "job_vacancy_id": "1d0e9949-b08a-5044-8656-08a984e48688",
+    "user_id": "efc169eb-f917-5c05-9c94-1aaff74e0893",
+    "status": "under_review",
+    "job_title": "Medical Data Entry",
+    "company_name": "Delta Health",
+    "submitted_at": "2026-10-30 15:45:00"
+  },
+  {
+    "id": "0514045c-7836-5d8d-b7fb-61af83d44d49",
+    "job_vacancy_id": null,
+    "user_id": "f79e794a-1335-5606-9e76-d68a277c66c1",
+    "status": "rejected",
+    "job_title": "Junior Laravel Developer",
+    "company_name": "TechNile",
+    "submitted_at": "2026-10-10 12:00:00"
+  }
+]

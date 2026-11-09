@@ -1,0 +1,26 @@
+[
+  {
+    "id": "6a82e00e-cbc0-5f58-ac84-c94cb60bd208",
+    "name": "Software Development"
+  },
+  {
+    "id": "8b262f91-5e47-548b-9c26-18bbd11aeaf2",
+    "name": "Data & AI"
+  },
+  {
+    "id": "5ec55c81-5735-59e8-90fe-9d0f2669229b",
+    "name": "Design"
+  },
+  {
+    "id": "6123361e-10a5-50d6-8f1e-59985a6a0947",
+    "name": "Marketing"
+  },
+  {
+    "id": "f213e748-51ea-5fb5-b6f3-8311a40bd432",
+    "name": "Healthcare"
+  },
+  {
+    "id": "e00b9ae4-fb0e-5bbf-bc4f-1fbf81a203e6",
+    "name": "Customer Support"
+  }
+]

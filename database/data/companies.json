@@ -1,0 +1,58 @@
+[
+  {
+    "id": "fe2d7661-4b69-5494-9cda-9fa6bec264db",
+    "owner_id": "1710bb81-38eb-5578-82b2-1a35b51aec4a",
+    "name": "TechNile",
+    "description": "Software house building web and mobile products.",
+    "industry": "Software",
+    "location": "Cairo",
+    "website": "https://technile.test",
+    "logo": "logos/technile.png",
+    "registration_status": "approved",
+    "rejection_reason": null,
+    "reviewed_by": "80a723c2-02e4-56d4-9cbe-918baf6c92e9",
+    "reviewed_at": "2026-10-02 12:00:00"
+  },
+  {
+    "id": "54e91a81-ebc5-562e-adf3-896e2aff7432",
+    "owner_id": "eef40a2a-94ee-5cee-9ff6-1cf9314d51d3",
+    "name": "Delta Health",
+    "description": "Private clinics network across Alexandria.",
+    "industry": "Medical Services",
+    "location": "Alexandria",
+    "website": "https://deltahealth.test",
+    "logo": "logos/deltahealth.png",
+    "registration_status": "approved",
+    "rejection_reason": null,
+    "reviewed_by": "80a723c2-02e4-56d4-9cbe-918baf6c92e9",
+    "reviewed_at": "2026-10-03 11:30:00"
+  },
+  {
+    "id": "fc3b2548-b1c3-5b1f-a4c9-f0e73ba6db61",
+    "owner_id": "36225b04-9f01-55ea-866e-460ff8375b8d",
+    "name": "GreenLeaf Foods",
+    "description": "Organic food distribution.",
+    "industry": "Food & Beverage",
+    "location": "Giza",
+    "website": null,
+    "logo": null,
+    "registration_status": "pending_approval",
+    "rejection_reason": null,
+    "reviewed_by": null,
+    "reviewed_at": null
+  },
+  {
+    "id": "fd03a1e2-0e1e-51d0-ade0-6bb8cf4d987a",
+    "owner_id": "64d45310-47b0-52ad-83ee-f89568a50247",
+    "name": "Pixel Studio",
+    "description": "Small design agency.",
+    "industry": "Design",
+    "location": "Cairo",
+    "website": null,
+    "logo": null,
+    "registration_status": "rejected",
+    "rejection_reason": "Company details are incomplete. Please add a website or a valid business registration.",
+    "reviewed_by": "80a723c2-02e4-56d4-9cbe-918baf6c92e9",
+    "reviewed_at": "2026-11-05 14:00:00"
+  }
+]

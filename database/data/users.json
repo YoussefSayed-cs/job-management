@@ -1,0 +1,122 @@
+[
+  {
+    "id": "80a723c2-02e4-56d4-9cbe-918baf6c92e9",
+    "full_name": "Admin Shagalni",
+    "email": "admin@shagalni.test",
+    "email_verified_at": "2026-10-01 09:00:00",
+    "phone": "01000000001",
+    "profile_picture": null,
+    "password": "password",
+    "role": "admin",
+    "status": "active",
+    "deletion_requested_at": null
+  },
+  {
+    "id": "1710bb81-38eb-5578-82b2-1a35b51aec4a",
+    "full_name": "Karim Mansour",
+    "email": "karim@technile.test",
+    "email_verified_at": "2026-10-01 09:00:00",
+    "phone": "01011111111",
+    "profile_picture": null,
+    "password": "password",
+    "role": "company_owner",
+    "status": "active",
+    "deletion_requested_at": null
+  },
+  {
+    "id": "eef40a2a-94ee-5cee-9ff6-1cf9314d51d3",
+    "full_name": "Salma Adel",
+    "email": "salma@deltahealth.test",
+    "email_verified_at": "2026-10-01 09:00:00",
+    "phone": "01022222222",
+    "profile_picture": null,
+    "password": "password",
+    "role": "company_owner",
+    "status": "active",
+    "deletion_requested_at": null
+  },
+  {
+    "id": "36225b04-9f01-55ea-866e-460ff8375b8d",
+    "full_name": "Omar Fathy",
+    "email": "omar@greenleaf.test",
+    "email_verified_at": "2026-10-01 09:00:00",
+    "phone": "01033333333",
+    "profile_picture": null,
+    "password": "password",
+    "role": "company_owner",
+    "status": "active",
+    "deletion_requested_at": null
+  },
+  {
+    "id": "64d45310-47b0-52ad-83ee-f89568a50247",
+    "full_name": "Nour Hassan",
+    "email": "nour@pixelstudio.test",
+    "email_verified_at": "2026-10-01 09:00:00",
+    "phone": "01044444444",
+    "profile_picture": null,
+    "password": "password",
+    "role": "company_owner",
+    "status": "active",
+    "deletion_requested_at": null
+  },
+  {
+    "id": "5288a031-3717-5b2d-bc47-f2dafb3b798d",
+    "full_name": "Ahmed Samir",
+    "email": "ahmed.samir@example.test",
+    "email_verified_at": "2026-10-01 09:00:00",
+    "phone": "01255555551",
+    "profile_picture": null,
+    "password": "password",
+    "role": "job_seeker",
+    "status": "active",
+    "deletion_requested_at": null
+  },
+  {
+    "id": "8a9a4ea9-a830-5023-abe4-7b38c16148c3",
+    "full_name": "Mariam Khaled",
+    "email": "mariam.khaled@example.test",
+    "email_verified_at": "2026-10-01 09:00:00",
+    "phone": "01255555552",
+    "profile_picture": null,
+    "password": "password",
+    "role": "job_seeker",
+    "status": "active",
+    "deletion_requested_at": null
+  },
+  {
+    "id": "efc169eb-f917-5c05-9c94-1aaff74e0893",
+    "full_name": "Youssef Hany",
+    "email": "youssef.hany@example.test",
+    "email_verified_at": "2026-10-01 09:00:00",
+    "phone": "01255555553",
+    "profile_picture": null,
+    "password": "password",
+    "role": "job_seeker",
+    "status": "active",
+    "deletion_requested_at": null
+  },
+  {
+    "id": "f79e794a-1335-5606-9e76-d68a277c66c1",
+    "full_name": "Rana Tarek",
+    "email": "rana.tarek@example.test",
+    "email_verified_at": "2026-10-01 09:00:00",
+    "phone": "01255555554",
+    "profile_picture": null,
+    "password": "password",
+    "role": "job_seeker",
+    "status": "suspended",
+    "deletion_requested_at": null
+  },
+  {
+    "id": "832a3271-815f-5b83-8e14-8ec262815fbe",
+    "full_name": "Hossam Ali",
+    "email": "hossam.ali@example.test",
+    "email_verified_at": "2026-10-01 09:00:00",
+    "phone": "01255555555",
+    "profile_picture": null,
+    "password": "password",
+    "role": "job_seeker",
+    "status": "deactivated",
+    "deletion_requested_at": "2026-11-06 10:00:00"
+  }
+]

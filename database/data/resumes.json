@@ -1,0 +1,34 @@
+[
+  {
+    "id": "dd91b63a-be47-58c2-ae26-25dec068a99a",
+    "user_id": "5288a031-3717-5b2d-bc47-f2dafb3b798d",
+    "file_path": "resumes/s1/ahmed_samir_cv.pdf",
+    "original_name": "ahmed_samir_cv.pdf",
+    "file_size": 245760,
+    "file_type": "pdf"
+  },
+  {
+    "id": "8aa56f21-62ac-5891-b760-11da6d0ac359",
+    "user_id": "8a9a4ea9-a830-5023-abe4-7b38c16148c3",
+    "file_path": "resumes/s2/mariam_khaled_cv.pdf",
+    "original_name": "mariam_khaled_cv.pdf",
+    "file_size": 312000,
+    "file_type": "pdf"
+  },
+  {
+    "id": "709c5579-66b2-5a42-83a5-91d21c40d5a6",
+    "user_id": "efc169eb-f917-5c05-9c94-1aaff74e0893",
+    "file_path": "resumes/s3/youssef_hany_cv.docx",
+    "original_name": "youssef_hany_cv.docx",
+    "file_size": 150400,
+    "file_type": "docx"
+  },
+  {
+    "id": "d216cc2f-d4cd-51d3-ba12-fb013f939d1f",
+    "user_id": "f79e794a-1335-5606-9e76-d68a277c66c1",
+    "file_path": "resumes/s4/rana_tarek_cv.pdf",
+    "original_name": "rana_tarek_cv.pdf",
+    "file_size": 198000,
+    "file_type": "pdf"
+  }
+]
