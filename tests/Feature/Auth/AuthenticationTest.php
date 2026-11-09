@@ -65,3 +65,18 @@ test('users can logout', function () {
 
     $this->assertGuest();
 });
+
+test('users with pending deletion requests cannot authenticate', function () {
+    $user = User::factory()->create([
+        'deletion_requested_at' => now(),
+    ]);
+
+    $response = $this->post(route('login.store'), [
+        'email' => $user->email,
+        'password' => 'password',
+    ]);
+
+    $response->assertSessionHasErrorsIn('email');
+
+    $this->assertGuest();
+});
