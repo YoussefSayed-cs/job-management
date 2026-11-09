@@ -8,10 +8,8 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/', '/dashboard')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::view('/dashboard', 'dashboard')->name('dashboard');
-
-    Route::get('/users', [UserController::class, 'index'])
-        ->name('users.index');
+   Route::view('/dashboard', 'account.home')->name('dashboard');
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
 });
 
 Route::get('/account-deletion/{user}/cancel', [
