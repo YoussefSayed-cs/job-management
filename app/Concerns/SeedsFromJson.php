@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders\Concerns;
+namespace App\Concerns;
 
 trait SeedsFromJson
 {
@@ -8,7 +8,7 @@ trait SeedsFromJson
     protected function readJson(string $file): array
     {
         return json_decode(
-            file_get_contents(database_path("seed-data/{$file}.json")),
+            file_get_contents(database_path("data/{$file}.json")),
             true
         );
     }
