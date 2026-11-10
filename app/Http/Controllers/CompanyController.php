@@ -13,8 +13,7 @@ class CompanyController extends Controller
     {
         $filters = $request->validated();
 
-        $companies = Company::query()
-            ->with('owner')
+        $companies = Company::query()->with('owner')
             ->when($filters['search'] ?? null, function ($query, $search) {
                 $query->where(function ($query) use ($search) {
                     $query->where('name', 'like', "%{$search}%")
@@ -26,11 +25,11 @@ class CompanyController extends Controller
             })
             ->when($filters['status'] ?? null, function ($query, $status) {
                 $query->where('registration_status', $status);
-            })
-            ->latest()
+            })->latest()
             ->paginate(10)
             ->withQueryString();
 
+            
         return view('companies.index', compact('companies', 'filters'));
     }
 
