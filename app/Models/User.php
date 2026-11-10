@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\AccountStatus;
 use App\Enums\UserRole;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -21,13 +23,9 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'full_name',
         'email',
-        'email_verified_at',
         'phone',
         'profile_picture',
         'password',
-        'role',
-        'status',
-        'deletion_requested_at',
     ];
 
     protected $hidden = [
@@ -45,6 +43,21 @@ class User extends Authenticatable implements MustVerifyEmail
             'role' => UserRole::class,
             'status' => AccountStatus::class,
         ];
+    }
+
+    
+    protected function profilePictureUrl(): Attribute
+    {
+        return Attribute::get(function () {
+            if (! $this->profile_picture) {
+                return null;
+            }
+
+            /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+            $disk = Storage::disk('public');
+
+            return $disk->url($this->profile_picture);
+        });
     }
 
     public function company(): HasOne
