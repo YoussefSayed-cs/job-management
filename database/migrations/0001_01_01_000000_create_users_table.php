@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('role', ['admin', 'company_owner', 'job_seeker']);
             $table->enum('status', ['active', 'suspended', 'deactivated'])->default('active');
             $table->timestamp('deletion_requested_at')->nullable();
+            $table->timestamp('anonymized_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
