@@ -14,9 +14,6 @@ beforeEach(function () {
         'confirm' => true,
         'confirmPassword' => true,
     ]);
-    Features::passkeys([
-        'confirmPassword' => true,
-    ]);
 });
 
 test('security settings page can be rendered', function () {
@@ -28,10 +25,20 @@ test('security settings page can be rendered', function () {
 
     $response->assertOk();
 
-    $response->assertSee('Passkeys');
-    $response->assertSee('No passkeys yet');
     $response->assertSee('Two-factor authentication');
     $response->assertSee('Enable 2FA');
+});
+
+test('security settings do not render passkey controls', function () {
+    config(['fortify.features' => []]);
+
+    $user = User::factory()->create();
+
+    $this->actingAs($user);
+
+    Livewire::test(Security::class)
+        ->assertSee('Update password')
+        ->assertDontSee('Passkey');
 });
 
 test('security settings page requires password confirmation when enabled', function () {
@@ -53,8 +60,6 @@ test('security settings page renders without two factor when feature is disabled
         ->get(route('security.edit'))
         ->assertOk()
         ->assertSee('Update password')
-        ->assertDontSee('Manage your passkeys for passwordless sign-in')
-        ->assertDontSee('Add a passkey to sign in without a password')
         ->assertDontSee('Two-factor authentication');
 });
 

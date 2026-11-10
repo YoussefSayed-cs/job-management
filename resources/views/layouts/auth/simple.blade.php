@@ -24,7 +24,7 @@
                         Good work starts with the right opportunity.
                     </h1>
                     <p class="mt-6 max-w-lg text-base leading-7 text-slate-300">
-                        Sign in to manage your workspace, or create an account to get started with Shagalni.
+                        Sign in to access your Shagalni workspace.
                     </p>
                     <div class="mt-10 flex items-center gap-3 text-sm text-slate-300">
                         <span class="flex size-9 items-center justify-center rounded-full bg-white/10 text-indigo-200">✓</span>

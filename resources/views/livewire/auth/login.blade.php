@@ -8,8 +8,6 @@
 
         <x-auth-session-status class="text-center" :status="session('status')" />
 
-        <x-passkey-verify />
-
         <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-5">
             @csrf
 
@@ -51,9 +49,5 @@
             </div>
         </form>
 
-        <div class="border-t border-slate-100 pt-5 text-center text-sm text-slate-500 dark:border-slate-800 dark:text-slate-400">
-            <span>{{ __('Don\'t have an account?') }}</span>
-            <flux:link class="font-semibold text-indigo-700 dark:text-indigo-400" :href="route('register')" wire:navigate>{{ __('Create an account') }}</flux:link>
-        </div>
     </div>
 </x-layouts::auth>
