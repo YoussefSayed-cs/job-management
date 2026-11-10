@@ -14,7 +14,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-   use HasFactory, HasUuids, Notifiable;
+    use HasFactory, HasUuids, Notifiable;
 
     protected $table = 'users';
 
@@ -40,6 +40,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'deletion_requested_at' => 'datetime',
+            'anonymized_at' => 'datetime',
             'password' => 'hashed',
             'role' => UserRole::class,
             'status' => AccountStatus::class,
