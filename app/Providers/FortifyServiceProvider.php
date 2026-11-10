@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Actions\Fortify\ResetUserPassword;
+use App\Enums\AccountStatus;
 use App\Models\User;
 use Illuminate\Auth\Middleware\RequirePassword;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -62,7 +63,9 @@ class FortifyServiceProvider extends ServiceProvider
             if (
                 $user &&
                 Hash::check($request->password, $user->password) &&
-                $user->deletion_requested_at === null
+                $user->status === AccountStatus::Active &&
+                $user->deletion_requested_at === null &&
+                $user->anonymized_at === null
             ) {
                 return $user;
             }
@@ -76,12 +79,12 @@ class FortifyServiceProvider extends ServiceProvider
      */
     private function configureViews(): void
     {
-        Fortify::loginView(fn () => view('livewire.auth.login'));
-        Fortify::verifyEmailView(fn () => view('livewire.auth.verify-email'));
-        Fortify::twoFactorChallengeView(fn () => view('livewire.auth.two-factor-challenge'));
-        Fortify::confirmPasswordView(fn () => view('livewire.auth.confirm-password'));
-        Fortify::resetPasswordView(fn () => view('livewire.auth.reset-password'));
-        Fortify::requestPasswordResetLinkView(fn () => view('livewire.auth.forgot-password'));
+        Fortify::loginView(fn() => view('livewire.auth.login'));
+        Fortify::verifyEmailView(fn() => view('livewire.auth.verify-email'));
+        Fortify::twoFactorChallengeView(fn() => view('livewire.auth.two-factor-challenge'));
+        Fortify::confirmPasswordView(fn() => view('livewire.auth.confirm-password'));
+        Fortify::resetPasswordView(fn() => view('livewire.auth.reset-password'));
+        Fortify::requestPasswordResetLinkView(fn() => view('livewire.auth.forgot-password'));
     }
 
     /**
@@ -94,7 +97,7 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });
