@@ -59,13 +59,14 @@
         <x-theme-toggle />
 
         <flux:dropdown position="top" align="end">
-            <flux:profile :initials="$userInitials" icon-trailing="chevron-down" />
+            <flux:profile :initials="$userInitials" :avatar="$user->profile_picture_url" icon-trailing="chevron-down" />
 
             <flux:menu>
                 <flux:menu.radio.group>
                     <div class="p-0 text-sm font-normal">
                         <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                            <flux:avatar :name="$user->full_name" :initials="$userInitials" />
+                            <flux:avatar :name="$user->full_name" :initials="$userInitials"
+                                :src="$user->profile_picture_url" />
 
                             <div class="grid flex-1 text-start text-sm leading-tight">
                                 <flux:heading class="truncate">
