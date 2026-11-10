@@ -51,6 +51,11 @@ class Company extends Model
         return $this->hasMany(JobVacancy::class);
     }
 
+    public function applications(): HasMany
+    {
+        return $this->hasMany(Application::class);
+    }
+
     public function changeRequests(): HasMany
     {
         return $this->hasMany(CompanyChangeRequest::class);

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Application;
+use App\Models\JobVacancy;
 use App\Concerns\SeedsFromJson;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,13 @@ class ApplicationSeeder extends Seeder
 
     public function run(): void
     {
-        $this->seedFromJson(Application::class, 'applications');
+        
+        $companyIds = JobVacancy::pluck('company_id', 'id');
+
+        $this->seedFromJson(Application::class, 'applications', function (array $row) use ($companyIds) {
+            $row['company_id'] = $companyIds[$row['job_vacancy_id']] ?? null;
+
+            return $row;
+        });
     }
 }
