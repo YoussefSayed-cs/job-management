@@ -3,6 +3,7 @@
 namespace App\Livewire\Settings;
 
 use App\Concerns\ProfileValidationRules;
+use App\Enums\UserRole;
 use Flux\Flux;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Auth;
@@ -46,11 +47,18 @@ class Profile extends Component
 
         $user->fill($validated);
 
-        if ($user->isDirty('email')) {
+        $emailChanged = $user->isDirty('email');
+
+        if ($emailChanged) {
+
             $user->email_verified_at = null;
         }
 
         $user->save();
+
+        if ($emailChanged) {
+            $user->sendEmailVerificationNotification();
+        }
 
         Flux::toast(
             variant: 'success',
@@ -155,7 +163,11 @@ class Profile extends Component
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
-        return !$user instanceof MustVerifyEmail
-            || $user->hasVerifiedEmail();
+        
+        if ($user->role === UserRole::Admin) {
+            return false;
+        }
+
+        return !$user instanceof MustVerifyEmail || $user->hasVerifiedEmail();
     }
 }
