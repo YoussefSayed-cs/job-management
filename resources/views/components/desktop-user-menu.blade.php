@@ -9,12 +9,11 @@
 @endphp
 
 <flux:dropdown position="bottom" align="start">
-    <flux:sidebar.profile :name="$user->full_name" :initials="$userInitials" icon:trailing="chevrons-up-down"
-        data-test="sidebar-menu-button" />
-
+    <flux:sidebar.profile :name="$user->full_name" :initials="$userInitials" :avatar="$user->profile_picture_url"
+        icon:trailing="chevrons-up-down" data-test="sidebar-menu-button" />
     <flux:menu>
         <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-            <flux:avatar :name="$user->full_name" :initials="$userInitials" />
+            <flux:avatar :name="$user->full_name" :initials="$userInitials" :src="$user->profile_picture_url" />
 
             <div class="grid flex-1 text-start text-sm leading-tight">
                 <flux:heading class="truncate">

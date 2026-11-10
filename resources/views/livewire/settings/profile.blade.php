@@ -15,7 +15,7 @@
                     <img src="{{ $profilePicture->temporaryUrl() }}" alt="Profile picture preview"
                         class="size-24 rounded-full object-cover">
                 @elseif (auth()->user()->profile_picture)
-                    <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url(auth()->user()->profile_picture) }}"
+                    <img src="{{ auth()->user()->profile_picture_url }}"
                         alt="Profile picture" class="size-24 rounded-full object-cover">
                 @else
                     <div class="flex size-24 items-center justify-center rounded-full bg-slate-200 text-slate-500">
