@@ -16,11 +16,13 @@ Route::middleware([
 ])->group(function () {
     Route::view('/dashboard', 'account.home')->name('dashboard');
 
-    
+
     Route::get('/users', [UserController::class, 'index'])
         ->name('users.index');
-
     
+    Route::get('/users/{user}', [UserController::class, 'show'])
+         ->name('users.show');
+
     Route::get('/companies', [CompanyController::class, 'index'])
         ->name('companies.index');
 
@@ -39,4 +41,4 @@ Route::get('/account-deletion/{user}/cancel', [
     'cancel',
 ])->middleware('signed')->name('account-deletion.cancel');
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';
