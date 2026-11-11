@@ -33,54 +33,29 @@
                 ])>
                     <span aria-hidden="true">⌂</span>
                     Dashboard
-                </a>
-                @can('viewAny', \App\Models\JobVacancy::class)
-                    <a href="{{ route('jobs.index') }}" @class([
-                        'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium',
-                        'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-300' => request()->routeIs('jobs.*'),
-                        'text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white' => !request()->routeIs('jobs.*'),
-                    ])>
-                        <span aria-hidden="true">▤</span>
-                        Jobs
-                    </a>
-                @else
-                    <span aria-disabled="true"
-                        title="Job management access is restricted to administrators and company owners"
-                        class="flex cursor-not-allowed items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-400 dark:text-slate-500">
-                        <span aria-hidden="true">▤</span>
-                        <span class="flex-1">Jobs</span>
-                        <span class="text-[10px] font-semibold tracking-wide uppercase">Restricted</span>
-                    </span>
-                @endcan
 
-                @can('viewAny', \App\Models\Company::class)
-                    <a href="{{ route('companies.index') }}" @class([
-                        'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium',
-                        'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-300' => request()->routeIs('companies.*'),
-                        'text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white' => !request()->routeIs('companies.*'),
-                    ])>
-                        <span aria-hidden="true">▣</span>
-                        Companies
-                    </a>
-                @endcan
-                @can('viewAny', \App\Models\User::class)
-                    <a href="{{ route('users.index') }}" @class([
-                        'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium',
-                        'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-300' => request()->routeIs('users.*'),
-                        'text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white' => !request()->routeIs('users.*'),
-                    ])>
-                        <span aria-hidden="true">☺</span>
-                        Users
-                    </a>
-                @endcan
+                    @can('viewAny', \App\Models\Company::class)
+                        <a href="{{ route('companies.index') }}" @class([
+                            'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium',
+                            'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-300' => request()->routeIs('companies.*'),
+                            'text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white' => !request()->routeIs('companies.*'),
+                        ])>
+                            <span aria-hidden="true">▣</span>
+                            Companies
+                        </a>
+                    @endcan
+                    @can('viewAny', \App\Models\User::class)
+                        <a href="{{ route('users.index') }}" @class([
+                            'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium',
+                            'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-300' => request()->routeIs('users.*'),
+                            'text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white' => !request()->routeIs('users.*'),
+                        ])>
+                            <span aria-hidden="true">☺</span>
+                            Users
+                        </a>
+                    @endcan
 
-                @can('create', \App\Models\JobVacancy::class)
-                    <a href="{{ route('jobs.create') }}"
-                        class="mt-4 flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-3 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700">
-                        <span aria-hidden="true">+</span>
-                        Create a job
-                    </a>
-                @endcan
+
 
 
             </nav>
@@ -120,19 +95,6 @@
                                 class="absolute right-0 mt-2 flex w-52 flex-col gap-1 rounded-xl border border-slate-200 bg-white p-2 shadow-lg dark:border-slate-700 dark:bg-slate-900">
                                 <a href="{{ route('dashboard') }}"
                                     class="rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800">Dashboard</a>
-                                @can('viewAny', \App\Models\JobVacancy::class)
-                                    <a href="{{ route('jobs.index') }}"
-                                        class="rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800">Jobs</a>
-                                @else
-                                    <span aria-disabled="true"
-                                        class="rounded-lg px-3 py-2 text-sm text-slate-400 dark:text-slate-500">Jobs ·
-                                        Restricted</span>
-                                @endcan
-                                @can('create', \App\Models\JobVacancy::class)
-                                    <a href="{{ route('jobs.create') }}"
-                                        class="rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800">Create
-                                        a job</a>
-                                @endcan
                             </nav>
 
                             @can('viewAny', \App\Models\Company::class)
