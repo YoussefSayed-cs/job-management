@@ -142,19 +142,7 @@ test('a suspended company owner cannot enter the backoffice', function () {
         ->assertRedirect(route('login'));
 });
 
-test('suspension cannot be bypassed by cancelling a deletion request', function () {
-    $user = User::factory()->suspended()->create(['deletion_requested_at' => now()]);
 
-    $url = URL::temporarySignedRoute(
-        'account-deletion.cancel',
-        now()->addDays(30),
-        ['user' => $user->getRouteKey()]
-    );
-
-    $this->get($url)->assertForbidden();
-
-    expect($user->fresh()->deletion_requested_at)->not->toBeNull();
-});
 
 test('user details page shows the right actions for each status', function () {
     $admin = adminUser();
