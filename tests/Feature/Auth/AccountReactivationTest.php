@@ -79,8 +79,10 @@ test('the link can only be used once', function () {
 
     $this->get($url);
 
+    expect($user->fresh()->status)->toBe(AccountStatus::Active);
+
     // The user deactivates again, then tries the old link.
-    $user->forceFill(['status' => AccountStatus::Deactivated])->save();
+    $user->refresh()->forceFill(['status' => AccountStatus::Deactivated])->save();
 
     $this->get($url)->assertRedirect(route('login'));
 
