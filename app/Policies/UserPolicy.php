@@ -11,4 +11,10 @@ class UserPolicy
     {
         return $user->role === UserRole::Admin;
     }
+
+   
+    public function view(User $user, User $target): bool
+    {
+        return $user->role === UserRole::Admin && $target->role !== UserRole::Admin;
+    }
 }
