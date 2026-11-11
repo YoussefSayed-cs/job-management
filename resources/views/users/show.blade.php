@@ -1,5 +1,5 @@
 @php
-use Illuminate\Support\Str;
+    use Illuminate\Support\Str;
 @endphp
 <x-jobs.layout :title="$user->full_name">
     <div class="space-y-6">
@@ -11,6 +11,13 @@ use Illuminate\Support\Str;
                 </a>
             </x-slot:action>
         </x-jobs.page-heading>
+
+        @if ($errors->has('account'))
+            <div role="alert"
+                class="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-800 dark:border-rose-900 dark:bg-rose-950 dark:text-rose-200">
+                {{ $errors->first('account') }}
+            </div>
+        @endif
 
         <section
             class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
