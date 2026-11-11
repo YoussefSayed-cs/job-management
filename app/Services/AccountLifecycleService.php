@@ -13,6 +13,7 @@ use Illuminate\Validation\ValidationException;
 class AccountLifecycleService
 {
     public const REACTIVATION_LINK_HOURS = 24;
+    public const DELETION_GRACE_DAYS = 30;
 
     public function suspend(User $target): User
     {
@@ -94,6 +95,36 @@ class AccountLifecycleService
             && $user->anonymized_at === null;
     }
 
+    public function cancelDeletion(User $user, int $requestedAt): User
+    {
+        return DB::transaction(function () use ($user, $requestedAt) {
+            $locked = User::query()->lockForUpdate()->findOrFail($user->id);
+
+            // One answer for: no request, already cancelled, or a link from an older request.
+            if (
+                $locked->anonymized_at !== null
+                || $locked->deletion_requested_at === null
+                || $locked->deletion_requested_at->getTimestamp() !== $requestedAt
+            ) {
+                throw ValidationException::withMessages([
+                    'account' => 'This cancellation link is invalid or has already been used.',
+                ]);
+            }
+
+            $graceEndsAt = $locked->deletion_requested_at->copy()->addDays(self::DELETION_GRACE_DAYS);
+
+            if (now()->greaterThan($graceEndsAt)) {
+                throw ValidationException::withMessages([
+                    'account' => 'The account recovery period has expired.',
+                ]);
+            }
+
+            $locked->forceFill(['deletion_requested_at' => null])->save();
+
+            return $locked;
+        });
+    }
+
     /**
      * @param  array<int, AccountStatus>  $from
      */
@@ -128,6 +159,6 @@ class AccountLifecycleService
 
     private function tokenKey(User $user): string
     {
-        return 'account-reactivation:'.$user->id;
+        return 'account-reactivation:' . $user->id;
     }
 }
