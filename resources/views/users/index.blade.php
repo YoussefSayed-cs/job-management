@@ -1,39 +1,27 @@
-
 <x-jobs.layout title="User Management">
     <div class="space-y-6">
-        <x-jobs.page-heading
-            title="User Management"
-            description="Manage company owners and job seekers."
-        />
+        <x-jobs.page-heading title="User Management" description="Manage company owners and job seekers." />
 
         {{-- Filters --}}
-        <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <form method="GET" action="{{ route('users.index') }}"
-                class="grid gap-4 md:grid-cols-4">
+        <section
+            class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <form method="GET" action="{{ route('users.index') }}" class="grid gap-4 md:grid-cols-4">
 
                 <div class="md:col-span-2">
                     <label for="search" class="mb-2 block text-sm font-medium">
                         Search users
                     </label>
-                    <input
-                        id="search"
-                        type="text"
-                        name="search"
-                        value="{{ $filters['search'] ?? '' }}"
+                    <input id="search" type="text" name="search" value="{{ $filters['search'] ?? '' }}"
                         placeholder="Name or email..."
-                        class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800"
-                    >
+                        class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800">
                 </div>
 
                 <div>
                     <label for="role" class="mb-2 block text-sm font-medium">
                         Role
                     </label>
-                    <select
-                        id="role"
-                        name="role"
-                        class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800"
-                    >
+                    <select id="role" name="role"
+                        class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800">
                         <option value="">All roles</option>
                         <option value="company_owner" @selected(($filters['role'] ?? '') === 'company_owner')>
                             Company Owner
@@ -48,18 +36,12 @@
                     <label for="status" class="mb-2 block text-sm font-medium">
                         Status
                     </label>
-                    <select
-                        id="status"
-                        name="status"
-                        class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800"
-                    >
+                    <select id="status" name="status"
+                        class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800">
                         <option value="">All statuses</option>
 
                         @foreach (\App\Enums\AccountStatus::cases() as $status)
-                            <option
-                                value="{{ $status->value }}"
-                                @selected(($filters['status'] ?? '') === $status->value)
-                            >
+                            <option value="{{ $status->value }}" @selected(($filters['status'] ?? '') === $status->value)>
                                 {{ ucfirst($status->value) }}
                             </option>
                         @endforeach
@@ -67,17 +49,13 @@
                 </div>
 
                 <div class="flex flex-wrap items-center gap-3 md:col-span-4">
-                    <button
-                        type="submit"
-                        class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
-                    >
+                    <button type="submit"
+                        class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">
                         Apply Filters
                     </button>
 
-                    <a
-                        href="{{ route('users.index') }}"
-                        class="text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300"
-                    >
+                    <a href="{{ route('users.index') }}"
+                        class="text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300">
                         Clear Filters
                     </a>
                 </div>
@@ -85,7 +63,8 @@
         </section>
 
         {{-- Users Table --}}
-        <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <section
+            class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
 
             <div class="border-b border-slate-100 px-5 py-4 dark:border-slate-800">
                 <h2 class="font-semibold">Users</h2>
@@ -96,7 +75,8 @@
 
             <div class="overflow-x-auto">
                 <table class="w-full min-w-[700px] text-left text-sm">
-                    <thead class="bg-slate-50 text-xs font-semibold uppercase text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                    <thead
+                        class="bg-slate-50 text-xs font-semibold uppercase text-slate-500 dark:bg-slate-800 dark:text-slate-400">
                         <tr>
                             <th class="px-6 py-3">Name</th>
                             <th class="px-6 py-3">Email</th>
@@ -108,26 +88,27 @@
 
                     <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
                         @forelse ($users as $user)
-                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
-                                <td class="px-6 py-4 font-medium">
+                            <td class="px-6 py-4 font-medium">
+                                <a href="{{ route('users.show', $user) }}" class="hover:underline">
                                     {{ $user->full_name }}
-                                </td>
+                                </a>
+                            </td>
 
-                                <td class="px-6 py-4 text-slate-600 dark:text-slate-300">
-                                    {{ $user->email }}
-                                </td>
+                            <td class="px-6 py-4 text-slate-600 dark:text-slate-300">
+                                {{ $user->email }}
+                            </td>
 
-                                <td class="px-6 py-4">
-                                    {{ $user->role->value === 'company_owner' ? 'Company Owner' : 'Job Seeker' }}
-                                </td>
+                            <td class="px-6 py-4">
+                                {{ $user->role->value === 'company_owner' ? 'Company Owner' : 'Job Seeker' }}
+                            </td>
 
-                                <td class="px-6 py-4">
-                                    {{ ucfirst($user->status->value) }}
-                                </td>
+                            <td class="px-6 py-4">
+                                <x-jobs.status-badge :status="$user->status" />
+                            </td>
 
-                                <td class="px-6 py-4 text-slate-500">
-                                    {{ $user->created_at->format('M j, Y') }}
-                                </td>
+                            <td class="px-6 py-4 text-slate-500">
+                                {{ $user->created_at->format('M j, Y') }}
+                            </td>
                             </tr>
                         @empty
                             <tr>
