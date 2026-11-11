@@ -4,34 +4,36 @@ namespace App\Http\Controllers;
 
 use App\Enums\AccountStatus;
 use App\Models\User;
+use App\Services\AccountLifecycleService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class AccountDeletionController extends Controller
 {
-    public function cancel(User $user): RedirectResponse
+    public function __construct(private AccountLifecycleService $service) {}
+
+    public function cancel(Request $request, User $user): RedirectResponse
     {
-        $requestedAt = $user->deletion_requested_at;
-
-        abort_if($requestedAt === null, 404);
-
-        abort_if(
-            now()->greaterThan($requestedAt->copy()->addDays(30)),
-            410,
-            'The account recovery period has expired.'
-        );
-
-        abort_if(
-            $user->status === AccountStatus::Suspended,
-            403,
-            'Suspended accounts cannot cancel deletion requests.'
-        );
-
-        $user->forceFill([
-            'deletion_requested_at' => null,
-        ])->save();
+        try {
+            $user = $this->service->cancelDeletion($user, (int) $request->query('requested'));
+        } catch (ValidationException $e) {
+            return redirect()
+                ->route('login')
+                ->with('status', $e->validator->errors()->first('account'));
+        }
 
         return redirect()
             ->route('login')
-            ->with('status', 'Your account deletion request has been cancelled successfully.');
+            ->with('status', $this->cancelledMessage($user));
+    }
+
+    private function cancelledMessage(User $user): string
+    {
+        return match ($user->status) {
+            AccountStatus::Active => 'Your account deletion request has been cancelled. You can sign in now.',
+            AccountStatus::Deactivated => 'Your deletion request has been cancelled. Your account is still deactivated, you can request a reactivation link.',
+            AccountStatus::Suspended => 'Your deletion request has been cancelled. Your account is still suspended and only an administrator can restore access.',
+        };
     }
 }
