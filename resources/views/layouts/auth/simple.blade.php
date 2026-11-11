@@ -42,7 +42,6 @@
                         <span class="text-sm font-bold text-slate-900 dark:text-slate-100">Shagalni</span>
                     </a>
                     <div class="flex items-center gap-3">
-                        <x-theme-toggle />
                         <a href="{{ route('home') }}" class="hidden text-sm font-medium text-slate-500 hover:text-slate-900 lg:inline dark:text-slate-400 dark:hover:text-white" wire:navigate>
                             Back to home
                         </a>

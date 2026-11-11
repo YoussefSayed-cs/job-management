@@ -86,7 +86,6 @@
                     </div>
 
                     <div class="flex items-center gap-3">
-                        <x-theme-toggle />
                         <details class="relative lg:hidden">
                             <summary
                                 class="cursor-pointer list-none rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 dark:border-slate-700 dark:text-slate-200">

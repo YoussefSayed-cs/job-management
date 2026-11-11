@@ -20,7 +20,6 @@
         class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
         <flux:sidebar.header>
             <x-app-logo :sidebar="true" href="{{ route('dashboard') }}" wire:navigate />
-            <x-theme-toggle />
             <flux:sidebar.collapse class="lg:hidden" />
         </flux:sidebar.header>
 
@@ -55,8 +54,6 @@
         <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
 
         <flux:spacer />
-
-        <x-theme-toggle />
 
         <flux:dropdown position="top" align="end">
             <flux:profile :initials="$userInitials" :avatar="$user->profile_picture_url" icon-trailing="chevron-down" />
