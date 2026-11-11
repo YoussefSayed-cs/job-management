@@ -2,6 +2,10 @@
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Enums\RegistrationStatus;
+use App\Enums\UserRole;
+use App\Models\Company;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +48,25 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+
+
+
+function adminUser(): User
 {
-    // ..
+    return User::factory()->create(['role' => UserRole::Admin]);
+}
+
+function approvedOwner(): User
+{
+    $owner = User::factory()->create(['role' => UserRole::CompanyOwner]);
+
+    Company::create([
+        'owner_id' => $owner->id,
+        'name' => 'Approved Co',
+        'industry' => 'Software',
+        'location' => 'Cairo',
+        'registration_status' => RegistrationStatus::Approved,
+    ]);
+
+    return $owner;
 }

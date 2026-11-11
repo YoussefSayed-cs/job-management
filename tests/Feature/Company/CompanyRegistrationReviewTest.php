@@ -25,10 +25,6 @@ function companyWithOwner(array $ownerState = [], array $companyState = []): Com
     ], $companyState));
 }
 
-function adminUser(): User
-{
-    return User::factory()->create(['role' => UserRole::Admin]);
-}
 
 test('admin can approve a pending company registration', function () {
     Notification::fake();
