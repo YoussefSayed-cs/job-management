@@ -1,7 +1,7 @@
 <x-jobs.layout title="Company Change Requests">
-    <x-jobs.page-heading>
+    <h1 class="mb-6 text-2xl font-bold text-gray-900">
         Company Change Requests
-    </x-jobs.page-heading>
+    </h1>
 
     @if (session('success'))
         <div class="mb-4 rounded-lg bg-green-100 p-4 text-green-800">

@@ -18,7 +18,7 @@ it('allows admin to approve a company name change', function () {
     $owner = approvedOwner();
     $company = $owner->company;
 
-    $changeRequest = CompanyChangeRequest::factory()->create([
+    $changeRequest = CompanyChangeRequest::query()->create([
         'company_id' => $company->id,
         'new_name' => 'New Company Name',
         'new_industry' => null,
@@ -38,7 +38,7 @@ it('allows admin to approve an industry change', function () {
     $owner = approvedOwner();
     $company = $owner->company;
 
-    $changeRequest = CompanyChangeRequest::factory()->create([
+    $changeRequest = CompanyChangeRequest::query()->create([
         'company_id' => $company->id,
         'new_name' => null,
         'new_industry' => 'Technology',
@@ -57,7 +57,7 @@ it('allows admin to approve both name and industry changes', function () {
     $owner = approvedOwner();
     $company = $owner->company;
 
-    $changeRequest = CompanyChangeRequest::factory()->create([
+    $changeRequest = CompanyChangeRequest::query()->create([
         'company_id' => $company->id,
         'new_name' => 'Updated Company',
         'new_industry' => 'Technology',
@@ -79,7 +79,7 @@ it('preserves unchanged company fields when approving a partial request', functi
 
     $originalIndustry = $company->industry;
 
-    $changeRequest = CompanyChangeRequest::factory()->create([
+    $changeRequest = CompanyChangeRequest::query()->create([
         'company_id' => $company->id,
         'new_name' => 'Updated Company',
         'new_industry' => null,
@@ -97,7 +97,7 @@ it('allows admin to reject a change request', function () {
     $admin = adminUser();
     $owner = approvedOwner();
 
-    $changeRequest = CompanyChangeRequest::factory()->create([
+    $changeRequest = CompanyChangeRequest::query()->create([
         'company_id' => $owner->company->id,
         'new_name' => 'Rejected Name',
         'status' => ChangeRequestStatus::Pending,
@@ -118,7 +118,7 @@ it('does not change company data when a request is rejected', function () {
     $originalName = $company->name;
     $originalIndustry = $company->industry;
 
-    $changeRequest = CompanyChangeRequest::factory()->create([
+    $changeRequest = CompanyChangeRequest::query()->create([
         'company_id' => $company->id,
         'new_name' => 'Rejected Name',
         'new_industry' => 'Rejected Industry',
@@ -137,7 +137,7 @@ it('stores the admin reviewer and review timestamp', function () {
     $admin = adminUser();
     $owner = approvedOwner();
 
-    $changeRequest = CompanyChangeRequest::factory()->create([
+    $changeRequest = CompanyChangeRequest::query()->create([
         'company_id' => $owner->company->id,
         'new_name' => 'Reviewed Company',
         'status' => ChangeRequestStatus::Pending,
@@ -164,7 +164,7 @@ it('prevents company owners from viewing the admin queue', function () {
 it('prevents company owners from approving change requests', function () {
     $owner = approvedOwner();
 
-    $changeRequest = CompanyChangeRequest::factory()->create([
+    $changeRequest = CompanyChangeRequest::query()->create([
         'company_id' => $owner->company->id,
         'new_name' => 'Unauthorized Change',
         'status' => ChangeRequestStatus::Pending,
@@ -192,7 +192,7 @@ it('prevents job seekers from rejecting change requests', function () {
     ]);
     $owner = approvedOwner();
 
-    $changeRequest = CompanyChangeRequest::factory()->create([
+    $changeRequest = CompanyChangeRequest::query()->create([
         'company_id' => $owner->company->id,
         'new_name' => 'Unauthorized Change',
         'status' => ChangeRequestStatus::Pending,
@@ -207,7 +207,7 @@ it('prevents reviewing an already decided request', function () {
     $admin = adminUser();
     $owner = approvedOwner();
 
-    $changeRequest = CompanyChangeRequest::factory()->create([
+    $changeRequest = CompanyChangeRequest::query()->create([
         'company_id' => $owner->company->id,
         'new_name' => 'Already Approved',
         'status' => ChangeRequestStatus::Approved,
