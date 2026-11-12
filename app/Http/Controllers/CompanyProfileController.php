@@ -36,8 +36,6 @@ class CompanyProfileController extends Controller
             $request->validated()
         );
 
-        return redirect()
-            ->route('my-company.show')
-            ->with('success', 'Company profile updated successfully.');
+        return redirect() ->route('my-company.show')->with('success', 'Company profile updated successfully.');
     }
 }
