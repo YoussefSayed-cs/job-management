@@ -60,7 +60,7 @@ it('does not allow an admin to update a company through owner profile routes', f
 
     $this->actingAs($admin)
         ->get(route('my-company.show'))
-        ->assertForbidden();
+        ->assertNotFound();
 });
 
 it('allows an owner to replace their company logo', function () {
