@@ -62,6 +62,12 @@ Route::middleware([
 
     Route::patch('/my-company', [CompanyProfileController::class, 'update'])
         ->name('my-company.update');
+
+    Route::get('/my-company/change-requests', [CompanyChangeRequestController::class, 'index'])
+        ->name('my-company.change-requests.index');
+
+    Route::post('/my-company/change-requests', [CompanyChangeRequestController::class, 'store'])
+        ->name('my-company.change-requests.store');
 });
 
 Route::get('/account-deletion/{user}/cancel', [
