@@ -7,6 +7,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Middleware\EnsureManagementPortalAccess;
 use App\Http\Controllers\AccountReactivationController;
 use App\Http\Controllers\UserStatusController;
+use App\Http\Controllers\CompanyOwnerController;
+use App\Http\Controllers\CompanyOwnerInvitationController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/dashboard')->name('home');
@@ -32,6 +34,15 @@ Route::middleware([
 
     Route::post('/users/{user}/reactivate', [UserStatusController::class, 'reactivate'])
         ->name('users.reactivate');
+
+    Route::get('/company-owners/create', [CompanyOwnerController::class, 'create'])
+        ->name('company-owners.create');
+
+    Route::post('/company-owners', [CompanyOwnerController::class, 'store'])
+        ->name('company-owners.store');
+
+    Route::post('/users/{user}/resend-invitation', [CompanyOwnerController::class, 'resend'])
+        ->name('users.resend-invitation');
 
     Route::get('/companies', [CompanyController::class, 'index'])
         ->name('companies.index');
@@ -63,5 +74,15 @@ Route::middleware('guest')->group(function () {
 Route::get('/account-reactivation/{user}/confirm', [AccountReactivationController::class, 'confirm'])
     ->middleware('signed')
     ->name('account-reactivation.confirm');
+
+    
+Route::middleware('signed')->group(function () {
+    Route::get('/company-owner-invitation/{user}', [CompanyOwnerInvitationController::class, 'show'])
+        ->name('company-owner-invitation.show');
+
+    Route::post('/company-owner-invitation/{user}', [CompanyOwnerInvitationController::class, 'store'])
+        ->middleware('throttle:10,1')
+        ->name('company-owner-invitation.store');
+});
 
 require __DIR__ . '/settings.php';
