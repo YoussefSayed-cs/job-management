@@ -115,3 +115,21 @@ it('does not allow a job seeker to access company change requests', function () 
         ->get(route('my-company.change-requests.index'))
         ->assertForbidden();
 });
+
+it('shows the approved company owner their change request history', function () {
+    $owner = approvedOwner();
+
+    CompanyChangeRequest::create([
+        'company_id' => $owner->company->id,
+        'new_name' => 'Requested Company Name',
+        'status' => 'pending',
+    ]);
+
+    $this->actingAs($owner)
+        ->get(route('my-company.change-requests.index'))
+        ->assertOk()
+        ->assertSee('Company Change Requests')
+        ->assertSee('Request History')
+        ->assertSee('Requested Company Name')
+        ->assertSee('Pending');
+});
