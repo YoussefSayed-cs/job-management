@@ -11,6 +11,7 @@ use App\Http\Controllers\CompanyProfileController;
 use App\Http\Controllers\CompanyChangeRequestController;
 use App\Http\Controllers\CompanyOwnerController;
 use App\Http\Controllers\CompanyOwnerInvitationController;
+use App\Http\Controllers\CompanyChangeRequestReviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/dashboard')->name('home');
@@ -69,6 +70,21 @@ Route::middleware([
 
     Route::post('/my-company/change-requests', [CompanyChangeRequestController::class, 'store'])
         ->name('my-company.change-requests.store');
+
+    Route::get('/company-change-requests', [
+        CompanyChangeRequestReviewController::class,
+        'index',
+    ])->name('company-change-requests.index');
+
+    Route::post('/company-change-requests/{companyChangeRequest}/approve', [
+        CompanyChangeRequestReviewController::class,
+        'approve',
+    ])->name('company-change-requests.approve');
+
+    Route::post('/company-change-requests/{companyChangeRequest}/reject', [
+        CompanyChangeRequestReviewController::class,
+        'reject',
+    ])->name('company-change-requests.reject');
 });
 
 Route::get('/account-deletion/{user}/cancel', [
