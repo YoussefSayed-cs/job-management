@@ -18,11 +18,13 @@ class UpdateCompanyProfileService
         unset($data['logo']);
 
         // Only allow directly editable company fields.
-        $attributes = [
-            'description' => $data['description'] ?? null,
-            'location' => $data['location'],
-            'website' => $data['website'] ?? null,
-        ];
+        $attributes = [];
+
+        foreach (['description', 'location', 'website'] as $field) {
+            if (array_key_exists($field, $data)) {
+                $attributes[$field] = $data[$field];
+            }
+        }
 
         $oldLogo = $company->logo;
         $newLogoPath = null;
