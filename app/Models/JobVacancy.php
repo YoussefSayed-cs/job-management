@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 class JobVacancy extends Model
 {
@@ -49,11 +50,19 @@ class JobVacancy extends Model
         ];
     }
 
-    // Expired مش بيتخزن، بيتحسب من الـ deadline (FR-61, FR-63)
+    /**
+     * Determine whether the application deadline has passed.
+     *
+     * Expired is derived from application_deadline.
+     * It is not stored as a Job status.
+     */
     public function isExpired(): bool
     {
-        return $this->application_deadline !== null
-            && $this->application_deadline->endOfDay()->isPast();
+        if ($this->application_deadline === null) {
+            return false;
+        }
+
+        return Carbon::parse($this->application_deadline)->endOfDay()->isPast();       
     }
 
     public function company(): BelongsTo
@@ -63,7 +72,7 @@ class JobVacancy extends Model
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(JobCategory::class, 'job_category_id');
+        return $this->belongsTo( JobCategory::class,'job_category_id' );
     }
 
     public function applications(): HasMany
