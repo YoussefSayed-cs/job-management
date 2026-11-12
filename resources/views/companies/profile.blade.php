@@ -19,6 +19,13 @@
             </div>
         @endif
 
+        <div class="flex justify-end">
+            <a href="{{ route('my-company.change-requests.index') }}"
+                class="rounded-lg border border-indigo-200 px-4 py-2 text-sm font-semibold text-indigo-700 hover:bg-indigo-50 dark:border-indigo-900 dark:text-indigo-300 dark:hover:bg-indigo-950">
+                Request Name or Industry Change
+            </a>
+        </div>
+
         <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
 
             {{-- Approved Company Information --}}
