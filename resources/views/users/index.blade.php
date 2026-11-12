@@ -1,7 +1,15 @@
 <x-jobs.layout title="User Management">
     <div class="space-y-6">
-        <x-jobs.page-heading title="User Management" description="Manage company owners and job seekers." />
-
+        <x-jobs.page-heading title="User Management" description="Manage company owners and job seekers.">
+            <x-slot:action>
+                @can('create', \App\Models\User::class)
+                    <a href="{{ route('company-owners.create') }}"
+                        class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">
+                        Invite Company Owner
+                    </a>
+                @endcan
+            </x-slot:action>
+        </x-jobs.page-heading>
         {{-- Filters --}}
         <section
             class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">

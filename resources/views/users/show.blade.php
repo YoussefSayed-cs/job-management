@@ -60,6 +60,25 @@
                 </a>
             @endif
         </section>
+
+        @can('resendInvitation', $user)
+            <section
+                class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                <h2 class="font-semibold">Invitation</h2>
+                <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">
+                    This owner has not set a password yet. If the link expired or got lost, send a new one
+                    (valid for 48 hours). Older links stop working.
+                </p>
+
+                <form method="POST" action="{{ route('users.resend-invitation', $user) }}" class="mt-4">
+                    @csrf
+                    <button type="submit"
+                        class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">
+                        Resend invitation
+                    </button>
+                </form>
+            </section>
+        @endcan
         {{-- Account actions --}}
         @canany(['suspend', 'deactivate', 'reactivate'], $user)
             @php
