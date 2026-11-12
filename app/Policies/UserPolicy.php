@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Enums\UserRole;
 use App\Models\User;
+use App\Services\CompanyOwnerInvitationService;
 
 class UserPolicy
 {
@@ -41,5 +42,18 @@ class UserPolicy
         return $user->role === UserRole::Admin
             && $target->role !== UserRole::Admin
             && $target->anonymized_at === null;
+    }
+
+    public function __construct(private CompanyOwnerInvitationService $invitations) {}
+
+    public function create(User $user): bool
+    {
+        return $user->role === UserRole::Admin;
+    }
+
+    public function resendInvitation(User $user, User $target): bool
+    {
+        return $user->role === UserRole::Admin
+            && $this->invitations->isInvitationPending($target);
     }
 }
