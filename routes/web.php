@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Middleware\EnsureManagementPortalAccess;
 use App\Http\Controllers\AccountReactivationController;
 use App\Http\Controllers\UserStatusController;
+use App\Http\Controllers\CompanyProfileController;
 use App\Http\Controllers\CompanyOwnerController;
 use App\Http\Controllers\CompanyOwnerInvitationController;
 use Illuminate\Support\Facades\Route;
@@ -55,6 +56,12 @@ Route::middleware([
 
     Route::post('/companies/{company}/reject', [ReviewCompanyRegistrationController::class, 'reject'])
         ->name('companies.reject');
+
+    Route::get('/my-company', [CompanyProfileController::class, 'show'])
+        ->name('my-company.show');
+
+    Route::patch('/my-company', [CompanyProfileController::class, 'update'])
+        ->name('my-company.update');
 });
 
 Route::get('/account-deletion/{user}/cancel', [
@@ -75,7 +82,7 @@ Route::get('/account-reactivation/{user}/confirm', [AccountReactivationControlle
     ->middleware('signed')
     ->name('account-reactivation.confirm');
 
-    
+
 Route::middleware('signed')->group(function () {
     Route::get('/company-owner-invitation/{user}', [CompanyOwnerInvitationController::class, 'show'])
         ->name('company-owner-invitation.show');
