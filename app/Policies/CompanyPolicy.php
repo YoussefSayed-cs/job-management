@@ -37,4 +37,18 @@ class CompanyPolicy
             && $company->owner_id === $user->id
             && $company->registration_status === RegistrationStatus::Approved;
     }
+
+    public function viewChangeRequests(User $user, Company $company): bool
+    {
+        return $user->role === UserRole::CompanyOwner
+            && $company->owner_id === $user->id
+            && $company->registration_status === RegistrationStatus::Approved;
+    }
+
+    public function createChangeRequest(User $user, Company $company): bool
+    {
+        return $user->role === UserRole::CompanyOwner
+            && $company->owner_id === $user->id
+            && $company->registration_status === RegistrationStatus::Approved;
+    }
 }
