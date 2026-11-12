@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Company;
 
-use App\Models\Company;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCompanyChangeRequest extends FormRequest
