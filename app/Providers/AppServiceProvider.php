@@ -11,6 +11,8 @@ use App\Models\JobVacancy;
 use App\Policies\JobPolicy;
 use App\Models\Application;
 use App\Policies\ApplicationPolicy;
+use App\Models\JobCategory;
+use App\Policies\JobCategoryPolicy;
 use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
@@ -30,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Gate::policy(JobVacancy::class, JobPolicy::class);
         Gate::policy(Application::class, ApplicationPolicy::class);
+        Gate::policy(JobCategory::class, JobCategoryPolicy::class);
 
         $this->configureDefaults();
     }
