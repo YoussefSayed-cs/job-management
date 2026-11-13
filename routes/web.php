@@ -138,9 +138,7 @@ Route::middleware([
 
     Route::resource('categories', JobCategoryController::class)->except(['show']);
 
-    Route::get('/categories/trash', [JobCategoryController::class, 'trash',])->name('categories.trash');
-
-    Route::patch('/categories/{id}/restore', [JobCategoryController::class, 'restore',])->name('categories.restore');
+    
 });
 
 Route::get('/account-deletion/{user}/cancel', [
