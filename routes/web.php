@@ -91,11 +91,11 @@ Route::middleware([
 
     // Job Management
 
-    Route::get('/jobs', [JobController::class, 'index'])
-        ->name('jobs.index');
+    Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
+        
 
-    Route::get('/jobs/create', [JobController::class, 'create'])
-        ->name('jobs.create');
+    Route::get('/jobs/create', [JobController::class, 'create'])->name('jobs.create');
+        
 
     Route::post('/jobs', [JobController::class, 'store'])
         ->name('jobs.store');
@@ -126,30 +126,21 @@ Route::middleware([
 
     // Application Management
 
-    Route::get('/applications', [
-        ApplicationReviewController::class,
-        'index',
-    ])->name('applications.index');
+    Route::get('/applications', [ApplicationReviewController::class,'index',])->name('applications.index');
+        
+    Route::get('/applications/{application}', [ApplicationReviewController::class,'show',])->name('applications.show');
 
-    Route::get('/applications/{application}', [
-        ApplicationReviewController::class,
-        'show',
-    ])->name('applications.show');
-
-    Route::patch('/applications/{application}/status', [
-        ApplicationReviewController::class,
-        'updateStatus',
-    ])->name('applications.status.update');
-
-    Route::get('/applications/{application}/resume', [
-        ApplicationReviewController::class,
-        'downloadResume',
-    ])->name('applications.resume.download');
-
+    Route::patch('/applications/{application}/status', [ApplicationReviewController::class, 'updateStatus',])->name('applications.status.update');
+       
+    Route::get('/applications/{application}/resume', [ApplicationReviewController::class,'downloadResume',])->name('applications.resume.download');
+        
     // Job Categories Management
 
-    Route::resource('categories', JobCategoryController::class)
-        ->except(['show']);
+    Route::resource('categories', JobCategoryController::class)->except(['show']);
+
+    Route::get('/categories/trash', [JobCategoryController::class, 'trash',])->name('categories.trash');
+
+    Route::patch('/categories/{id}/restore', [JobCategoryController::class, 'restore',])->name('categories.restore');
 });
 
 Route::get('/account-deletion/{user}/cancel', [
