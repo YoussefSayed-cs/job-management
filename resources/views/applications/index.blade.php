@@ -6,8 +6,8 @@
 
         <section class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
 
-            <x-jobs.stat-card label="Total Applications" :value="number_format($applications->total())"
-                description="Matching applications." />
+            <x-jobs.stat-card label="Matching Applications" :value="number_format($applications->total())"
+                description="Applications matching the current filters." />
 
         </section>
 
