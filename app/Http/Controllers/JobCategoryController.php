@@ -15,7 +15,7 @@ class JobCategoryController extends Controller
     {
         Gate::authorize('viewAny', JobCategory::class);
 
-        $categories = JobCategory::query() ->withCount('jobVacancies')->orderBy('name')->paginate(15);
+        $categories = JobCategory::query()->withCount('jobVacancies')->orderBy('name')->paginate(15);
 
         return view('categories.index', compact('categories'));
     }
