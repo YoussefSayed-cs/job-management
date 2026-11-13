@@ -12,3 +12,7 @@ Artisan::command('inspire', function () {
 Schedule::command('accounts:anonymize-expired')
     ->dailyAt('02:00')
     ->withoutOverlapping();
+
+Schedule::command('jobs:purge-archived')
+    ->dailyAt('02:30')
+    ->withoutOverlapping();
