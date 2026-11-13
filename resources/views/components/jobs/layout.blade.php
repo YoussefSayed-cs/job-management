@@ -66,6 +66,17 @@
                         </a>
                     @endcan
 
+                    @can('viewAny', \App\Models\JobCategory::class)
+                        <a href="{{ route('categories.index') }}" @class([
+                            'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium',
+                            'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-300' => request()->routeIs('categories.*'),
+                            'text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white' => !request()->routeIs('categories.*'),
+                        ])>
+                            <span aria-hidden="true">▦</span>
+                            Categories
+                        </a>
+                    @endcan
+
                     @can('viewAny', \App\Models\Application::class)
                         <a href="{{ route('applications.index') }}" @class([
                             'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium',
@@ -131,6 +142,13 @@
                                 <a href="{{ route('jobs.index') }}"
                                     class="rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800">
                                     Jobs
+                                </a>
+                            @endcan
+
+                            @can('viewAny', \App\Models\JobCategory::class)
+                                <a href="{{ route('categories.index') }}"
+                                    class="rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800">
+                                    Categories
                                 </a>
                             @endcan
 
