@@ -26,9 +26,9 @@ class ApplicationStatusService
             $changedBy,
             $message
         ) {
-            $application = Application::query()
-                ->lockForUpdate()
-                ->findOrFail($application->id);
+            $application = Application::query()->lockForUpdate()->findOrFail($application->id);
+               
+                
 
             $currentStatus = $application->status;
 
@@ -44,10 +44,10 @@ class ApplicationStatusService
                 ]);
             }
 
-            $application->update([
-                'status' => $newStatus,
-            ]);
+            $application->update([ 'status' => $newStatus,]);
+           
 
+               
             ApplicationStatusHistory::create([
                 'application_id' => $application->id,
                 'from_status' => $currentStatus,
@@ -56,9 +56,9 @@ class ApplicationStatusService
                 'changed_by' => $changedBy->id,
             ]);
 
-            return $application->fresh([
-                'statusHistories.changedBy',
-            ]);
+            return $application->fresh(['statusHistories.changedBy',]);
+            
+             
         });
     }
 
@@ -73,7 +73,8 @@ class ApplicationStatusService
             return true;
         }
 
-        $allowedNextStatuses = [
+        $allowedNextStatuses = 
+        [
             ApplicationStatus::Pending->value =>
                 ApplicationStatus::UnderReview,
 
