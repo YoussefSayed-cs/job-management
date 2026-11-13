@@ -83,8 +83,8 @@ class JobPolicy
      */
     public function delete(User $user, JobVacancy $job): bool
     {
-        return $job->status === JobStatus::Archived
-            && $this->canManageJob($user, $job);
+        return $job->status === JobStatus::Archived && $this->canManageJob($user, $job);
+           
     }
 
     /**
