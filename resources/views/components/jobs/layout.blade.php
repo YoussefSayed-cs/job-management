@@ -22,76 +22,71 @@
                 </span>
             </a>
 
+
             <nav aria-label="Main navigation" class="flex flex-1 flex-col gap-1 px-4 py-6">
                 <p class="px-3 pb-2 text-xs font-semibold tracking-wider text-slate-400 uppercase dark:text-slate-500">
-                    Workspace</p>
+                    Workspace
+                </p>
+
                 <a href="{{ route('dashboard') }}" @class([
                     'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium',
-                    'bg-indigo-50 text-indigo-700' => request()->routeIs('dashboard'),
-                    'dark:bg-indigo-400/10 dark:text-indigo-300' => request()->routeIs('dashboard'),
+                    'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-300' => request()->routeIs('dashboard'),
                     'text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white' => !request()->routeIs('dashboard'),
                 ])>
-                    <span aria-hidden="true">⌂</span>
-                    Dashboard
+        Dashboard
+                </a>
 
-                    @can('viewAny', \App\Models\Company::class)
+                @can('viewAny', \App\Models\Company::class)
                         <a href="{{ route('companies.index') }}" @class([
                             'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium',
                             'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-300' => request()->routeIs('companies.*'),
                             'text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white' => !request()->routeIs('companies.*'),
                         ])>
-                            <span aria-hidden="true">▣</span>
-                            Companies
+                    Companies
                         </a>
-                    @endcan
-                    @can('viewAny', \App\Models\User::class)
-                        <a href="{{ route('users.index') }}" @class([
-                            'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium',
-                            'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-300' => request()->routeIs('users.*'),
-                            'text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white' => !request()->routeIs('users.*'),
-                        ])>
-                            <span aria-hidden="true">☺</span>
-                            Users
-                        </a>
-                    @endcan
+                @endcan
 
-                    @can('viewAny', \App\Models\JobVacancy::class)
-                        <a href="{{ route('jobs.index') }}" @class([
-                            'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium',
-                            'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-300' => request()->routeIs('jobs.*'),
-                            'text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white' => !request()->routeIs('jobs.*'),
-                        ])>
-                            <span aria-hidden="true">▤</span>
-                            Jobs
-                        </a>
-                    @endcan
+                @can('viewAny', \App\Models\User::class)
+                    <a href="{{ route('users.index') }}" @class([
+                        'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium',
+                        'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-300' => request()->routeIs('users.*'),
+                        'text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white' => !request()->routeIs('users.*'),
+                    ])>
+                        Users
+                    </a>
+                @endcan
 
-                    @can('viewAny', \App\Models\JobCategory::class)
+                @can('viewAny', \App\Models\JobVacancy::class)
+                    <a href="{{ route('jobs.index') }}" @class([
+                        'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium',
+                        'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-300' => request()->routeIs('jobs.*'),
+                        'text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white' => !request()->routeIs('jobs.*'),
+                    ])>
+                        Jobs
+                    </a>
+                @endcan
+
+                @can('viewAny', \App\Models\JobCategory::class)
                         <a href="{{ route('categories.index') }}" @class([
                             'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium',
                             'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-300' => request()->routeIs('categories.*'),
                             'text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white' => !request()->routeIs('categories.*'),
                         ])>
-                            <span aria-hidden="true">▦</span>
-                            Categories
+                    Categories
                         </a>
-                    @endcan
+                @endcan
 
-                    @can('viewAny', \App\Models\Application::class)
+                @can('viewAny', \App\Models\Application::class)
                         <a href="{{ route('applications.index') }}" @class([
                             'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium',
                             'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-300' => request()->routeIs('applications.*'),
                             'text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white' => !request()->routeIs('applications.*'),
                         ])>
-                            <span aria-hidden="true">▤</span>
-                            Applications
+                    Applications
                         </a>
-                    @endcan
-
-
-
-
+                @endcan
             </nav>
+
 
             <div class="border-t border-slate-100 p-4 dark:border-slate-800">
                 <p class="truncate px-2 text-sm font-semibold text-slate-800 dark:text-slate-100">
@@ -142,13 +137,6 @@
                                 <a href="{{ route('jobs.index') }}"
                                     class="rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800">
                                     Jobs
-                                </a>
-                            @endcan
-
-                            @can('viewAny', \App\Models\JobCategory::class)
-                                <a href="{{ route('categories.index') }}"
-                                    class="rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800">
-                                    Categories
                                 </a>
                             @endcan
 
