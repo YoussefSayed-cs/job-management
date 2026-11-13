@@ -27,14 +27,13 @@ class JobCategoryController extends Controller
         return view('categories.create');
     }
 
-    public function store(StoreJobCategoryRequest $request ): RedirectResponse
-     {
+    public function store(StoreJobCategoryRequest $request): RedirectResponse
+    {
         JobCategory::create($request->validated());
 
         return redirect()->route('categories.index')->with('status', 'Category created successfully.');
-               
-    }    
-   
+    }
+
 
     public function edit(JobCategory $category): View
     {
@@ -43,29 +42,40 @@ class JobCategoryController extends Controller
         return view('categories.edit', compact('category'));
     }
 
-    public function update(UpdateJobCategoryRequest $request, JobCategory $category ): RedirectResponse   
+    public function update(UpdateJobCategoryRequest $request, JobCategory $category): RedirectResponse
     {
         $category->update($request->validated());
 
         return redirect()->route('categories.index')->with('status', 'Category updated successfully.');
-            
     }
-    
-    
+
+
     public function destroy(JobCategory $category): RedirectResponse
     {
         Gate::authorize('delete', $category);
 
-        // A category cannot be deleted while Jobs reference it.
-        if ($category->jobVacancies()->exists()) {
-            return back()->withErrors([
-                'category' => 'This category cannot be deleted because it is currently assigned to one or more jobs.',
-            ]);
-        }
-
         $category->delete();
 
-        return redirect()->route('categories.index')->with('status', 'Category deleted successfully.');
-           
+        return redirect()->route('categories.index')->with('status', 'Category moved to trash successfully.');
+    }
+
+    public function trash(): View
+    {
+        Gate::authorize('viewAny', JobCategory::class);
+
+        $categories = JobCategory::onlyTrashed()->withCount('jobVacancies')->orderByDesc('deleted_at')->paginate(15);
+
+        return view('categories.trash', compact('categories'));
+    }
+
+    public function restore(string $id): RedirectResponse
+    {
+        $category = JobCategory::onlyTrashed()->findOrFail($id);
+
+        Gate::authorize('restore', $category);
+
+        $category->restore();
+
+        return redirect()->route('categories.trash')->with('status', 'Category restored successfully.');
     }
 }
