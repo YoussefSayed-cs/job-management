@@ -13,6 +13,7 @@ use App\Http\Controllers\CompanyOwnerController;
 use App\Http\Controllers\CompanyOwnerInvitationController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\CompanyChangeRequestReviewController;
+use App\Http\Controllers\ApplicationReviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/dashboard')->name('home');
@@ -121,6 +122,28 @@ Route::middleware([
 
     Route::delete('/jobs/{job}', [JobController::class, 'destroy'])
         ->name('jobs.destroy');
+
+    // Application Management
+
+    Route::get('/applications', [
+        ApplicationReviewController::class,
+        'index',
+    ])->name('applications.index');
+
+    Route::get('/applications/{application}', [
+        ApplicationReviewController::class,
+        'show',
+    ])->name('applications.show');
+
+    Route::patch('/applications/{application}/status', [
+        ApplicationReviewController::class,
+        'updateStatus',
+    ])->name('applications.status.update');
+
+    Route::get('/applications/{application}/resume', [
+        ApplicationReviewController::class,
+        'downloadResume',
+    ])->name('applications.resume.download');
 });
 
 Route::get('/account-deletion/{user}/cancel', [
@@ -143,12 +166,8 @@ Route::get('/account-reactivation/{user}/confirm', [AccountReactivationControlle
 
 
 Route::middleware('signed')->group(function () {
-    Route::get('/company-owner-invitation/{user}', [CompanyOwnerInvitationController::class, 'show'])
-        ->name('company-owner-invitation.show');
-
-    Route::post('/company-owner-invitation/{user}', [CompanyOwnerInvitationController::class, 'store'])
-        ->middleware('throttle:10,1')
-        ->name('company-owner-invitation.store');
+    Route::get('/company-owner-invitation/{user}', [CompanyOwnerInvitationController::class, 'show'])->name('company-owner-invitation.show');    
+    Route::post('/company-owner-invitation/{user}', [CompanyOwnerInvitationController::class, 'store'])->middleware('throttle:10,1')->name('company-owner-invitation.store');  
 });
 
 require __DIR__ . '/settings.php';
