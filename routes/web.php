@@ -14,6 +14,7 @@ use App\Http\Controllers\CompanyOwnerInvitationController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\CompanyChangeRequestReviewController;
 use App\Http\Controllers\ApplicationReviewController;
+use App\Http\Controllers\JobCategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/dashboard')->name('home');
@@ -144,6 +145,11 @@ Route::middleware([
         ApplicationReviewController::class,
         'downloadResume',
     ])->name('applications.resume.download');
+
+    // Job Categories Management
+
+    Route::resource('categories', JobCategoryController::class)
+        ->except(['show']);
 });
 
 Route::get('/account-deletion/{user}/cancel', [
@@ -166,8 +172,8 @@ Route::get('/account-reactivation/{user}/confirm', [AccountReactivationControlle
 
 
 Route::middleware('signed')->group(function () {
-    Route::get('/company-owner-invitation/{user}', [CompanyOwnerInvitationController::class, 'show'])->name('company-owner-invitation.show');    
-    Route::post('/company-owner-invitation/{user}', [CompanyOwnerInvitationController::class, 'store'])->middleware('throttle:10,1')->name('company-owner-invitation.store');  
+    Route::get('/company-owner-invitation/{user}', [CompanyOwnerInvitationController::class, 'show'])->name('company-owner-invitation.show');
+    Route::post('/company-owner-invitation/{user}', [CompanyOwnerInvitationController::class, 'store'])->middleware('throttle:10,1')->name('company-owner-invitation.store');
 });
 
 require __DIR__ . '/settings.php';
