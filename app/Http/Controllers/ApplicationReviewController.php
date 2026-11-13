@@ -49,14 +49,11 @@ class ApplicationReviewController extends Controller
                         });
                 });
             })->latest('submitted_at')->paginate(15)->withQueryString();
-            
-            
-            
 
         $statuses = ApplicationStatus::cases();
 
-        return view('applications.index', compact( 'applications','statuses','statusFilter','search'));
-           
+        return view('applications.index', compact('applications', 'statuses', 'statusFilter', 'search'));
+
     }
 
     /**
@@ -80,6 +77,28 @@ class ApplicationReviewController extends Controller
             'availableStatuses' => $this->availableStatuses(
                 $application->status
             ),
+            'messageTemplates' => [
+                ApplicationStatus::UnderReview->value => [[
+                    'label' => 'Under Review',
+                    'message' => 'Your application is now under review. We will contact you with an update.',
+                ]],
+                ApplicationStatus::Shortlisted->value => [[
+                    'label' => 'Shortlisted',
+                    'message' => 'Your application has been shortlisted. We will be in touch about the next steps.',
+                ]],
+                ApplicationStatus::Interview->value => [[
+                    'label' => 'Interview',
+                    'message' => 'We would like to invite you to an interview. Please reply so we can arrange a suitable time.',
+                ]],
+                ApplicationStatus::Accepted->value => [[
+                    'label' => 'Accepted',
+                    'message' => 'Congratulations! Your application has been accepted. We will be in touch with the next steps.',
+                ]],
+                ApplicationStatus::Rejected->value => [[
+                    'label' => 'Rejected',
+                    'message' => 'Thank you for your interest. We regret to inform you that your application was not successful.',
+                ]],
+            ],
         ]);
     }
 
@@ -100,8 +119,7 @@ class ApplicationReviewController extends Controller
         );
 
         return redirect()->route('applications.show', $application)->with('status', 'Application status updated successfully.');
-           
-           
+
     }
 
     /**
@@ -115,42 +133,36 @@ class ApplicationReviewController extends Controller
 
         abort_unless($snapshot, 404);
 
-        abort_unless( Storage::disk('local')->exists($snapshot->file_path),404 );
-           
+        abort_unless(Storage::disk('local')->exists($snapshot->file_path), 404);
+
         $path = Storage::disk('local')->path($snapshot->file_path);
-        return response()->download($path, $snapshot->original_name);  
+
+        return response()->download($path, $snapshot->original_name);
 
     }
 
     /**
      * Return only valid next statuses for the current status.
      */
-    private function availableStatuses(ApplicationStatus $current ):
-        
-    array {
+    private function availableStatuses(ApplicationStatus $current): array
+    {
         if ($current->isTerminal()) {
             return [];
         }
 
         $nextStatuses = [
-            ApplicationStatus::Pending->value =>
-                ApplicationStatus::UnderReview,
+            ApplicationStatus::Pending->value => ApplicationStatus::UnderReview,
 
-            ApplicationStatus::UnderReview->value =>
-                ApplicationStatus::Shortlisted,
+            ApplicationStatus::UnderReview->value => ApplicationStatus::Shortlisted,
 
-            ApplicationStatus::Shortlisted->value =>
-                ApplicationStatus::Interview,
+            ApplicationStatus::Shortlisted->value => ApplicationStatus::Interview,
 
-            ApplicationStatus::Interview->value =>
-                ApplicationStatus::Accepted,
+            ApplicationStatus::Interview->value => ApplicationStatus::Accepted,
         ];
 
         $next = $nextStatuses[$current->value] ?? null;
 
-        return array_values(array_filter([$next,ApplicationStatus::Rejected,]));
-           
-            
-        
+        return array_values(array_filter([$next, ApplicationStatus::Rejected]));
+
     }
 }

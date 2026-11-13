@@ -165,6 +165,7 @@
                                 @foreach ($templates as $template)
                                     <option
                                         value="{{ $statusKey }}"
+                                        data-status="{{ $statusKey }}"
                                         data-message="{{ $template['message'] }}">
                                         {{ $template['label'] }}
                                     </option>
