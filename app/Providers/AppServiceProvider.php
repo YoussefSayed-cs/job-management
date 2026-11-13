@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use App\Models\JobVacancy;
+use App\Policies\JobPolicy;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::policy(JobVacancy::class, JobPolicy::class);
+
         $this->configureDefaults();
     }
 
@@ -37,14 +42,15 @@ class AppServiceProvider extends ServiceProvider
             app()->isProduction(),
         );
 
-        Password::defaults(fn (): ?Password => app()->isProduction()
-            ? Password::min(12)
+        Password::defaults(
+            fn(): ?Password => app()->isProduction()
+                ? Password::min(12)
                 ->mixedCase()
                 ->letters()
                 ->numbers()
                 ->symbols()
                 ->uncompromised()
-            : null,
+                : null,
         );
     }
 }
