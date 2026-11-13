@@ -1,103 +1,195 @@
-<x-jobs.layout title="Jobs">
-    <div class="flex flex-col gap-7">
-        <x-jobs.page-heading
-            title="Jobs"
-            description="Search, filter, and manage the vacancies in your workspace."
-        >
+<x-jobs.layout title="Job Management">
+    <div class="space-y-6">
+
+        <x-jobs.page-heading title="Job Management" description="Browse, manage and maintain job vacancies.">
             <x-slot:action>
-                <a href="{{ route('jobs.create') }}" class="inline-flex items-center justify-center rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700">
-                    Create a job
-                </a>
+                @can('create', \App\Models\JobVacancy::class)
+                    <a href="{{ route('jobs.create') }}"
+                        class="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700">
+                        Create Job
+                    </a>
+                @endcan
             </x-slot:action>
         </x-jobs.page-heading>
 
-        <section class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 dark:border-slate-800 dark:bg-slate-900">
-            <form method="GET" action="{{ route('jobs.index') }}" class="grid gap-3 md:grid-cols-[minmax(12rem,1fr)_12rem_12rem_auto_auto] md:items-end">
+        @if ($errors->any())
+            <div role="alert" class="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
+                <ul class="list-inside list-disc">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <section
+            class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <form method="GET" action="{{ route('jobs.index') }}" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+
                 <div>
-                    <label for="search" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Search by title</label>
-                    <input id="search" name="search" type="search" value="{{ request('search') }}" placeholder="Search job titles" class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500">
+                    <label for="search" class="mb-2 block text-sm font-medium">Search</label>
+                    <input id="search" name="search" value="{{ $filters['search'] ?? '' }}"
+                        placeholder="Job title, location or company..."
+                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800">
                 </div>
+
                 <div>
-                    <label for="status" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Status</label>
-                    <select id="status" name="status" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100">
+                    <label for="status" class="mb-2 block text-sm font-medium">Status</label>
+                    <select id="status" name="status"
+                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800">
                         <option value="">All statuses</option>
-                        @foreach ($statuses as $status)
-                            <option value="{{ $status->value }}" @selected(request('status') === $status->value)>{{ \Illuminate\Support\Str::headline($status->value) }}</option>
+                        @foreach (\App\Enums\JobStatus::cases() as $status)
+                            <option value="{{ $status->value }}" @selected(($filters['status'] ?? '') === $status->value)>
+                                {{ \Illuminate\Support\Str::headline($status->value) }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
+
                 <div>
-                    <label for="category" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Category</label>
-                    <select id="category" name="category" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100">
+                    <label for="job_category_id" class="mb-2 block text-sm font-medium">Category</label>
+                    <select id="job_category_id" name="job_category_id"
+                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800">
                         <option value="">All categories</option>
                         @foreach ($categories as $category)
-                            <option value="{{ $category->id }}" @selected(request('category') === $category->id)>{{ $category->name }}</option>
+                            <option value="{{ $category->id }}" @selected(($filters['job_category_id'] ?? '') === $category->id)>
+                                {{ $category->name }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
-                <button type="submit" class="rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-700 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white">Apply filters</button>
-                <a href="{{ route('jobs.index') }}" class="rounded-lg border border-slate-300 px-4 py-2.5 text-center text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800">Clear</a>
+
+                <div>
+                    <label for="employment_type" class="mb-2 block text-sm font-medium">Employment Type</label>
+                    <select id="employment_type" name="employment_type"
+                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800">
+                        <option value="">All types</option>
+                        @foreach (\App\Enums\EmploymentType::cases() as $type)
+                            <option value="{{ $type->value }}" @selected(($filters['employment_type'] ?? '') === $type->value)>
+                                {{ \Illuminate\Support\Str::headline($type->value) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div>
+                    <label for="work_location_type" class="mb-2 block text-sm font-medium">Work Location</label>
+                    <select id="work_location_type" name="work_location_type"
+                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800">
+                        <option value="">All locations</option>
+                        @foreach (\App\Enums\WorkLocationType::cases() as $type)
+                            <option value="{{ $type->value }}" @selected(($filters['work_location_type'] ?? '') === $type->value)>
+                                {{ \Illuminate\Support\Str::headline($type->value) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div>
+                    <label for="experience_level" class="mb-2 block text-sm font-medium">Experience Level</label>
+                    <select id="experience_level" name="experience_level"
+                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800">
+                        <option value="">All levels</option>
+                        @foreach (\App\Enums\ExperienceLevel::cases() as $level)
+                            <option value="{{ $level->value }}" @selected(($filters['experience_level'] ?? '') === $level->value)>
+                                {{ \Illuminate\Support\Str::headline($level->value) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-3 md:col-span-2 lg:col-span-3">
+                    <button type="submit"
+                        class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">
+                        Apply Filters
+                    </button>
+
+                    <a href="{{ route('jobs.index') }}"
+                        class="text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300">
+                        Clear Filters
+                    </a>
+                </div>
             </form>
         </section>
 
-        <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <div class="flex items-center justify-between border-b border-slate-100 px-5 py-4 sm:px-6 dark:border-slate-800">
-                <p class="text-sm text-slate-600 dark:text-slate-400"><span class="font-semibold text-slate-900 dark:text-slate-100">{{ $jobs->total() }}</span> {{ \Illuminate\Support\Str::plural('job', $jobs->total()) }}</p>
+        <section
+            class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+
+            <div class="border-b border-slate-100 px-5 py-4 dark:border-slate-800">
+                <h2 class="font-semibold">Jobs</h2>
+                <p class="mt-1 text-sm text-slate-500">
+                    {{ $jobs->total() }} jobs found
+                </p>
             </div>
 
-            @if ($jobs->isEmpty())
-                <div class="px-6 py-14 text-center">
-                    <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">No jobs found</p>
-                    <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Try changing your search or filters, or create a new job.</p>
-                    <a href="{{ route('jobs.create') }}" class="mt-5 inline-flex rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700">Create a job</a>
-                </div>
-            @else
-                <div class="overflow-x-auto">
-                    <table class="w-full min-w-[850px] text-left text-sm">
-                        <thead class="bg-slate-50 text-xs font-semibold tracking-wide text-slate-500 uppercase dark:bg-slate-800 dark:text-slate-400">
-                            <tr>
-                                <th scope="col" class="px-6 py-3">Job title</th>
-                                <th scope="col" class="px-6 py-3">Company</th>
-                                <th scope="col" class="px-6 py-3">Category</th>
-                                <th scope="col" class="px-6 py-3">Status</th>
-                                <th scope="col" class="px-6 py-3">Created</th>
-                                <th scope="col" class="px-6 py-3 text-right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-                            @foreach ($jobs as $job)
-                                <tr class="hover:bg-slate-50/70 dark:hover:bg-slate-800/60">
-                                    <td class="px-6 py-4">
-                                        <a href="{{ route('jobs.show', $job) }}" class="font-semibold text-slate-900 hover:text-indigo-700 dark:text-slate-100 dark:hover:text-indigo-300">{{ $job->title }}</a>
-                                        <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ \Illuminate\Support\Str::headline($job->employment_type->value) }} · {{ \Illuminate\Support\Str::headline($job->work_location_type->value) }}</p>
-                                    </td>
-                                    <td class="px-6 py-4 text-slate-600 dark:text-slate-300">{{ $job->company->name }}</td>
-                                    <td class="px-6 py-4 text-slate-600 dark:text-slate-300">{{ $job->category->name }}</td>
-                                    <td class="px-6 py-4"><x-jobs.status-badge :status="$job->status" :expired="$job->isExpired()" /></td>
-                                    <td class="whitespace-nowrap px-6 py-4 text-slate-500 dark:text-slate-400">{{ $job->created_at->format('M j, Y') }}</td>
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center justify-end gap-3 whitespace-nowrap">
-                                            <a href="{{ route('jobs.show', $job) }}" class="font-medium text-indigo-700 hover:text-indigo-900 dark:text-indigo-300 dark:hover:text-indigo-200">View</a>
-                                            <a href="{{ route('jobs.edit', $job) }}" class="font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100">Edit</a>
-                                            <form method="POST" action="{{ route('jobs.destroy', $job) }}" onsubmit="return confirm('Delete this job? This action cannot be undone.');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="font-medium text-rose-700 hover:text-rose-900">Delete</button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[850px] text-left text-sm">
+                    <thead class="bg-slate-50 text-xs uppercase text-slate-500 dark:bg-slate-800">
+                        <tr>
+                            <th class="px-5 py-3">Job</th>
+                            @if (auth()->user()->role === \App\Enums\UserRole::Admin)
+                                <th class="px-5 py-3">Company</th>
+                            @endif
+                            <th class="px-5 py-3">Category</th>
+                            <th class="px-5 py-3">Employment</th>
+                            <th class="px-5 py-3">Status</th>
+                            <th class="px-5 py-3">Deadline</th>
+                            <th class="px-5 py-3"></th>
+                        </tr>
+                    </thead>
 
-                @if ($jobs->hasPages())
-                    <div class="border-t border-slate-100 px-5 py-4 sm:px-6">
-                        {{ $jobs->links() }}
-                    </div>
-                @endif
-            @endif
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                        @forelse ($jobs as $job)
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                                <td class="px-5 py-4">
+                                    <p class="font-semibold">{{ $job->title }}</p>
+                                    <p class="mt-1 text-xs text-slate-500">{{ $job->location }}</p>
+                                </td>
+
+                                @if (auth()->user()->role === \App\Enums\UserRole::Admin)
+                                    <td class="px-5 py-4">{{ $job->company->name }}</td>
+                                @endif
+
+                                <td class="px-5 py-4">{{ $job->category->name }}</td>
+
+                                <td class="px-5 py-4">
+                                    {{ \Illuminate\Support\Str::headline($job->employment_type->value) }}
+                                </td>
+
+                                <td class="px-5 py-4">
+                                    <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium dark:bg-slate-800">
+                                        {{ \Illuminate\Support\Str::headline($job->status->value) }}
+                                    </span>
+                                    @if ($job->isExpired())
+                                        <span class="mt-1 block text-xs text-amber-600">Expired</span>
+                                    @endif
+                                </td>
+
+                                <td class="px-5 py-4 text-slate-500">
+                                    {{ $job->application_deadline?->format('M j, Y') ?? 'No deadline' }}
+                                </td>
+
+                                <td class="px-5 py-4 text-right">
+                                    <a href="{{ route('jobs.show', $job) }}"
+                                        class="font-semibold text-indigo-600 hover:text-indigo-800">
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="px-5 py-12 text-center text-slate-500">
+                                    No jobs found.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="border-t border-slate-100 px-5 py-4 dark:border-slate-800">
+                {{ $jobs->links() }}
+            </div>
         </section>
     </div>
 </x-jobs.layout>
