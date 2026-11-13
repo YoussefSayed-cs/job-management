@@ -20,10 +20,22 @@ class UpdateApplicationStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => ['required',Rule::enum(ApplicationStatus::class),
-            Rule::notIn([ApplicationStatus::Pending->value,ApplicationStatus::Withdrawn->value,]),], 
-            'message' => ['nullable','string', 'max:1000', ],
-                
+            'status' => [
+                'required',
+                Rule::in([
+                    ApplicationStatus::UnderReview->value,
+                    ApplicationStatus::Shortlisted->value,
+                    ApplicationStatus::Interview->value,
+                    ApplicationStatus::Accepted->value,
+                    ApplicationStatus::Rejected->value,
+                ]),
+            ],
+
+            'message' => [
+                'nullable',
+                'string',
+                'max:1000',
+            ],
         ];
     }
 }
