@@ -11,9 +11,6 @@ use Illuminate\Validation\ValidationException;
 
 class ApplicationStatusService
 {
-    /**
-     * Update an Application status and preserve its history.
-     */
     public function updateStatus(
         Application $application,
         ApplicationStatus $newStatus,
@@ -26,9 +23,15 @@ class ApplicationStatusService
             $changedBy,
             $message
         ) {
-            $application = Application::query()->lockForUpdate()->findOrFail($application->id);
-               
-                
+            $application = Application::query()
+                ->lockForUpdate()
+                ->findOrFail($application->id);
+
+            if ($application->job_vacancy_id === null) {
+                throw ValidationException::withMessages([
+                    'status' => 'This application is linked to a deleted job.',
+                ]);
+            }
 
             $currentStatus = $application->status;
 
@@ -44,10 +47,10 @@ class ApplicationStatusService
                 ]);
             }
 
-            $application->update([ 'status' => $newStatus,]);
-           
+            $application->update([
+                'status' => $newStatus,
+            ]);
 
-               
             ApplicationStatusHistory::create([
                 'application_id' => $application->id,
                 'from_status' => $currentStatus,
@@ -56,15 +59,12 @@ class ApplicationStatusService
                 'changed_by' => $changedBy->id,
             ]);
 
-            return $application->fresh(['statusHistories.changedBy',]);
-            
-             
+            return $application->fresh([
+                'statusHistories.changedBy',
+            ]);
         });
     }
 
-    /**
-     * Only the next stage or Rejected is allowed.
-     */
     private function isAllowedTransition(
         ApplicationStatus $current,
         ApplicationStatus $next
@@ -73,8 +73,7 @@ class ApplicationStatusService
             return true;
         }
 
-        $allowedNextStatuses = 
-        [
+        $allowedTransitions = [
             ApplicationStatus::Pending->value =>
                 ApplicationStatus::UnderReview,
 
@@ -88,8 +87,6 @@ class ApplicationStatusService
                 ApplicationStatus::Accepted,
         ];
 
-        $expectedNext = $allowedNextStatuses[$current->value] ?? null;
-
-        return $expectedNext === $next;
+        return ($allowedTransitions[$current->value] ?? null) === $next;
     }
 }
