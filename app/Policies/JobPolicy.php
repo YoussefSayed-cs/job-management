@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
+use App\Enums\JobStatus;
 use App\Enums\RegistrationStatus;
 use App\Enums\UserRole;
-use App\Enums\JobStatus;
 use App\Models\JobVacancy;
 use App\Models\User;
 
@@ -84,7 +84,7 @@ class JobPolicy
     public function delete(User $user, JobVacancy $job): bool
     {
         return $job->status === JobStatus::Archived && $this->canManageJob($user, $job);
-           
+
     }
 
     /**
@@ -127,6 +127,6 @@ class JobPolicy
         $company = $user->company;
 
         return $company !== null && $company->registration_status === RegistrationStatus::Approved;
-           
+
     }
 }

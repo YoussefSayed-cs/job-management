@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\JobCategory;
 use App\Concerns\SeedsFromJson;
+use App\Models\JobCategory;
 use Illuminate\Database\Seeder;
 
 class JobCategorySeeder extends Seeder

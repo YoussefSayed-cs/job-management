@@ -25,7 +25,7 @@ class EnsureAccountIsAccessible
             $request->session()->regenerateToken();
 
             return redirect()->route('login')
-                   ->with('status', 'Your account is currently unavailable.');
+                ->with('status', 'Your account is currently unavailable.');
         }
 
         return $next($request);

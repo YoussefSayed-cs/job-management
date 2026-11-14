@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Enums\JobStatus;
 use App\Models\JobVacancy;
-use Carbon\CarbonInterface;
 use Closure;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;

@@ -4,8 +4,8 @@ use App\Enums\AccountStatus;
 use App\Enums\UserRole;
 use App\Models\Application;
 use App\Models\Company;
-use App\Models\JobVacancy;
 use App\Models\JobCategory;
+use App\Models\JobVacancy;
 use App\Models\Resume;
 use App\Models\SavedJob;
 use App\Models\User;
@@ -30,7 +30,7 @@ function anonymize(User $user): void
 
 function createCompany(User $owner): Company
 {
-    return Company::unguarded(fn() => Company::create([
+    return Company::unguarded(fn () => Company::create([
         'owner_id' => $owner->id,
         'name' => 'Acme',
         'industry' => 'Software',
@@ -46,11 +46,11 @@ function createJob(?Company $company = null): JobVacancy
         $company = createCompany($owner);
     }
 
-    $category = JobCategory::unguarded(fn() => JobCategory::create([
-        'name' => 'Category ' . Str::random(8),
+    $category = JobCategory::unguarded(fn () => JobCategory::create([
+        'name' => 'Category '.Str::random(8),
     ]));
 
-    return JobVacancy::unguarded(fn() => JobVacancy::create([
+    return JobVacancy::unguarded(fn () => JobVacancy::create([
         'company_id' => $company->id,
         'job_category_id' => $category->id,
         'title' => 'Laravel Developer',
@@ -102,7 +102,7 @@ test('anonymization removes the resume, saved jobs, notifications and files', fu
     Storage::disk('public')->put('avatars/me.jpg', 'x');
     Storage::disk('local')->put('resumes/cv.pdf', 'x');
 
-    Resume::unguarded(fn() => Resume::create([
+    Resume::unguarded(fn () => Resume::create([
         'user_id' => $user->id,
         'file_path' => 'resumes/cv.pdf',
         'original_name' => 'cv.pdf',
@@ -111,7 +111,7 @@ test('anonymization removes the resume, saved jobs, notifications and files', fu
     ]));
 
     $job = createJob();
-    SavedJob::unguarded(fn() => SavedJob::create([
+    SavedJob::unguarded(fn () => SavedJob::create([
         'user_id' => $user->id,
         'job_vacancy_id' => $job->id,
     ]));
@@ -141,7 +141,7 @@ test('applications of an anonymized job seeker are preserved', function () {
     $seeker = dueForAnonymization();
     $job = createJob();
 
-    $application = Application::unguarded(fn() => Application::create([
+    $application = Application::unguarded(fn () => Application::create([
         'job_vacancy_id' => $job->id,
         'company_id' => $job->company_id,
         'user_id' => $seeker->id,
@@ -165,7 +165,7 @@ test('anonymizing a company owner deletes the company and jobs but keeps applica
     $job = createJob($company);
     $seeker = User::factory()->create(['role' => UserRole::JobSeeker]);
 
-    $application = Application::unguarded(fn() => Application::create([
+    $application = Application::unguarded(fn () => Application::create([
         'job_vacancy_id' => $job->id,
         'company_id' => $company->id,
         'user_id' => $seeker->id,
@@ -191,20 +191,20 @@ test('anonymizing a company owner deletes the company and jobs but keeps applica
 test('an account is not anonymized before the grace period ends', function () {
     $user = dueForAnonymization(['deletion_requested_at' => now()->subDays(10)]);
 
-    expect(fn() => anonymize($user))->toThrow(LogicException::class);
+    expect(fn () => anonymize($user))->toThrow(LogicException::class);
     expect($user->refresh()->anonymized_at)->toBeNull();
 });
 
 test('an account without a deletion request is not anonymized', function () {
     $user = dueForAnonymization(['deletion_requested_at' => null]);
 
-    expect(fn() => anonymize($user))->toThrow(LogicException::class);
+    expect(fn () => anonymize($user))->toThrow(LogicException::class);
 });
 
 test('the admin account cannot be anonymized', function () {
     $admin = dueForAnonymization(['role' => UserRole::Admin]);
 
-    expect(fn() => anonymize($admin))->toThrow(LogicException::class);
+    expect(fn () => anonymize($admin))->toThrow(LogicException::class);
     expect($admin->refresh()->anonymized_at)->toBeNull();
 });
 
@@ -212,5 +212,5 @@ test('an already anonymized account cannot be anonymized twice', function () {
     $user = dueForAnonymization();
     anonymize($user);
 
-    expect(fn() => anonymize($user->refresh()))->toThrow(LogicException::class);
+    expect(fn () => anonymize($user->refresh()))->toThrow(LogicException::class);
 });

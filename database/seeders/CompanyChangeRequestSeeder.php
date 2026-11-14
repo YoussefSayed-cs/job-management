@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\CompanyChangeRequest;
 use App\Concerns\SeedsFromJson;
+use App\Models\CompanyChangeRequest;
 use Illuminate\Database\Seeder;
 
 class CompanyChangeRequestSeeder extends Seeder

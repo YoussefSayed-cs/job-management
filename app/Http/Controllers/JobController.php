@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\UserRole;
 use App\Enums\JobStatus;
+use App\Enums\UserRole;
 use App\Http\Requests\Job\DeleteArchivedJobRequest;
 use App\Http\Requests\Job\IndexJobsRequest;
 use App\Http\Requests\Job\StoreJobRequest;
@@ -11,9 +11,9 @@ use App\Http\Requests\Job\UpdateJobRequest;
 use App\Models\JobCategory;
 use App\Models\JobVacancy;
 use App\Services\JobLifecycleService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 
 class JobController extends Controller
 {
@@ -27,7 +27,6 @@ class JobController extends Controller
         $user = $request->user();
 
         $query = JobVacancy::query()->with(['company', 'category']);
-
 
         if ($user->role === UserRole::CompanyOwner) {
             $query->where('company_id', $user->company->id);
@@ -53,7 +52,6 @@ class JobController extends Controller
             $query->where('experience_level', $level);
         });
 
-
         $jobs = $query->latest()->paginate(10)->withQueryString();
 
         $categories = JobCategory::query()->orderBy('name')->get();
@@ -74,7 +72,7 @@ class JobController extends Controller
     {
         $company = $request->user()->company()->firstOrFail();
 
-        $job = $company->jobVacancies()->create([...$request->validated(), 'status' => JobStatus::Active,]);
+        $job = $company->jobVacancies()->create([...$request->validated(), 'status' => JobStatus::Active]);
 
         return redirect()->route('jobs.show', $job)->with('status', 'Job published successfully.');
     }

@@ -2,7 +2,6 @@
 
 use App\Models\User;
 
-
 test('login screen can be rendered', function () {
     $response = $this->get(route('login'));
 
@@ -38,8 +37,6 @@ test('users can not authenticate with invalid password', function () {
 
     $this->assertGuest();
 });
-
-
 
 test('users can logout', function () {
     $user = User::factory()->create();

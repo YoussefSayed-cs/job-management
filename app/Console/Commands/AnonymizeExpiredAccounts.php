@@ -62,7 +62,7 @@ class AnonymizeExpiredAccounts extends Command
 
                     Log::error('Automatic anonymization failed', [
                         'user_id' => $user->id,
-                        'error'   => $e->getMessage(),
+                        'error' => $e->getMessage(),
                     ]);
                 }
             }
@@ -70,7 +70,7 @@ class AnonymizeExpiredAccounts extends Command
 
         Log::info('Automatic anonymization finished', [
             'anonymized' => $done,
-            'failed'     => $failed,
+            'failed' => $failed,
         ]);
 
         $this->info("Anonymized: {$done}, failed: {$failed}.");

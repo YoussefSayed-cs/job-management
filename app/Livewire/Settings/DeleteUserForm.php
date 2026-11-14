@@ -1,11 +1,10 @@
 <?php
 
-
 namespace App\Livewire\Settings;
 
 use App\Concerns\PasswordValidationRules;
-use App\Livewire\Actions\Logout;
 use App\Enums\UserRole;
+use App\Livewire\Actions\Logout;
 use App\Notifications\AccountDeletionRequested;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -43,7 +42,7 @@ class DeleteUserForm extends Component
             'deletion_requested_at' => now(),
         ])->save();
 
-        $user->notify(new AccountDeletionRequested());
+        $user->notify(new AccountDeletionRequested);
 
         $this->reset('password');
 

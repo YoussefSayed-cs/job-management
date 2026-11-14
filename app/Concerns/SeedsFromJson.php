@@ -4,7 +4,6 @@ namespace App\Concerns;
 
 trait SeedsFromJson
 {
-    
     protected function readJson(string $file): array
     {
         return json_decode(
@@ -13,7 +12,6 @@ trait SeedsFromJson
         );
     }
 
-    
     protected function seedFromJson(string $model, string $file, ?callable $transform = null): void
     {
         foreach ($this->readJson($file) as $row) {

@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Resume;
 use App\Concerns\SeedsFromJson;
+use App\Models\Resume;
 use Illuminate\Database\Seeder;
 
 class ResumeSeeder extends Seeder

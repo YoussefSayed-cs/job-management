@@ -1,20 +1,20 @@
 <?php
 
 use App\Http\Controllers\AccountDeletionController;
-use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\ReviewCompanyRegistrationController;
-use App\Http\Controllers\UserController;
-use App\Http\Middleware\EnsureManagementPortalAccess;
 use App\Http\Controllers\AccountReactivationController;
-use App\Http\Controllers\UserStatusController;
-use App\Http\Controllers\CompanyProfileController;
+use App\Http\Controllers\ApplicationReviewController;
 use App\Http\Controllers\CompanyChangeRequestController;
+use App\Http\Controllers\CompanyChangeRequestReviewController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CompanyOwnerController;
 use App\Http\Controllers\CompanyOwnerInvitationController;
-use App\Http\Controllers\JobController;
-use App\Http\Controllers\CompanyChangeRequestReviewController;
-use App\Http\Controllers\ApplicationReviewController;
+use App\Http\Controllers\CompanyProfileController;
 use App\Http\Controllers\JobCategoryController;
+use App\Http\Controllers\JobController;
+use App\Http\Controllers\ReviewCompanyRegistrationController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserStatusController;
+use App\Http\Middleware\EnsureManagementPortalAccess;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/dashboard')->name('home');
@@ -25,7 +25,6 @@ Route::middleware([
     EnsureManagementPortalAccess::class,
 ])->group(function () {
     Route::view('/dashboard', 'account.home')->name('dashboard');
-
 
     Route::get('/users', [UserController::class, 'index'])
         ->name('users.index');
@@ -92,10 +91,8 @@ Route::middleware([
     // Job Management
 
     Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
-        
 
     Route::get('/jobs/create', [JobController::class, 'create'])->name('jobs.create');
-        
 
     Route::post('/jobs', [JobController::class, 'store'])
         ->name('jobs.store');
@@ -126,19 +123,18 @@ Route::middleware([
 
     // Application Management
 
-    Route::get('/applications', [ApplicationReviewController::class,'index',])->name('applications.index');
-        
-    Route::get('/applications/{application}', [ApplicationReviewController::class,'show',])->name('applications.show');
+    Route::get('/applications', [ApplicationReviewController::class, 'index'])->name('applications.index');
 
-    Route::patch('/applications/{application}/status', [ApplicationReviewController::class, 'updateStatus',])->name('applications.status.update');
-       
-    Route::get('/applications/{application}/resume', [ApplicationReviewController::class,'downloadResume',])->name('applications.resume.download');
-        
+    Route::get('/applications/{application}', [ApplicationReviewController::class, 'show'])->name('applications.show');
+
+    Route::patch('/applications/{application}/status', [ApplicationReviewController::class, 'updateStatus'])->name('applications.status.update');
+
+    Route::get('/applications/{application}/resume', [ApplicationReviewController::class, 'downloadResume'])->name('applications.resume.download');
+
     // Job Categories Management
 
     Route::resource('categories', JobCategoryController::class)->except(['show']);
 
-    
 });
 
 Route::get('/account-deletion/{user}/cancel', [
@@ -159,10 +155,9 @@ Route::get('/account-reactivation/{user}/confirm', [AccountReactivationControlle
     ->middleware('signed')
     ->name('account-reactivation.confirm');
 
-
 Route::middleware('signed')->group(function () {
     Route::get('/company-owner-invitation/{user}', [CompanyOwnerInvitationController::class, 'show'])->name('company-owner-invitation.show');
     Route::post('/company-owner-invitation/{user}', [CompanyOwnerInvitationController::class, 'store'])->middleware('throttle:10,1')->name('company-owner-invitation.store');
 });
 
-require __DIR__ . '/settings.php';
+require __DIR__.'/settings.php';

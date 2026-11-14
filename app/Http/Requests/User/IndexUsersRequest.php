@@ -22,7 +22,7 @@ class IndexUsersRequest extends FormRequest
 
             'role' => [
                 'nullable',
-                Rule::in([UserRole::CompanyOwner->value, UserRole::JobSeeker->value,]),
+                Rule::in([UserRole::CompanyOwner->value, UserRole::JobSeeker->value]),
             ],
 
             'status' => [

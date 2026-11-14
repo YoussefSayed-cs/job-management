@@ -1,9 +1,7 @@
 <?php
 
-use App\Enums\UserRole;
 use App\Models\JobCategory;
 use App\Models\JobVacancy;
-use App\Models\User;
 
 it('allows admin to create a category', function () {
     $admin = adminUser();
@@ -16,8 +14,8 @@ it('allows admin to create a category', function () {
         ->assertSessionHas('status');
 
     $this->assertDatabaseHas('job_categories', [
-        'name' => 'Software Engineering',
-    ]);
+        'name' => 'Software Engineering', ]);
+
 });
 
 it('prevents company owners from accessing category management', function () {

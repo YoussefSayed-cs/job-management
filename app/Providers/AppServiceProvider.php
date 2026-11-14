@@ -2,18 +2,18 @@
 
 namespace App\Providers;
 
+use App\Models\Application;
+use App\Models\JobCategory;
+use App\Models\JobVacancy;
+use App\Policies\ApplicationPolicy;
+use App\Policies\JobCategoryPolicy;
+use App\Policies\JobPolicy;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
-use App\Models\JobVacancy;
-use App\Policies\JobPolicy;
-use App\Models\Application;
-use App\Policies\ApplicationPolicy;
-use App\Models\JobCategory;
-use App\Policies\JobCategoryPolicy;
-use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -49,13 +49,13 @@ class AppServiceProvider extends ServiceProvider
         );
 
         Password::defaults(
-            fn(): ?Password => app()->isProduction()
+            fn (): ?Password => app()->isProduction()
                 ? Password::min(12)
-                ->mixedCase()
-                ->letters()
-                ->numbers()
-                ->symbols()
-                ->uncompromised()
+                    ->mixedCase()
+                    ->letters()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised()
                 : null,
         );
     }

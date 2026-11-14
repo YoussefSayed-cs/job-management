@@ -79,12 +79,12 @@ class FortifyServiceProvider extends ServiceProvider
      */
     private function configureViews(): void
     {
-        Fortify::loginView(fn() => view('livewire.auth.login'));
-        Fortify::verifyEmailView(fn() => view('livewire.auth.verify-email'));
-        Fortify::twoFactorChallengeView(fn() => view('livewire.auth.two-factor-challenge'));
-        Fortify::confirmPasswordView(fn() => view('livewire.auth.confirm-password'));
-        Fortify::resetPasswordView(fn() => view('livewire.auth.reset-password'));
-        Fortify::requestPasswordResetLinkView(fn() => view('livewire.auth.forgot-password'));
+        Fortify::loginView(fn () => view('livewire.auth.login'));
+        Fortify::verifyEmailView(fn () => view('livewire.auth.verify-email'));
+        Fortify::twoFactorChallengeView(fn () => view('livewire.auth.two-factor-challenge'));
+        Fortify::confirmPasswordView(fn () => view('livewire.auth.confirm-password'));
+        Fortify::resetPasswordView(fn () => view('livewire.auth.reset-password'));
+        Fortify::requestPasswordResetLinkView(fn () => view('livewire.auth.forgot-password'));
     }
 
     /**
@@ -97,7 +97,7 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });

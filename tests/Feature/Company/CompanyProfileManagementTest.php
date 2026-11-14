@@ -1,7 +1,6 @@
 <?php
 
 use App\Enums\UserRole;
-use App\Models\Company;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -73,9 +72,7 @@ it('allows an owner to replace their company logo', function () {
 
     Storage::disk('public')->put($oldLogo, 'old-logo-content');
 
-    $company->update(['logo' => $oldLogo, ]);
-   
-        
+    $company->update(['logo' => $oldLogo]);
 
     $this->actingAs($owner)
         ->patch(route('my-company.update'), [
@@ -90,5 +87,4 @@ it('allows an owner to replace their company logo', function () {
 
     expect($company->logo)->not->toBe($oldLogo);
 
-   
 });

@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\SavedJob;
 use App\Concerns\SeedsFromJson;
+use App\Models\SavedJob;
 use Illuminate\Database\Seeder;
 
 class SavedJobSeeder extends Seeder

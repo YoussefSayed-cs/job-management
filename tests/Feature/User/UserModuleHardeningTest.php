@@ -53,7 +53,6 @@ test('login is locked after five failed attempts', function () {
         ])->assertSessionHasErrors('email');
     }
 
-
     // Even the correct password is refused while the lockout is active.
     $this->post(route('login.store'), [
         'email' => $user->email,
@@ -143,7 +142,7 @@ test('a user who has applications cannot be physically deleted', function () {
         'submitted_at' => now(),
     ]);
 
-    expect(fn() => $user->delete())->toThrow(QueryException::class);
+    expect(fn () => $user->delete())->toThrow(QueryException::class);
 
     expect(User::find($user->id))->not->toBeNull();
 });

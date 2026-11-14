@@ -74,17 +74,13 @@ class ApplicationStatusService
         }
 
         $allowedTransitions = [
-            ApplicationStatus::Pending->value =>
-                ApplicationStatus::UnderReview,
+            ApplicationStatus::Pending->value => ApplicationStatus::UnderReview,
 
-            ApplicationStatus::UnderReview->value =>
-                ApplicationStatus::Shortlisted,
+            ApplicationStatus::UnderReview->value => ApplicationStatus::Shortlisted,
 
-            ApplicationStatus::Shortlisted->value =>
-                ApplicationStatus::Interview,
+            ApplicationStatus::Shortlisted->value => ApplicationStatus::Interview,
 
-            ApplicationStatus::Interview->value =>
-                ApplicationStatus::Accepted,
+            ApplicationStatus::Interview->value => ApplicationStatus::Accepted,
         ];
 
         return ($allowedTransitions[$current->value] ?? null) === $next;

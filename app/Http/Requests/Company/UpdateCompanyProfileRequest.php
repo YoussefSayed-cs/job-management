@@ -17,19 +17,19 @@ class UpdateCompanyProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'description' => ['nullable', 'string', 'max:5000',],
+            'description' => ['nullable', 'string', 'max:5000'],
 
-            'location' => ['required', 'string', 'max:255',],
+            'location' => ['required', 'string', 'max:255'],
 
-            'website' => ['nullable', 'url', 'max:255',],
+            'website' => ['nullable', 'url', 'max:255'],
 
-            'logo' => ['nullable',  'image',  'mimes:jpg,jpeg,png,webp', 'max:2048',],
+            'logo' => ['nullable',  'image',  'mimes:jpg,jpeg,png,webp', 'max:2048'],
 
             // These fields require Admin approval.
-            'name' => ['prohibited',],
+            'name' => ['prohibited'],
 
-            'industry' => ['prohibited', ],
-                
+            'industry' => ['prohibited'],
+
         ];
     }
 }

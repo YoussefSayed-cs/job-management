@@ -57,14 +57,14 @@ class AccountAnonymizationService
 
             // 5) Replace identity, keep id + role
             $locked->forceFill([
-                'full_name'         => 'Deleted User',
-                'email'             => "anonymized-{$locked->id}@anonymized.invalid",
-                'phone'             => '',
-                'profile_picture'   => null,
+                'full_name' => 'Deleted User',
+                'email' => "anonymized-{$locked->id}@anonymized.invalid",
+                'phone' => '',
+                'profile_picture' => null,
                 'email_verified_at' => null,
-                'password'          => Hash::make(Str::random(64)),
-                'status'            => AccountStatus::Deactivated,
-                'anonymized_at'     => now(),
+                'password' => Hash::make(Str::random(64)),
+                'status' => AccountStatus::Deactivated,
+                'anonymized_at' => now(),
             ])->save();
 
             // 6) Any pending password reset for the old email
@@ -102,8 +102,8 @@ class AccountAnonymizationService
             } catch (Throwable $e) {
                 // a leftover file must never undo a finished anonymization
                 Log::warning('Could not delete file during anonymization', [
-                    'disk'  => $disk,
-                    'path'  => $path,
+                    'disk' => $disk,
+                    'path' => $path,
                     'error' => $e->getMessage(),
                 ]);
             }

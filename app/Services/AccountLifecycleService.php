@@ -13,6 +13,7 @@ use Illuminate\Validation\ValidationException;
 class AccountLifecycleService
 {
     public const REACTIVATION_LINK_HOURS = 24;
+
     public const DELETION_GRACE_DAYS = 30;
 
     public function suspend(User $target): User
@@ -159,6 +160,6 @@ class AccountLifecycleService
 
     private function tokenKey(User $user): string
     {
-        return 'account-reactivation:' . $user->id;
+        return 'account-reactivation:'.$user->id;
     }
 }

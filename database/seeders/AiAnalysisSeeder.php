@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\AiAnalysis;
 use App\Concerns\SeedsFromJson;
+use App\Models\AiAnalysis;
 use Illuminate\Database\Seeder;
 
 class AiAnalysisSeeder extends Seeder

@@ -1,11 +1,11 @@
 <?php
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use App\Enums\RegistrationStatus;
 use App\Enums\UserRole;
 use App\Models\Company;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,9 +47,6 @@ expect()->extend('toBeOne', function () {
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
-
-
-
 
 function adminUser(): User
 {

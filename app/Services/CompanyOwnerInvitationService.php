@@ -142,6 +142,6 @@ class CompanyOwnerInvitationService
 
     private function tokenKey(User $owner): string
     {
-        return 'company-owner-invitation:' . $owner->id;
+        return 'company-owner-invitation:'.$owner->id;
     }
 }

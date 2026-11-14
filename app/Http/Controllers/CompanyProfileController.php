@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Company\UpdateCompanyProfileRequest;
-use App\Models\Company;
 use App\Services\Companies\UpdateCompanyProfileService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -36,6 +35,6 @@ class CompanyProfileController extends Controller
             $request->validated()
         );
 
-        return redirect() ->route('my-company.show')->with('success', 'Company profile updated successfully.');
+        return redirect()->route('my-company.show')->with('success', 'Company profile updated successfully.');
     }
 }

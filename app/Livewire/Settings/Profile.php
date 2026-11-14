@@ -4,6 +4,7 @@ namespace App\Livewire\Settings;
 
 use App\Concerns\ProfileValidationRules;
 use App\Enums\UserRole;
+use App\Models\User;
 use Flux\Flux;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +29,7 @@ class Profile extends Component
 
     public function mount(): void
     {
-        /** @var \App\Models\User $user */
+        /** @var User $user */
         $user = Auth::user();
 
         $this->full_name = $user->full_name;
@@ -38,7 +39,7 @@ class Profile extends Component
 
     public function updateProfileInformation(): void
     {
-        /** @var \App\Models\User $user */
+        /** @var User $user */
         $user = Auth::user();
 
         $validated = $this->validate(
@@ -77,7 +78,7 @@ class Profile extends Component
             ],
         ]);
 
-        /** @var \App\Models\User $user */
+        /** @var User $user */
         $user = Auth::user();
 
         $oldPicture = $user->profile_picture;
@@ -106,12 +107,12 @@ class Profile extends Component
 
     public function removeProfilePicture(): void
     {
-        /** @var \App\Models\User $user */
+        /** @var User $user */
         $user = Auth::user();
 
         $oldPicture = $user->profile_picture;
 
-        if (!$oldPicture) {
+        if (! $oldPicture) {
             return;
         }
 
@@ -129,7 +130,7 @@ class Profile extends Component
 
     public function resendVerificationNotification(): void
     {
-        /** @var \App\Models\User $user */
+        /** @var User $user */
         $user = Auth::user();
 
         if ($user->hasVerifiedEmail()) {
@@ -150,24 +151,23 @@ class Profile extends Component
     #[Computed]
     public function hasUnverifiedEmail(): bool
     {
-        /** @var \App\Models\User $user */
+        /** @var User $user */
         $user = Auth::user();
 
         return $user instanceof MustVerifyEmail
-            && !$user->hasVerifiedEmail();
+            && ! $user->hasVerifiedEmail();
     }
 
     #[Computed]
     public function showDeleteUser(): bool
     {
-        /** @var \App\Models\User $user */
+        /** @var User $user */
         $user = Auth::user();
 
-        
         if ($user->role === UserRole::Admin) {
             return false;
         }
 
-        return !$user instanceof MustVerifyEmail || $user->hasVerifiedEmail();
+        return ! $user instanceof MustVerifyEmail || $user->hasVerifiedEmail();
     }
 }

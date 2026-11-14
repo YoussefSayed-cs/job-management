@@ -12,9 +12,7 @@ use Illuminate\View\View;
 
 class CompanyOwnerInvitationController extends Controller
 {
-    public function __construct(private CompanyOwnerInvitationService $service)
-    {
-    }
+    public function __construct(private CompanyOwnerInvitationService $service) {}
 
     public function show(Request $request, User $user): View|RedirectResponse
     {

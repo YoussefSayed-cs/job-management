@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\URL;
 
 class CompanyOwnerInvitation extends Notification
 {
-    public function __construct(public string $token)
-    {
-    }
+    public function __construct(public string $token) {}
 
     public function via(object $notifiable): array
     {

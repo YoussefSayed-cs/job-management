@@ -38,6 +38,7 @@ class Application extends Model
     {
         return $this->belongsTo(JobVacancy::class);
     }
+
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);

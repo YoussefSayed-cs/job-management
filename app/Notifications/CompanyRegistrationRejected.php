@@ -8,9 +8,7 @@ use Illuminate\Notifications\Notification;
 
 class CompanyRegistrationRejected extends Notification
 {
-    public function __construct(public Company $company)
-    {
-    }
+    public function __construct(public Company $company) {}
 
     public function via(object $notifiable): array
     {

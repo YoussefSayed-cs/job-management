@@ -2,7 +2,6 @@
 
 use App\Enums\AccountStatus;
 use App\Models\User;
-use Illuminate\Support\Facades\URL;
 
 beforeEach(function () {
     $this->withoutVite();
@@ -141,8 +140,6 @@ test('a suspended company owner cannot enter the backoffice', function () {
         ->get(route('dashboard'))
         ->assertRedirect(route('login'));
 });
-
-
 
 test('user details page shows the right actions for each status', function () {
     $admin = adminUser();

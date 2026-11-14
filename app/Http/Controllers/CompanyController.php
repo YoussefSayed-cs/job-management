@@ -29,7 +29,6 @@ class CompanyController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-            
         return view('companies.index', compact('companies', 'filters'));
     }
 

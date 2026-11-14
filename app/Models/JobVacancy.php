@@ -62,7 +62,7 @@ class JobVacancy extends Model
             return false;
         }
 
-        return Carbon::parse($this->application_deadline)->endOfDay()->isPast();       
+        return Carbon::parse($this->application_deadline)->endOfDay()->isPast();
     }
 
     public function company(): BelongsTo
@@ -72,7 +72,7 @@ class JobVacancy extends Model
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo( JobCategory::class,'job_category_id' );
+        return $this->belongsTo(JobCategory::class, 'job_category_id');
     }
 
     public function applications(): HasMany

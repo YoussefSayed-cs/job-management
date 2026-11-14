@@ -34,7 +34,6 @@ class JobCategoryController extends Controller
         return redirect()->route('categories.index')->with('status', 'Category created successfully.');
     }
 
-
     public function edit(JobCategory $category): View
     {
         Gate::authorize('update', $category);
@@ -48,7 +47,6 @@ class JobCategoryController extends Controller
 
         return redirect()->route('categories.index')->with('status', 'Category updated successfully.');
     }
-
 
     public function destroy(JobCategory $category): RedirectResponse
     {

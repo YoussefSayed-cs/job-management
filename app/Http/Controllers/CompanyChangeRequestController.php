@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Company\StoreCompanyChangeRequest;
-use App\Models\Company;
 use App\Services\Companies\CompanyChangeRequestService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

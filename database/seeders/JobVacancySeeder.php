@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\JobVacancy;
 use App\Concerns\SeedsFromJson;
+use App\Models\JobVacancy;
 use Illuminate\Database\Seeder;
 
 class JobVacancySeeder extends Seeder

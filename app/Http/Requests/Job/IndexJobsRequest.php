@@ -22,16 +22,16 @@ class IndexJobsRequest extends FormRequest
         return [
             'search' => ['nullable', 'string', 'max:100'],
 
-            'status' => ['nullable',Rule::enum(JobStatus::class),],    
+            'status' => ['nullable', Rule::enum(JobStatus::class)],
 
-            'job_category_id' => ['nullable','uuid',Rule::exists('job_categories', 'id'),],
+            'job_category_id' => ['nullable', 'uuid', Rule::exists('job_categories', 'id')],
 
-            'employment_type' => ['nullable',Rule::enum(EmploymentType::class),],
-                
-            'work_location_type' => ['nullable',Rule::enum(WorkLocationType::class),],
-                
-            'experience_level' => ['nullable',Rule::enum(ExperienceLevel::class), ],
-               
+            'employment_type' => ['nullable', Rule::enum(EmploymentType::class)],
+
+            'work_location_type' => ['nullable', Rule::enum(WorkLocationType::class)],
+
+            'experience_level' => ['nullable', Rule::enum(ExperienceLevel::class)],
+
         ];
     }
 }

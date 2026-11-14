@@ -20,20 +20,20 @@ class StoreJobRequest extends FormRequest
     public function rules(): array
     {
         return [
-            
-            'job_category_id' => ['required','uuid', Rule::exists('job_categories', 'id'), ],
+
+            'job_category_id' => ['required', 'uuid', Rule::exists('job_categories', 'id')],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'requirements' => ['required', 'string'],
-            'location' => ['required', 'string', 'max:255'],   
-            'employment_type' => ['required',  Rule::enum(EmploymentType::class),],   
-            'work_location_type' => ['required',Rule::enum(WorkLocationType::class),],
+            'location' => ['required', 'string', 'max:255'],
+            'employment_type' => ['required',  Rule::enum(EmploymentType::class)],
+            'work_location_type' => ['required', Rule::enum(WorkLocationType::class)],
             'required_skills' => ['nullable', 'string'],
             'salary_min' => ['nullable', 'numeric', 'min:0'],
             'salary_max' => ['nullable', 'numeric', 'min:0'],
-            'experience_level' => [ 'nullable', Rule::enum(ExperienceLevel::class), ],
-            'application_deadline' => ['nullable', 'date'], 
-            
+            'experience_level' => ['nullable', Rule::enum(ExperienceLevel::class)],
+            'application_deadline' => ['nullable', 'date'],
+
         ];
     }
 

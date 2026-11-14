@@ -11,9 +11,7 @@ use Illuminate\Support\Facades\Gate;
 
 class ReviewCompanyRegistrationController extends Controller
 {
-    public function __construct(private CompanyApprovalService $service)
-    {
-    }
+    public function __construct(private CompanyApprovalService $service) {}
 
     public function approve(Request $request, Company $company): RedirectResponse
     {

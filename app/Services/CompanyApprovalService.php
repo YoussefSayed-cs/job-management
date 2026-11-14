@@ -54,7 +54,6 @@ class CompanyApprovalService
         return $company;
     }
 
-   
     private function lockReviewableCompany(Company $company): Company
     {
         $company = Company::query()
@@ -77,7 +76,7 @@ class CompanyApprovalService
         return $company;
     }
 
-        private function notifyOwner(Company $company, Notification $notification): void
+    private function notifyOwner(Company $company, Notification $notification): void
     {
         try {
             $company->owner->notify($notification);

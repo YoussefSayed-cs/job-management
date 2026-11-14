@@ -11,9 +11,7 @@ use Illuminate\View\View;
 
 class CompanyOwnerController extends Controller
 {
-    public function __construct(private CompanyOwnerInvitationService $service)
-    {
-    }
+    public function __construct(private CompanyOwnerInvitationService $service) {}
 
     public function create(): View
     {

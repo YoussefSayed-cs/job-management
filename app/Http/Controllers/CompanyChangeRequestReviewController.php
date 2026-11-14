@@ -24,9 +24,6 @@ class CompanyChangeRequestReviewController extends Controller
 
         $status = null;
 
-
-
-
         if ($statusFilter !== 'all') {
             $status = is_string($statusFilter)
                 ? ChangeRequestStatus::tryFrom($statusFilter)
@@ -39,7 +36,7 @@ class CompanyChangeRequestReviewController extends Controller
             ->with(['company.owner', 'reviewer'])
             ->when(
                 $status,
-                fn($query) => $query->where('status', $status)
+                fn ($query) => $query->where('status', $status)
             )
             ->latest()
             ->paginate(15)

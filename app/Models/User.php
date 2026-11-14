@@ -4,12 +4,13 @@ namespace App\Models;
 
 use App\Enums\AccountStatus;
 use App\Enums\UserRole;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
@@ -45,7 +46,6 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    
     protected function profilePictureUrl(): Attribute
     {
         return Attribute::get(function () {
@@ -53,7 +53,7 @@ class User extends Authenticatable implements MustVerifyEmail
                 return null;
             }
 
-            /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+            /** @var FilesystemAdapter $disk */
             $disk = Storage::disk('public');
 
             return $disk->url($this->profile_picture);

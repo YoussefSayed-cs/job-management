@@ -23,18 +23,14 @@ class UserController extends Controller
                     ->orWhere('email', 'like', "%{$search}%");
             });
         })
-          ->when($filters['role'] ?? null, function ($query, $role) {
+            ->when($filters['role'] ?? null, function ($query, $role) {
                 $query->where('role', $role);
             })
             ->when($filters['status'] ?? null, function ($query, $status) {
                 $query->where('status', $status);
             })->latest()
             ->paginate(10)
-            ->withQueryString();  
-
-
-
-
+            ->withQueryString();
 
         return view('users.index', compact('users', 'filters'));
     }
