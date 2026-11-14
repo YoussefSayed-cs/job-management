@@ -6,6 +6,9 @@ use App\Enums\EmploymentType;
 use App\Enums\ExperienceLevel;
 use App\Enums\JobStatus;
 use App\Enums\WorkLocationType;
+use App\Enums\AccountStatus;
+use App\Enums\RegistrationStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -63,6 +66,43 @@ class JobVacancy extends Model
         }
 
         return Carbon::parse($this->application_deadline)->endOfDay()->isPast();
+    }
+
+    /**
+     * Single eligibility rule used for public visibility and applying.
+     * Active job + deadline not passed + Approved company + Active owner.
+     */
+    public function isAcceptingApplications(): bool
+    {
+        if ($this->status !== JobStatus::Active || $this->isExpired()) {
+            return false;
+        }
+
+        $company = $this->company;
+
+        return $company !== null
+            && $company->registration_status === RegistrationStatus::Approved
+            && $company->owner?->status === AccountStatus::Active;
+    }
+
+    /**
+     * Query version of isAcceptingApplications() for lists and detail pages.
+     *
+     * @param  Builder<JobVacancy>  $query
+     */
+    public function scopePubliclyVisible(Builder $query): void
+    {
+        $query->where('status', JobStatus::Active->value)
+            ->where(function (Builder $query) {
+                $query->whereNull('application_deadline')
+                    ->orWhereDate('application_deadline', '>=', now()->toDateString());
+            })
+            ->whereHas('company', function (Builder $company) {
+                $company->where('registration_status', RegistrationStatus::Approved->value)
+                    ->whereHas('owner', function (Builder $owner) {
+                        $owner->where('status', AccountStatus::Active->value);
+                    });
+            });
     }
 
     public function company(): BelongsTo
