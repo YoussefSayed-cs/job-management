@@ -27,9 +27,4 @@ class JobCategoryPolicy
     {
         return $user->role === UserRole::Admin;
     }
-
-    public function restore(User $user, JobCategory $category): bool
-    {
-        return $user->role === UserRole::Admin;
-    }
 }
