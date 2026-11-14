@@ -60,6 +60,17 @@ class User extends Authenticatable implements MustVerifyEmail
         });
     }
 
+    /**
+     * In-App and Email notifications for Application status changes are
+     * delivered only while the account is Active (SRS FR-117 / ODR-17).
+     */
+    public function canReceiveApplicationNotifications(): bool
+    {
+        return $this->status === AccountStatus::Active
+            && $this->deletion_requested_at === null
+            && $this->anonymized_at === null;
+    }
+
     public function company(): HasOne
     {
         return $this->hasOne(Company::class, 'owner_id');
