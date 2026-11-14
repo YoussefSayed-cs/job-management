@@ -53,9 +53,11 @@ class ApplicationReviewController extends Controller
         $statuses = ApplicationStatus::cases();
 
         return view('applications.index', compact('applications', 'statuses', 'statusFilter', 'search'));
-
     }
 
+    /**
+     * Show applicant details and application history.
+     */
     /**
      * Show applicant details and application history.
      */
@@ -77,28 +79,7 @@ class ApplicationReviewController extends Controller
             'availableStatuses' => $this->availableStatuses(
                 $application->status
             ),
-            'messageTemplates' => [
-                ApplicationStatus::UnderReview->value => [[
-                    'label' => 'Under Review',
-                    'message' => 'Your application is now under review. We will contact you with an update.',
-                ]],
-                ApplicationStatus::Shortlisted->value => [[
-                    'label' => 'Shortlisted',
-                    'message' => 'Your application has been shortlisted. We will be in touch about the next steps.',
-                ]],
-                ApplicationStatus::Interview->value => [[
-                    'label' => 'Interview',
-                    'message' => 'We would like to invite you to an interview. Please reply so we can arrange a suitable time.',
-                ]],
-                ApplicationStatus::Accepted->value => [[
-                    'label' => 'Accepted',
-                    'message' => 'Congratulations! Your application has been accepted. We will be in touch with the next steps.',
-                ]],
-                ApplicationStatus::Rejected->value => [[
-                    'label' => 'Rejected',
-                    'message' => 'Thank you for your interest. We regret to inform you that your application was not successful.',
-                ]],
-            ],
+            'messageTemplates' => config('application_status_messages.templates'),
         ]);
     }
 
@@ -119,7 +100,6 @@ class ApplicationReviewController extends Controller
         );
 
         return redirect()->route('applications.show', $application)->with('status', 'Application status updated successfully.');
-
     }
 
     /**
@@ -138,7 +118,6 @@ class ApplicationReviewController extends Controller
         $path = Storage::disk('local')->path($snapshot->file_path);
 
         return response()->download($path, $snapshot->original_name);
-
     }
 
     /**
@@ -163,6 +142,5 @@ class ApplicationReviewController extends Controller
         $next = $nextStatuses[$current->value] ?? null;
 
         return array_values(array_filter([$next, ApplicationStatus::Rejected]));
-
     }
 }
