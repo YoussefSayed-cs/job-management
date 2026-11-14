@@ -6,8 +6,10 @@ use App\Enums\ApplicationStatus;
 use App\Models\Application;
 use App\Models\ApplicationStatusHistory;
 use App\Models\User;
+use App\Notifications\ApplicationStatusChanged;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use Throwable;
 
 class ApplicationStatusService
 {
@@ -17,7 +19,7 @@ class ApplicationStatusService
         User $changedBy,
         ?string $message = null
     ): Application {
-        return DB::transaction(function () use (
+        $application = DB::transaction(function () use (
             $application,
             $newStatus,
             $changedBy,
@@ -63,6 +65,32 @@ class ApplicationStatusService
                 'statusHistories.changedBy',
             ]);
         });
+
+        // Notify only after the transaction has been committed.
+        $this->notifyJobSeeker($application, $message);
+
+        return $application;
+    }
+
+    /**
+     * Delivery is suppressed (not queued) while the Job Seeker account is
+     * Suspended, Deactivated or pending deletion. The status and history
+     * remain the source of truth. A delivery failure never rolls back the
+     * status change.
+     */
+    private function notifyJobSeeker(Application $application, ?string $message): void
+    {
+        $jobSeeker = $application->user;
+
+        if ($jobSeeker === null || ! $jobSeeker->canReceiveApplicationNotifications()) {
+            return;
+        }
+
+        try {
+            $jobSeeker->notify(new ApplicationStatusChanged($application, $message));
+        } catch (Throwable $e) {
+            report($e);
+        }
     }
 
     private function isAllowedTransition(
