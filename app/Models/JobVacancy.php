@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use App\Enums\AccountStatus;
 use App\Enums\EmploymentType;
 use App\Enums\ExperienceLevel;
 use App\Enums\JobStatus;
-use App\Enums\WorkLocationType;
-use App\Enums\AccountStatus;
 use App\Enums\RegistrationStatus;
+use App\Enums\WorkLocationType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;

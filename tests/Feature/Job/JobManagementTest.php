@@ -2,7 +2,6 @@
 
 use App\Enums\ApplicationStatus;
 use App\Enums\JobStatus;
-use App\Enums\RegistrationStatus;
 use App\Enums\UserRole;
 use App\Models\Application;
 use App\Models\Company;
