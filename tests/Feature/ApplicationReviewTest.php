@@ -36,5 +36,5 @@ it('renders message templates when an approved owner reviews an active applicati
         ->get(route('applications.show', $application))
         ->assertOk()
         ->assertSee('data-status="under_review"', false)
-        ->assertSee('Your application is now under review.');
+        ->assertSee('Your application is currently under review.');
 });
