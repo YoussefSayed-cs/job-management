@@ -15,6 +15,7 @@ use App\Http\Controllers\ReviewCompanyRegistrationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserStatusController;
 use App\Http\Middleware\EnsureManagementPortalAccess;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/dashboard')->name('home');
@@ -24,7 +25,7 @@ Route::middleware([
     'verified',
     EnsureManagementPortalAccess::class,
 ])->group(function () {
-    Route::view('/dashboard', 'account.home')->name('dashboard');
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
     Route::get('/users', [UserController::class, 'index'])
         ->name('users.index');
@@ -134,7 +135,6 @@ Route::middleware([
     // Job Categories Management
 
     Route::resource('categories', JobCategoryController::class)->except(['show']);
-
 });
 
 Route::get('/account-deletion/{user}/cancel', [
@@ -160,4 +160,4 @@ Route::middleware('signed')->group(function () {
     Route::post('/company-owner-invitation/{user}', [CompanyOwnerInvitationController::class, 'store'])->middleware('throttle:10,1')->name('company-owner-invitation.store');
 });
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';
