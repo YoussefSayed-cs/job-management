@@ -8,6 +8,12 @@
         "framework"
     ],
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../shagalni-shared"
+        }
+    ],
     "require": {
         "php": "^8.3",
         "laravel/chisel": "^0.1.0",
@@ -16,7 +22,8 @@
         "laravel/tinker": "^3.0",
         "livewire/blaze": "^1.0",
         "livewire/flux": "^2.13.1",
-        "livewire/livewire": "^4.1"
+        "livewire/livewire": "^4.1",
+        "shagalni/shared": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.24",
@@ -112,6 +119,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }
