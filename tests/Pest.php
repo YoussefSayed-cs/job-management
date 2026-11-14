@@ -1,8 +1,11 @@
 <?php
 
+use App\Enums\ApplicationStatus;
 use App\Enums\RegistrationStatus;
 use App\Enums\UserRole;
+use App\Models\Application;
 use App\Models\Company;
+use App\Models\JobCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -66,4 +69,34 @@ function approvedOwner(): User
     ]);
 
     return $owner;
+}
+
+function makeApplicationFor(
+    User $owner,
+    ?User $applicant = null,
+    ApplicationStatus $status = ApplicationStatus::Pending
+): Application {
+    $applicant ??= User::factory()->create();
+
+    $category = JobCategory::firstOrCreate(['name' => 'Software']);
+
+    $job = $owner->company->jobVacancies()->create([
+        'job_category_id' => $category->id,
+        'title' => 'Backend Developer',
+        'description' => 'Build backend services.',
+        'requirements' => 'PHP experience.',
+        'location' => 'Cairo',
+        'employment_type' => 'full_time',
+        'work_location_type' => 'on_site',
+    ]);
+
+    return Application::create([
+        'job_vacancy_id' => $job->id,
+        'company_id' => $owner->company->id,
+        'user_id' => $applicant->id,
+        'status' => $status,
+        'job_title' => $job->title,
+        'company_name' => $owner->company->name,
+        'submitted_at' => now(),
+    ]);
 }
