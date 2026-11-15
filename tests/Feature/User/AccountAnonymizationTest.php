@@ -86,6 +86,36 @@ test('anonymization replaces the identity but keeps the id and role', function (
         ->and(Hash::check('password', $user->password))->toBeFalse();
 });
 
+test('anonymization clears authentication tokens, two-factor data and database sessions', function () {
+    $user = dueForAnonymization();
+    $user->forceFill([
+        'remember_token' => 'remember-token',
+        'two_factor_secret' => 'encrypted-secret',
+        'two_factor_recovery_codes' => 'encrypted-recovery-codes',
+        'two_factor_confirmed_at' => now(),
+    ])->save();
+
+    DB::table('sessions')->insert([
+        'id' => 'session-'.$user->id,
+        'user_id' => $user->id,
+        'payload' => 'session-payload',
+        'last_activity' => now()->timestamp,
+    ]);
+
+    anonymize($user);
+    $user->refresh();
+
+    expect($user->remember_token)->toBeNull()
+        ->and($user->two_factor_secret)->toBeNull()
+        ->and($user->two_factor_recovery_codes)->toBeNull()
+        ->and($user->two_factor_confirmed_at)->toBeNull();
+
+    $this->assertDatabaseMissing('sessions', [
+        'id' => 'session-'.$user->id,
+        'user_id' => $user->id,
+    ]);
+});
+
 test('a suspended account becomes deactivated after anonymization', function () {
     $user = dueForAnonymization(['status' => AccountStatus::Suspended]);
 

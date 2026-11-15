@@ -49,6 +49,7 @@ class AccountAnonymizationService
             // 3) Saved jobs + personal notifications
             $locked->savedJobs()->delete();
             $locked->notifications()->delete();
+            DB::table('sessions')->where('user_id', $locked->id)->delete();
 
             // 4) Profile picture
             if ($locked->profile_picture) {
@@ -62,9 +63,13 @@ class AccountAnonymizationService
                 'phone' => '',
                 'profile_picture' => null,
                 'email_verified_at' => null,
+                'remember_token' => null,
                 'password' => Hash::make(Str::random(64)),
                 'status' => AccountStatus::Deactivated,
                 'anonymized_at' => now(),
+                'two_factor_secret' => null,
+                'two_factor_recovery_codes' => null,
+                'two_factor_confirmed_at' => null,
             ])->save();
 
             // 6) Any pending password reset for the old email
