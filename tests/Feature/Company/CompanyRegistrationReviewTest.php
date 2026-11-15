@@ -2,6 +2,7 @@
 
 use App\Notifications\CompanyRegistrationApproved;
 use App\Notifications\CompanyRegistrationRejected;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
 use Shagalni\Shared\Enums\RegistrationStatus;
 use Shagalni\Shared\Enums\UserRole;
@@ -89,6 +90,23 @@ test('admin can reject a company registration with a reason', function () {
         ->and($company->reviewed_by)->toBe($admin->id);
 
     Notification::assertSentTo($company->owner, CompanyRegistrationRejected::class);
+});
+
+test('rejection email directs the owner to the configured Job Seeker Portal', function () {
+    Config::set('services.job_seeker_portal_url', 'https://portal.example.test/company/register');
+
+    $company = companyWithOwner([], [
+        'registration_status' => RegistrationStatus::Rejected,
+        'rejection_reason' => 'The company description is missing.',
+    ]);
+
+    $mail = (new CompanyRegistrationRejected($company))->toMail($company->owner);
+
+    expect($mail->introLines)
+        ->toContain('You can edit your company details and resubmit your registration through the Job Seeker Portal.')
+        ->and($mail->actionText)->toBe('Open Job Seeker Portal')
+        ->and($mail->actionUrl)->toBe('https://portal.example.test/company/register')
+        ->and(implode(' ', $mail->introLines))->not->toContain('Backoffice');
 });
 
 test('a registration cannot be reviewed before the owner verifies their email', function () {

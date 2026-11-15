@@ -35,4 +35,6 @@ return [
         ],
     ],
 
+    'job_seeker_portal_url' => env('JOB_SEEKER_PORTAL_URL'),
+
 ];
