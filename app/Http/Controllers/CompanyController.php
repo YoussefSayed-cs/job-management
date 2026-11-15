@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Company\IndexCompaniesRequest;
-use App\Models\Company;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
+use Shagalni\Shared\Models\Company;
 
 class CompanyController extends Controller
 {

@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Enums\UserRole;
-use App\Models\User;
 use App\Services\AccountAnonymizationService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\User;
 use Throwable;
 
 class AnonymizeExpiredAccounts extends Command

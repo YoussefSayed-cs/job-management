@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\Enums\UserRole;
-use App\Models\CompanyChangeRequest;
-use App\Models\User;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\CompanyChangeRequest;
+use Shagalni\Shared\Models\User;
 
 class CompanyChangeRequestPolicy
 {

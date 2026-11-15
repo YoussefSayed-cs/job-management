@@ -2,13 +2,13 @@
 
 namespace App\Http\Requests\Job;
 
-use App\Enums\EmploymentType;
-use App\Enums\ExperienceLevel;
-use App\Enums\WorkLocationType;
-use App\Models\JobVacancy;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
+use Shagalni\Shared\Enums\EmploymentType;
+use Shagalni\Shared\Enums\ExperienceLevel;
+use Shagalni\Shared\Enums\WorkLocationType;
+use Shagalni\Shared\Models\JobVacancy;
 
 class UpdateJobRequest extends FormRequest
 {

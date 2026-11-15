@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Concerns\SeedsFromJson;
-use App\Models\ResumeSnapshot;
 use Illuminate\Database\Seeder;
+use Shagalni\Shared\Models\ResumeSnapshot;
 
 class ResumeSnapshotSeeder extends Seeder
 {

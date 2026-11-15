@@ -2,10 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use App\Enums\RegistrationStatus;
-use App\Enums\UserRole;
 use Closure;
 use Illuminate\Http\Request;
+use Shagalni\Shared\Enums\RegistrationStatus;
+use Shagalni\Shared\Enums\UserRole;
 use Symfony\Component\HttpFoundation\Response;
 
 class EnsureManagementPortalAccess

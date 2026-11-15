@@ -1,9 +1,9 @@
 <?php
 
-use App\Enums\ChangeRequestStatus;
-use App\Enums\UserRole;
-use App\Models\CompanyChangeRequest;
-use App\Models\User;
+use Shagalni\Shared\Enums\ChangeRequestStatus;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\CompanyChangeRequest;
+use Shagalni\Shared\Models\User;
 
 it('allows admin to view the change request queue', function () {
     $admin = adminUser();

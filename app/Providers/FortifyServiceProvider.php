@@ -3,8 +3,6 @@
 namespace App\Providers;
 
 use App\Actions\Fortify\ResetUserPassword;
-use App\Enums\AccountStatus;
-use App\Models\User;
 use Illuminate\Auth\Middleware\RequirePassword;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -14,6 +12,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
 use Livewire\Livewire;
+use Shagalni\Shared\Enums\AccountStatus;
+use Shagalni\Shared\Models\User;
 
 class FortifyServiceProvider extends ServiceProvider
 {

@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests\User;
 
-use App\Enums\AccountStatus;
-use App\Enums\UserRole;
-use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Shagalni\Shared\Enums\AccountStatus;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\User;
 
 class IndexUsersRequest extends FormRequest
 {

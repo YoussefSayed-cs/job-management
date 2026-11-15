@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Enums\ApplicationStatus;
-use App\Models\Application;
-use App\Models\ApplicationStatusHistory;
-use App\Models\User;
-use App\Notifications\ApplicationStatusChanged;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use Shagalni\Shared\Enums\ApplicationStatus;
+use Shagalni\Shared\Models\Application;
+use Shagalni\Shared\Models\ApplicationStatusHistory;
+use Shagalni\Shared\Models\User;
+use Shagalni\Shared\Notifications\ApplicationStatusChanged;
 use Throwable;
 
 class ApplicationStatusService

@@ -1,9 +1,9 @@
 <?php
 
 use App\Livewire\Settings\Security;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Livewire;
+use Shagalni\Shared\Models\User;
 
 beforeEach(function () {
     $this->withoutVite();

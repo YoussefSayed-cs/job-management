@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Concerns\SeedsFromJson;
-use App\Models\JobVacancy;
 use Illuminate\Database\Seeder;
+use Shagalni\Shared\Models\JobVacancy;
 
 class JobVacancySeeder extends Seeder
 {

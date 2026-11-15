@@ -2,15 +2,15 @@
 
 namespace App\Services;
 
-use App\Enums\AccountStatus;
-use App\Enums\UserRole;
-use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use LogicException;
+use Shagalni\Shared\Enums\AccountStatus;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\User;
 use Throwable;
 
 class AccountAnonymizationService

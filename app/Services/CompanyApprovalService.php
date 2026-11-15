@@ -2,14 +2,14 @@
 
 namespace App\Services;
 
-use App\Enums\RegistrationStatus;
-use App\Models\Company;
-use App\Models\User;
 use App\Notifications\CompanyRegistrationApproved;
 use App\Notifications\CompanyRegistrationRejected;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use Shagalni\Shared\Enums\RegistrationStatus;
+use Shagalni\Shared\Models\Company;
+use Shagalni\Shared\Models\User;
 use Throwable;
 
 class CompanyApprovalService

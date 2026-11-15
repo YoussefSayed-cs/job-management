@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\StoreCompanyOwnerRequest;
-use App\Models\User;
 use App\Services\CompanyOwnerInvitationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
+use Shagalni\Shared\Models\User;
 
 class CompanyOwnerController extends Controller
 {

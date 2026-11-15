@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests\Application;
 
-use App\Enums\ApplicationStatus;
-use App\Models\Application;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Shagalni\Shared\Enums\ApplicationStatus;
+use Shagalni\Shared\Models\Application;
 
 class UpdateApplicationStatusRequest extends FormRequest
 {

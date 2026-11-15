@@ -1,7 +1,7 @@
 <?php
 
-use App\Enums\UserRole;
-use App\Models\User;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\User;
 
 beforeEach(function () {
     $this->withoutVite();

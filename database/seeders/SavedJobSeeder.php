@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Concerns\SeedsFromJson;
-use App\Models\SavedJob;
 use Illuminate\Database\Seeder;
+use Shagalni\Shared\Models\SavedJob;
 
 class SavedJobSeeder extends Seeder
 {

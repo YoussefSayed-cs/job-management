@@ -2,16 +2,16 @@
 
 namespace App\Services;
 
-use App\Enums\AccountStatus;
-use App\Enums\RegistrationStatus;
-use App\Enums\UserRole;
-use App\Models\Company;
-use App\Models\User;
 use App\Notifications\CompanyOwnerInvitation;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Shagalni\Shared\Enums\AccountStatus;
+use Shagalni\Shared\Enums\RegistrationStatus;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\Company;
+use Shagalni\Shared\Models\User;
 use Throwable;
 
 class CompanyOwnerInvitationService

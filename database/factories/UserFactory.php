@@ -2,18 +2,20 @@
 
 namespace Database\Factories;
 
-use App\Enums\AccountStatus;
-use App\Enums\UserRole;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Shagalni\Shared\Enums\AccountStatus;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\User;
 
 /**
  * @extends Factory<User>
  */
 class UserFactory extends Factory
 {
+    protected $model = User::class;
+
     protected static ?string $password = null;
 
     public function definition(): array

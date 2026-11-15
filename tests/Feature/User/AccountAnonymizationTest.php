@@ -1,19 +1,19 @@
 <?php
 
-use App\Enums\AccountStatus;
-use App\Enums\UserRole;
-use App\Models\Application;
-use App\Models\Company;
-use App\Models\JobCategory;
-use App\Models\JobVacancy;
-use App\Models\Resume;
-use App\Models\SavedJob;
-use App\Models\User;
 use App\Services\AccountAnonymizationService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Shagalni\Shared\Enums\AccountStatus;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\Application;
+use Shagalni\Shared\Models\Company;
+use Shagalni\Shared\Models\JobCategory;
+use Shagalni\Shared\Models\JobVacancy;
+use Shagalni\Shared\Models\Resume;
+use Shagalni\Shared\Models\SavedJob;
+use Shagalni\Shared\Models\User;
 
 function dueForAnonymization(array $attributes = []): User
 {

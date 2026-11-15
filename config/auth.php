@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use Shagalni\Shared\Models\User;
 
 return [
 

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Services\AccountLifecycleService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
+use Shagalni\Shared\Models\User;
 
 class UserStatusController extends Controller
 {

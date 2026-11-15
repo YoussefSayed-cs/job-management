@@ -1,10 +1,10 @@
 <?php
 
-use App\Enums\ApplicationStatus;
-use App\Models\Application;
-use App\Models\ApplicationStatusHistory;
-use App\Models\User;
 use App\Services\AnalyticsService;
+use Shagalni\Shared\Enums\ApplicationStatus;
+use Shagalni\Shared\Models\Application;
+use Shagalni\Shared\Models\ApplicationStatusHistory;
+use Shagalni\Shared\Models\User;
 
 function analytics(): AnalyticsService
 {
@@ -37,15 +37,15 @@ it('returns null rates when there are no final decisions', function () {
 
     $overview = analytics()->companyOverview($owner->company);
 
-    expect($overview['acceptance_rate'])->toBeNull()->and($overview['rejection_rate'])->toBeNull(); 
-        
+    expect($overview['acceptance_rate'])->toBeNull()->and($overview['rejection_rate'])->toBeNull();
+
 });
 
 it('returns every status in the distribution even when empty', function () {
     $distribution = analytics()->statusDistribution();
 
     expect($distribution)->toHaveCount(count(ApplicationStatus::cases()))->and(array_sum($distribution))->toBe(0);
-        
+
 });
 
 it('keeps applications of a deleted job in company totals but not in per-job breakdown', function () {
@@ -115,7 +115,6 @@ it('reports rolling 30-day activity and ignores older records', function () {
     $old = makeApplicationFor($owner);
     $old->update(['submitted_at' => now()->subDays(31)]);
 
-    
     ApplicationStatusHistory::create([
         'application_id' => $recent->id,
         'from_status' => null,

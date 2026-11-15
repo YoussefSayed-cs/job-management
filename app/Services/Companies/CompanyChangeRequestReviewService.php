@@ -2,12 +2,12 @@
 
 namespace App\Services\Companies;
 
-use App\Enums\ChangeRequestStatus;
-use App\Models\Company;
-use App\Models\CompanyChangeRequest;
-use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use Shagalni\Shared\Enums\ChangeRequestStatus;
+use Shagalni\Shared\Models\Company;
+use Shagalni\Shared\Models\CompanyChangeRequest;
+use Shagalni\Shared\Models\User;
 
 class CompanyChangeRequestReviewService
 {

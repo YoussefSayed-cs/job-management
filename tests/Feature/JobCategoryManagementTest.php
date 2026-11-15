@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\JobCategory;
-use App\Models\JobVacancy;
 use Illuminate\Support\Str;
+use Shagalni\Shared\Models\JobCategory;
+use Shagalni\Shared\Models\JobVacancy;
 
 // ------------------------------------------
 // Category CRUD

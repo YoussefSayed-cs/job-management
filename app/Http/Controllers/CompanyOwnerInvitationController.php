@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\AcceptCompanyOwnerInvitationRequest;
-use App\Models\User;
 use App\Services\CompanyOwnerInvitationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Shagalni\Shared\Models\User;
 
 class CompanyOwnerInvitationController extends Controller
 {

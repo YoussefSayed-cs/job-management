@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\UserRole;
 use App\Services\AnalyticsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\View\View;
+use Shagalni\Shared\Enums\UserRole;
 
 class DashboardController extends Controller
 {
@@ -29,7 +29,7 @@ class DashboardController extends Controller
             'activity' => $analytics->platformActivity(),
             'distribution' => $analytics->statusDistribution(),
             'dailyLabels' => array_map(
-                fn(string $date) => Carbon::parse($date)->format('d M'),
+                fn (string $date) => Carbon::parse($date)->format('d M'),
                 array_keys($daily),
             ),
             'dailyValues' => array_values($daily),

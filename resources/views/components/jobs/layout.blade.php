@@ -36,7 +36,7 @@
        Dashboard
                 </a>
 
-                @can('viewAny', \App\Models\Company::class)
+                @can('viewAny', \Shagalni\Shared\Models\Company::class)
                     <a href="{{ route('companies.index') }}" @class([
                         'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium',
                         'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-300' => request()->routeIs('companies.*'),
@@ -46,7 +46,7 @@
                     </a>
                 @endcan
 
-                @can('viewAny', \App\Models\User::class)
+                @can('viewAny', \Shagalni\Shared\Models\User::class)
                     <a href="{{ route('users.index') }}" @class([
                         'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium',
                         'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-300' => request()->routeIs('users.*'),
@@ -56,7 +56,7 @@
                     </a>
                 @endcan
 
-                @can('viewAny', \App\Models\JobVacancy::class)
+                @can('viewAny', \Shagalni\Shared\Models\JobVacancy::class)
                     <a href="{{ route('jobs.index') }}" @class([
                         'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium',
                         'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-300' => request()->routeIs('jobs.*'),
@@ -66,7 +66,7 @@
                     </a>
                 @endcan
 
-                @can('viewAny', \App\Models\JobCategory::class)
+                @can('viewAny', \Shagalni\Shared\Models\JobCategory::class)
                     <a href="{{ route('categories.index') }}" @class([
                         'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium',
                         'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-300' => request()->routeIs('categories.*'),
@@ -76,7 +76,7 @@
                     </a>
                 @endcan
 
-                @can('viewAny', \App\Models\Application::class)
+                @can('viewAny', \Shagalni\Shared\Models\Application::class)
                     <a href="{{ route('applications.index') }}" @class([
                         'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium',
                         'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-300' => request()->routeIs('applications.*'),
@@ -129,35 +129,35 @@
                                     Dashboard
                                 </a>
 
-                                @can('viewAny', \App\Models\Company::class)
+                                @can('viewAny', \Shagalni\Shared\Models\Company::class)
                                     <a href="{{ route('companies.index') }}"
                                         class="rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800">
                                         Companies
                                     </a>
                                 @endcan
 
-                                @can('viewAny', \App\Models\User::class)
+                                @can('viewAny', \Shagalni\Shared\Models\User::class)
                                     <a href="{{ route('users.index') }}"
                                         class="rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800">
                                         Users
                                     </a>
                                 @endcan
 
-                                @can('viewAny', \App\Models\JobVacancy::class)
+                                @can('viewAny', \Shagalni\Shared\Models\JobVacancy::class)
                                     <a href="{{ route('jobs.index') }}"
                                         class="rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800">
                                         Jobs
                                     </a>
                                 @endcan
 
-                                @can('viewAny', \App\Models\JobCategory::class)
+                                @can('viewAny', \Shagalni\Shared\Models\JobCategory::class)
                                     <a href="{{ route('categories.index') }}"
                                         class="rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800">
                                         Categories
                                     </a>
                                 @endcan
 
-                                @can('viewAny', \App\Models\Application::class)
+                                @can('viewAny', \Shagalni\Shared\Models\Application::class)
                                     <a href="{{ route('applications.index') }}"
                                         class="rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800">
                                         Applications

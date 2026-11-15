@@ -3,8 +3,8 @@
 namespace App\Http\Requests\User;
 
 use App\Concerns\ProfileValidationRules;
-use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Shagalni\Shared\Models\User;
 
 class StoreCompanyOwnerRequest extends FormRequest
 {

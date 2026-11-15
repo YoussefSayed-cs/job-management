@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Enums\ApplicationStatus;
-use App\Models\Application;
-use App\Models\ApplicationStatusHistory;
-use App\Models\Company;
-use App\Models\JobVacancy;
-use App\Models\User;
 use Carbon\CarbonPeriod;
+use Shagalni\Shared\Enums\ApplicationStatus;
+use Shagalni\Shared\Models\Application;
+use Shagalni\Shared\Models\ApplicationStatusHistory;
+use Shagalni\Shared\Models\Company;
+use Shagalni\Shared\Models\JobVacancy;
+use Shagalni\Shared\Models\User;
 
 class AnalyticsService
 {
@@ -27,7 +27,6 @@ class AnalyticsService
         ];
     }
 
-   
     public function platformActivity(): array
     {
         $since = now()->subDays(self::ACTIVITY_DAYS);
@@ -43,7 +42,7 @@ class AnalyticsService
         ];
     }
 
-        public function companyOverview(Company $company): array
+    public function companyOverview(Company $company): array
     {
         $distribution = $this->statusDistribution($company);
 
@@ -58,7 +57,6 @@ class AnalyticsService
         ];
     }
 
-    
     public function statusDistribution(?Company $company = null): array
     {
         $counts = Application::query()
@@ -76,7 +74,6 @@ class AnalyticsService
         return $distribution;
     }
 
-    
     public function applicationsPerJob(Company $company, int $limit = 10): array
     {
         return JobVacancy::query()
@@ -94,7 +91,6 @@ class AnalyticsService
             ->all();
     }
 
-    
     public function dailyApplications(?Company $company = null): array
     {
         $start = now()->subDays(self::ACTIVITY_DAYS - 1)->startOfDay();
@@ -116,7 +112,6 @@ class AnalyticsService
         return $series;
     }
 
-    
     public function topCompaniesByApplications(int $limit = 5): array
     {
         return Application::query()
@@ -134,7 +129,6 @@ class AnalyticsService
             ->all();
     }
 
-    
     private function rates(array $distribution): array
     {
         $accepted = $distribution[ApplicationStatus::Accepted->value] ?? 0;

@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\ApplicationStatus;
+use Shagalni\Shared\Enums\ApplicationStatus;
 
 it('shows platform analytics with charts to an admin', function () {
     $owner = approvedOwner();
@@ -14,9 +14,9 @@ it('shows platform analytics with charts to an admin', function () {
         ->assertOk()
         ->assertSee('Platform overview')
         ->assertSee('data-chart', false)
-        ->assertViewHas('totals', fn(array $totals) => $totals['applications'] === 3
+        ->assertViewHas('totals', fn (array $totals) => $totals['applications'] === 3
             && $totals['acceptance_rate'] === 50.0)
-        ->assertViewHas('distribution', fn(array $distribution) => $distribution['accepted'] === 1);
+        ->assertViewHas('distribution', fn (array $distribution) => $distribution['accepted'] === 1);
 });
 
 it('renders the admin dashboard when the platform has no data', function () {
@@ -24,7 +24,7 @@ it('renders the admin dashboard when the platform has no data', function () {
         ->get(route('dashboard'))
         ->assertOk()
         ->assertSee('No data yet')
-        ->assertViewHas('totals', fn(array $totals) => $totals['acceptance_rate'] === null);
+        ->assertViewHas('totals', fn (array $totals) => $totals['acceptance_rate'] === null);
 });
 
 it('does not expose platform analytics to a company owner', function () {
@@ -36,5 +36,5 @@ it('does not expose platform analytics to a company owner', function () {
         ->assertOk()
         ->assertDontSee('Platform overview')
         ->assertViewMissing('totals');
-        
+
 });

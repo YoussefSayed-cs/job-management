@@ -1,11 +1,11 @@
 <?php
 
-use App\Enums\AccountStatus;
-use App\Enums\JobStatus;
-use App\Enums\RegistrationStatus;
-use App\Models\JobCategory;
-use App\Models\JobVacancy;
-use App\Models\User;
+use Shagalni\Shared\Enums\AccountStatus;
+use Shagalni\Shared\Enums\JobStatus;
+use Shagalni\Shared\Enums\RegistrationStatus;
+use Shagalni\Shared\Models\JobCategory;
+use Shagalni\Shared\Models\JobVacancy;
+use Shagalni\Shared\Models\User;
 
 function eligibilityJob(User $owner, array $attributes = []): JobVacancy
 {

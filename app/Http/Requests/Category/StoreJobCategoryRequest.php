@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Category;
 
-use App\Models\JobCategory;
 use Illuminate\Foundation\Http\FormRequest;
+use Shagalni\Shared\Models\JobCategory;
 
 class StoreJobCategoryRequest extends FormRequest
 {

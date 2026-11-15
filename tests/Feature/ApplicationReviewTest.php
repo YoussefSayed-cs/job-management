@@ -1,10 +1,10 @@
 <?php
 
-use App\Enums\ApplicationStatus;
-use App\Models\Application;
-use App\Models\JobCategory;
-use App\Models\JobVacancy;
-use App\Models\User;
+use Shagalni\Shared\Enums\ApplicationStatus;
+use Shagalni\Shared\Models\Application;
+use Shagalni\Shared\Models\JobCategory;
+use Shagalni\Shared\Models\JobVacancy;
+use Shagalni\Shared\Models\User;
 
 it('renders message templates when an approved owner reviews an active application', function () {
     $owner = approvedOwner();

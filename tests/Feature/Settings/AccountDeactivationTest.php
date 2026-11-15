@@ -1,9 +1,9 @@
 <?php
 
-use App\Enums\AccountStatus;
 use App\Livewire\Settings\DeactivateAccountForm;
-use App\Models\User;
 use Livewire\Livewire;
+use Shagalni\Shared\Enums\AccountStatus;
+use Shagalni\Shared\Models\User;
 
 beforeEach(function () {
     $this->withoutVite();

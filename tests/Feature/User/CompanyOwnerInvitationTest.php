@@ -1,15 +1,15 @@
 <?php
 
-use App\Enums\AccountStatus;
-use App\Enums\RegistrationStatus;
-use App\Enums\UserRole;
-use App\Models\Company;
-use App\Models\User;
 use App\Notifications\CompanyOwnerInvitation;
 use App\Services\CompanyOwnerInvitationService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
+use Shagalni\Shared\Enums\AccountStatus;
+use Shagalni\Shared\Enums\RegistrationStatus;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\Company;
+use Shagalni\Shared\Models\User;
 
 beforeEach(function () {
     $this->withoutVite();

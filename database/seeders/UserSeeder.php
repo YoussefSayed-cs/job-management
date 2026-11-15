@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use App\Concerns\SeedsFromJson;
-use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Shagalni\Shared\Models\User;
 
 class UserSeeder extends Seeder
 {

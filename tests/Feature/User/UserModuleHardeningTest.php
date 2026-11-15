@@ -1,13 +1,13 @@
 <?php
 
-use App\Enums\AccountStatus;
-use App\Enums\UserRole;
 use App\Livewire\Settings\Profile;
-use App\Models\Application;
-use App\Models\Company;
-use App\Models\User;
 use Illuminate\Database\QueryException;
 use Livewire\Livewire;
+use Shagalni\Shared\Enums\AccountStatus;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\Application;
+use Shagalni\Shared\Models\Company;
+use Shagalni\Shared\Models\User;
 
 beforeEach(function () {
     $this->withoutVite();

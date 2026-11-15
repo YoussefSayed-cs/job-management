@@ -2,11 +2,11 @@
 
 namespace App\Services\Companies;
 
-use App\Models\Company;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use RuntimeException;
+use Shagalni\Shared\Models\Company;
 use Throwable;
 
 class UpdateCompanyProfileService

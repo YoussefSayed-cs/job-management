@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Enums\JobStatus;
-use App\Enums\RegistrationStatus;
-use App\Enums\UserRole;
-use App\Models\JobVacancy;
-use App\Models\User;
+use Shagalni\Shared\Enums\JobStatus;
+use Shagalni\Shared\Enums\RegistrationStatus;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\JobVacancy;
+use Shagalni\Shared\Models\User;
 
 class JobPolicy
 {

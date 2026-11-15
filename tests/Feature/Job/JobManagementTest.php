@@ -1,13 +1,13 @@
 <?php
 
-use App\Enums\ApplicationStatus;
-use App\Enums\JobStatus;
-use App\Enums\UserRole;
-use App\Models\Application;
-use App\Models\Company;
-use App\Models\JobCategory;
-use App\Models\JobVacancy;
-use App\Models\User;
+use Shagalni\Shared\Enums\ApplicationStatus;
+use Shagalni\Shared\Enums\JobStatus;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\Application;
+use Shagalni\Shared\Models\Company;
+use Shagalni\Shared\Models\JobCategory;
+use Shagalni\Shared\Models\JobVacancy;
+use Shagalni\Shared\Models\User;
 
 beforeEach(function () {
     $this->owner = approvedOwner();

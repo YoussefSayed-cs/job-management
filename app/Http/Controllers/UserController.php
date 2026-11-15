@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\UserRole;
 use App\Http\Requests\User\IndexUsersRequest;
-use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\User;
 
 class UserController extends Controller
 {

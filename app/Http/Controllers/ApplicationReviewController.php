@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ApplicationStatus;
 use App\Http\Requests\Application\UpdateApplicationStatusRequest;
-use App\Models\Application;
 use App\Services\ApplicationStatusService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Shagalni\Shared\Enums\ApplicationStatus;
+use Shagalni\Shared\Models\Application;
 
 class ApplicationReviewController extends Controller
 {

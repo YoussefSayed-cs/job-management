@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\Enums\UserRole;
-use App\Models\JobCategory;
-use App\Models\User;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\JobCategory;
+use Shagalni\Shared\Models\User;
 
 class JobCategoryPolicy
 {

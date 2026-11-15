@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Concerns\SeedsFromJson;
-use App\Models\Resume;
 use Illuminate\Database\Seeder;
+use Shagalni\Shared\Models\Resume;
 
 class ResumeSeeder extends Seeder
 {

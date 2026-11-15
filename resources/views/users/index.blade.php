@@ -2,7 +2,7 @@
     <div class="space-y-6">
         <x-jobs.page-heading title="User Management" description="Manage company owners and job seekers.">
             <x-slot:action>
-                @can('create', \App\Models\User::class)
+                @can('create', \Shagalni\Shared\Models\User::class)
                     <a href="{{ route('company-owners.create') }}"
                         class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">
                         Invite Company Owner
@@ -48,7 +48,7 @@
                         class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800">
                         <option value="">All statuses</option>
 
-                        @foreach (\App\Enums\AccountStatus::cases() as $status)
+                        @foreach (\Shagalni\Shared\Enums\AccountStatus::cases() as $status)
                             <option value="{{ $status->value }}" @selected(($filters['status'] ?? '') === $status->value)>
                                 {{ ucfirst($status->value) }}
                             </option>

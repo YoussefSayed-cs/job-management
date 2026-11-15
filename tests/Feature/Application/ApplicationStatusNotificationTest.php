@@ -1,10 +1,10 @@
 <?php
 
-use App\Enums\AccountStatus;
-use App\Enums\ApplicationStatus;
-use App\Models\User;
-use App\Notifications\ApplicationStatusChanged;
 use Illuminate\Support\Facades\Notification;
+use Shagalni\Shared\Enums\AccountStatus;
+use Shagalni\Shared\Enums\ApplicationStatus;
+use Shagalni\Shared\Models\User;
+use Shagalni\Shared\Notifications\ApplicationStatusChanged;
 
 beforeEach(function () {
     $this->withoutVite();

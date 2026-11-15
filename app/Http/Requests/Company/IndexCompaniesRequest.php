@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests\Company;
 
-use App\Enums\RegistrationStatus;
-use App\Models\Company;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Shagalni\Shared\Enums\RegistrationStatus;
+use Shagalni\Shared\Models\Company;
 
 class IndexCompaniesRequest extends FormRequest
 {

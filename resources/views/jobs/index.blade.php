@@ -3,7 +3,7 @@
 
         <x-jobs.page-heading title="Job Management" description="Browse, manage and maintain job vacancies.">
             <x-slot:action>
-                @can('create', \App\Models\JobVacancy::class)
+                @can('create', \Shagalni\Shared\Models\JobVacancy::class)
                     <a href="{{ route('jobs.create') }}"
                         class="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700">
                         Create Job
@@ -38,7 +38,7 @@
                     <select id="status" name="status"
                         class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800">
                         <option value="">All statuses</option>
-                        @foreach (\App\Enums\JobStatus::cases() as $status)
+                        @foreach (\Shagalni\Shared\Enums\JobStatus::cases() as $status)
                             <option value="{{ $status->value }}" @selected(($filters['status'] ?? '') === $status->value)>
                                 {{ \Illuminate\Support\Str::headline($status->value) }}
                             </option>
@@ -64,7 +64,7 @@
                     <select id="employment_type" name="employment_type"
                         class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800">
                         <option value="">All types</option>
-                        @foreach (\App\Enums\EmploymentType::cases() as $type)
+                        @foreach (\Shagalni\Shared\Enums\EmploymentType::cases() as $type)
                             <option value="{{ $type->value }}" @selected(($filters['employment_type'] ?? '') === $type->value)>
                                 {{ \Illuminate\Support\Str::headline($type->value) }}
                             </option>
@@ -77,7 +77,7 @@
                     <select id="work_location_type" name="work_location_type"
                         class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800">
                         <option value="">All locations</option>
-                        @foreach (\App\Enums\WorkLocationType::cases() as $type)
+                        @foreach (\Shagalni\Shared\Enums\WorkLocationType::cases() as $type)
                             <option value="{{ $type->value }}" @selected(($filters['work_location_type'] ?? '') === $type->value)>
                                 {{ \Illuminate\Support\Str::headline($type->value) }}
                             </option>
@@ -90,7 +90,7 @@
                     <select id="experience_level" name="experience_level"
                         class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800">
                         <option value="">All levels</option>
-                        @foreach (\App\Enums\ExperienceLevel::cases() as $level)
+                        @foreach (\Shagalni\Shared\Enums\ExperienceLevel::cases() as $level)
                             <option value="{{ $level->value }}" @selected(($filters['experience_level'] ?? '') === $level->value)>
                                 {{ \Illuminate\Support\Str::headline($level->value) }}
                             </option>
@@ -127,7 +127,7 @@
                     <thead class="bg-slate-50 text-xs uppercase text-slate-500 dark:bg-slate-800">
                         <tr>
                             <th class="px-5 py-3">Job</th>
-                            @if (auth()->user()->role === \App\Enums\UserRole::Admin)
+                            @if (auth()->user()->role === \Shagalni\Shared\Enums\UserRole::Admin)
                                 <th class="px-5 py-3">Company</th>
                             @endif
                             <th class="px-5 py-3">Category</th>
@@ -146,7 +146,7 @@
                                     <p class="mt-1 text-xs text-slate-500">{{ $job->location }}</p>
                                 </td>
 
-                                @if (auth()->user()->role === \App\Enums\UserRole::Admin)
+                                @if (auth()->user()->role === \Shagalni\Shared\Enums\UserRole::Admin)
                                     <td class="px-5 py-4">{{ $job->company->name }}</td>
                                 @endif
 

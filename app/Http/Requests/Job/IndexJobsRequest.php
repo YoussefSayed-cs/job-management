@@ -2,13 +2,13 @@
 
 namespace App\Http\Requests\Job;
 
-use App\Enums\EmploymentType;
-use App\Enums\ExperienceLevel;
-use App\Enums\JobStatus;
-use App\Enums\WorkLocationType;
-use App\Models\JobVacancy;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Shagalni\Shared\Enums\EmploymentType;
+use Shagalni\Shared\Enums\ExperienceLevel;
+use Shagalni\Shared\Enums\JobStatus;
+use Shagalni\Shared\Enums\WorkLocationType;
+use Shagalni\Shared\Models\JobVacancy;
 
 class IndexJobsRequest extends FormRequest
 {

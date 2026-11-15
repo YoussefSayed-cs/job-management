@@ -143,7 +143,7 @@
                     </a>
                 @endcan
 
-                @if ($job->status === \App\Enums\JobStatus::Active)
+                @if ($job->status === \Shagalni\Shared\Enums\JobStatus::Active)
                     @can('close', $job)
                         <form method="POST" action="{{ route('jobs.close', $job) }}">
                             @csrf
@@ -155,7 +155,7 @@
                     @endcan
                 @endif
 
-                @if ($job->status === \App\Enums\JobStatus::Closed)
+                @if ($job->status === \Shagalni\Shared\Enums\JobStatus::Closed)
                     @can('reopen', $job)
                         <form method="POST" action="{{ route('jobs.reopen', $job) }}">
                             @csrf
@@ -167,7 +167,7 @@
                     @endcan
                 @endif
 
-                @if ($job->status !== \App\Enums\JobStatus::Archived)
+                @if ($job->status !== \Shagalni\Shared\Enums\JobStatus::Archived)
                     @can('archive', $job)
                         <form method="POST" action="{{ route('jobs.archive', $job) }}"
                             onsubmit="return confirm('Archive this job?')">
@@ -180,7 +180,7 @@
                     @endcan
                 @endif
 
-                @if ($job->status === \App\Enums\JobStatus::Archived)
+                @if ($job->status === \Shagalni\Shared\Enums\JobStatus::Archived)
                     @can('restore', $job)
                         <form method="POST" action="{{ route('jobs.restore', $job) }}"
                             onsubmit="return confirm('Restore this job as Active?')">
@@ -194,7 +194,7 @@
                 @endif
             </div>
 
-            @if ($job->status === \App\Enums\JobStatus::Archived)
+            @if ($job->status === \Shagalni\Shared\Enums\JobStatus::Archived)
                 @can('delete', $job)
                     <form method="POST" action="{{ route('jobs.destroy', $job) }}"
                         class="mt-6 max-w-lg border-t border-rose-100 pt-5 dark:border-rose-900"

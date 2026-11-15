@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\JobStatus;
-use App\Enums\UserRole;
 use App\Http\Requests\Job\DeleteArchivedJobRequest;
 use App\Http\Requests\Job\IndexJobsRequest;
 use App\Http\Requests\Job\StoreJobRequest;
 use App\Http\Requests\Job\UpdateJobRequest;
-use App\Models\JobCategory;
-use App\Models\JobVacancy;
 use App\Services\JobLifecycleService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
+use Shagalni\Shared\Enums\JobStatus;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\JobCategory;
+use Shagalni\Shared\Models\JobVacancy;
 
 class JobController extends Controller
 {

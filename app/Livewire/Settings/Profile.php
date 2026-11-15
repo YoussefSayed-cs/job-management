@@ -3,8 +3,6 @@
 namespace App\Livewire\Settings;
 
 use App\Concerns\ProfileValidationRules;
-use App\Enums\UserRole;
-use App\Models\User;
 use Flux\Flux;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +11,8 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\User;
 
 #[Title('Profile settings')]
 class Profile extends Component

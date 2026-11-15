@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Category;
 
-use App\Models\JobCategory;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Shagalni\Shared\Models\JobCategory;
 
 class UpdateJobCategoryRequest extends FormRequest
 {

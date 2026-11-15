@@ -93,7 +93,7 @@
                         </td>
 
                         <td class="p-3">
-                            @if ($changeRequest->status === \App\Enums\ChangeRequestStatus::Pending)
+                            @if ($changeRequest->status === \Shagalni\Shared\Enums\ChangeRequestStatus::Pending)
                                 <div class="flex gap-2">
                                     <form method="POST" action="{{ route('company-change-requests.approve', $changeRequest) }}"
                                         onsubmit="return confirm('Approve this change request?')">

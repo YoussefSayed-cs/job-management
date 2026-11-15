@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Category\StoreJobCategoryRequest;
 use App\Http\Requests\Category\UpdateJobCategoryRequest;
-use App\Models\JobCategory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Shagalni\Shared\Models\JobCategory;
 
 class JobCategoryController extends Controller
 {

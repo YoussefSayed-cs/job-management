@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Concerns\SeedsFromJson;
-use App\Models\AiAnalysis;
 use Illuminate\Database\Seeder;
+use Shagalni\Shared\Models\AiAnalysis;
 
 class AiAnalysisSeeder extends Seeder
 {

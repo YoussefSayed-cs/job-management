@@ -54,7 +54,7 @@
             <select id="employment_type" name="employment_type" required
                 class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800">
                 <option value="">Select type</option>
-                @foreach (\App\Enums\EmploymentType::cases() as $type)
+                @foreach (\Shagalni\Shared\Enums\EmploymentType::cases() as $type)
                     <option value="{{ $type->value }}" @selected(old('employment_type', $job?->employment_type?->value) === $type->value)>
                         {{ \Illuminate\Support\Str::headline($type->value) }}
                     </option>
@@ -69,7 +69,7 @@
             <select id="work_location_type" name="work_location_type" required
                 class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800">
                 <option value="">Select work location</option>
-                @foreach (\App\Enums\WorkLocationType::cases() as $type)
+                @foreach (\Shagalni\Shared\Enums\WorkLocationType::cases() as $type)
                     <option value="{{ $type->value }}" @selected(old('work_location_type', $job?->work_location_type?->value) === $type->value)>
                         {{ \Illuminate\Support\Str::headline($type->value) }}
                     </option>
@@ -84,7 +84,7 @@
             <select id="experience_level" name="experience_level"
                 class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800">
                 <option value="">Not specified</option>
-                @foreach (\App\Enums\ExperienceLevel::cases() as $level)
+                @foreach (\Shagalni\Shared\Enums\ExperienceLevel::cases() as $level)
                     <option value="{{ $level->value }}" @selected(old('experience_level', $job?->experience_level?->value) === $level->value)>
                         {{ \Illuminate\Support\Str::headline($level->value) }}
                     </option>

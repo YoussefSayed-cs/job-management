@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\RequestReactivationLinkRequest;
-use App\Models\User;
 use App\Notifications\AccountReactivationRequested;
 use App\Services\AccountLifecycleService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Shagalni\Shared\Models\User;
 use Throwable;
 
 class AccountReactivationController extends Controller

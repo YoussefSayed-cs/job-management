@@ -11,7 +11,12 @@
     "repositories": [
         {
             "type": "path",
-            "url": "../shagalni-shared"
+            "url": "../shagalni-shared",
+            "options": {
+                "versions": {
+                    "shagalni/shared": "1.0.0"
+                }
+            }
         }
     ],
     "require": {
@@ -23,7 +28,7 @@
         "livewire/blaze": "^1.0",
         "livewire/flux": "^2.13.1",
         "livewire/livewire": "^4.1",
-        "shagalni/shared": "*"
+        "shagalni/shared": "^1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.24",
@@ -119,6 +124,5 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "dev",
     "prefer-stable": true
 }

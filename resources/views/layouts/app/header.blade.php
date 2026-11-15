@@ -13,7 +13,7 @@
                 <flux:navbar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Dashboard') }}
                 </flux:navbar.item>
-                @can('viewAny', \App\Models\Company::class)
+                @can('viewAny', \Shagalni\Shared\Models\Company::class)
                     <flux:navbar.item icon="building-office-2" :href="route('companies.index')" :current="request()->routeIs('companies.*')" wire:navigate>
                         {{ __('Companies') }}
                     </flux:navbar.item>
@@ -47,7 +47,7 @@
                         {{ __('Dashboard')  }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
-                @can('viewAny', \App\Models\Company::class)
+                @can('viewAny', \Shagalni\Shared\Models\Company::class)
                     <flux:sidebar.group :heading="__('Management')">
                         <flux:sidebar.item icon="building-office-2" :href="route('companies.index')" :current="request()->routeIs('companies.*')" wire:navigate>
                             {{ __('Companies') }}

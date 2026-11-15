@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ChangeRequestStatus;
-use App\Models\CompanyChangeRequest;
 use App\Services\Companies\CompanyChangeRequestReviewService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
+use Shagalni\Shared\Enums\ChangeRequestStatus;
+use Shagalni\Shared\Models\CompanyChangeRequest;
 
 class CompanyChangeRequestReviewController extends Controller
 {

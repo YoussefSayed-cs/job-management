@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\Enums\UserRole;
-use App\Models\User;
 use App\Services\CompanyOwnerInvitationService;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\User;
 
 class UserPolicy
 {

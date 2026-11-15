@@ -1,8 +1,8 @@
 <?php
 
-use App\Enums\UserRole;
-use App\Models\CompanyChangeRequest;
-use App\Models\User;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\CompanyChangeRequest;
+use Shagalni\Shared\Models\User;
 
 it('allows an approved company owner to submit a company name change request without changing approved data', function () {
     $owner = approvedOwner();

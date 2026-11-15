@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
-use App\Enums\JobStatus;
-use App\Models\JobVacancy;
 use Closure;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use Shagalni\Shared\Enums\JobStatus;
+use Shagalni\Shared\Models\JobVacancy;
 
 class JobLifecycleService
 {

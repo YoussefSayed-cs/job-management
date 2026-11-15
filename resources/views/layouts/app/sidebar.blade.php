@@ -31,7 +31,7 @@
                 </flux:sidebar.item>
             </flux:sidebar.group>
 
-            @can('viewAny', \App\Models\Company::class)
+            @can('viewAny', \Shagalni\Shared\Models\Company::class)
                 <flux:sidebar.group :heading="__('Management')" class="grid">
                     <flux:sidebar.item icon="building-office-2" :href="route('companies.index')"
                         :current="request()->routeIs('companies.*')" wire:navigate>

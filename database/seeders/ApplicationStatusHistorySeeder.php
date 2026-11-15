@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Concerns\SeedsFromJson;
-use App\Models\ApplicationStatusHistory;
 use Illuminate\Database\Seeder;
+use Shagalni\Shared\Models\ApplicationStatusHistory;
 
 class ApplicationStatusHistorySeeder extends Seeder
 {

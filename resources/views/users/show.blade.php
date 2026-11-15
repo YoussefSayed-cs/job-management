@@ -83,9 +83,9 @@
         @canany(['suspend', 'deactivate', 'reactivate'], $user)
             @php
                 $status = $user->status;
-                $isActive = $status === \App\Enums\AccountStatus::Active;
-                $isSuspended = $status === \App\Enums\AccountStatus::Suspended;
-                $isDeactivated = $status === \App\Enums\AccountStatus::Deactivated;
+                $isActive = $status === \Shagalni\Shared\Enums\AccountStatus::Active;
+                $isSuspended = $status === \Shagalni\Shared\Enums\AccountStatus::Suspended;
+                $isDeactivated = $status === \Shagalni\Shared\Enums\AccountStatus::Deactivated;
             @endphp
 
             <section

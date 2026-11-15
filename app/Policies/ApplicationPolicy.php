@@ -2,10 +2,10 @@
 
 namespace App\Policies;
 
-use App\Enums\RegistrationStatus;
-use App\Enums\UserRole;
-use App\Models\Application;
-use App\Models\User;
+use Shagalni\Shared\Enums\RegistrationStatus;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\Application;
+use Shagalni\Shared\Models\User;
 
 class ApplicationPolicy
 {

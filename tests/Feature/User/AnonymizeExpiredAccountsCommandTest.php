@@ -1,9 +1,9 @@
 <?php
 
-use App\Enums\UserRole;
-use App\Models\User;
 use App\Services\AccountAnonymizationService;
 use Mockery\MockInterface;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\User;
 
 // unique name on purpose: Pest test files share one global function namespace
 function expiredDeletionUser(array $attributes = []): User

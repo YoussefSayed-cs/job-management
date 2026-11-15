@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Enums\AccountStatus;
-use App\Enums\UserRole;
-use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Shagalni\Shared\Enums\AccountStatus;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\User;
 
 class AccountLifecycleService
 {

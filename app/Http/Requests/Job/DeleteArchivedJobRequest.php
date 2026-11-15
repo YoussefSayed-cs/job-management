@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Job;
 
-use App\Models\JobVacancy;
 use Illuminate\Foundation\Http\FormRequest;
+use Shagalni\Shared\Models\JobVacancy;
 
 class DeleteArchivedJobRequest extends FormRequest
 {

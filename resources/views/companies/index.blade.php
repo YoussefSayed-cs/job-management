@@ -25,7 +25,7 @@
                         class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800">
                         <option value="">All statuses</option>
 
-                        @foreach (\App\Enums\RegistrationStatus::cases() as $status)
+                        @foreach (\Shagalni\Shared\Enums\RegistrationStatus::cases() as $status)
                             <option value="{{ $status->value }}" @selected(($filters['status'] ?? '') === $status->value)>
                                 {{ \Illuminate\Support\Str::headline($status->value) }}
                             </option>

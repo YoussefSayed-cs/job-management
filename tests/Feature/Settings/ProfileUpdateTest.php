@@ -1,14 +1,14 @@
 <?php
 
-use App\Enums\UserRole;
 use App\Livewire\Settings\Profile;
-use App\Models\User;
 use App\Notifications\AccountDeletionRequested;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
+use Shagalni\Shared\Enums\UserRole;
+use Shagalni\Shared\Models\User;
 
 beforeEach(function () {
     $this->withoutVite();

@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Concerns\SeedsFromJson;
-use App\Models\Company;
 use Illuminate\Database\Seeder;
+use Shagalni\Shared\Models\Company;
 
 class CompanySeeder extends Seeder
 {

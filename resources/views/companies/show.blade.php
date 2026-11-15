@@ -1,7 +1,7 @@
 @php
     $owner = $company->owner;
     $ownerVerified = $owner->hasVerifiedEmail();
-    $isPending = $company->registration_status === \App\Enums\RegistrationStatus::PendingApproval;
+    $isPending = $company->registration_status === \Shagalni\Shared\Enums\RegistrationStatus::PendingApproval;
 @endphp
 
 <x-jobs.layout :title="$company->name">

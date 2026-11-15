@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Company\RejectCompanyRegistrationRequest;
-use App\Models\Company;
 use App\Services\CompanyApprovalService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Shagalni\Shared\Models\Company;
 
 class ReviewCompanyRegistrationController extends Controller
 {
