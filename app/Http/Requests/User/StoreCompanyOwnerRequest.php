@@ -17,7 +17,7 @@ class StoreCompanyOwnerRequest extends FormRequest
 
     public function rules(): array
     {
-        // full_name + unique email + unique phone come from the shared profile rules.
+        // Full name and unique email rules come from the shared profile rules.
         return array_merge($this->profileRules(), [
             'company_name' => ['required', 'string', 'max:255'],
             'industry' => ['required', 'string', 'max:255'],

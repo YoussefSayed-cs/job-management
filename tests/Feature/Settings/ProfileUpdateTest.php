@@ -41,6 +41,20 @@ test('profile information can be updated', function () {
         ->and($user->phone)->toBe('01099999999');
 });
 
+test('profile update allows a phone number shared with another account', function () {
+    User::factory()->create(['phone' => '01011112222']);
+    $user = User::factory()->create();
+
+    $this->actingAs($user);
+
+    Livewire::test(Profile::class)
+        ->set('phone', '01011112222')
+        ->call('updateProfileInformation')
+        ->assertHasNoErrors();
+
+    expect($user->fresh()->phone)->toBe('01011112222');
+});
+
 test('changing the email requires verification of the new address', function () {
     Notification::fake();
 

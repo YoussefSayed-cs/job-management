@@ -87,6 +87,15 @@ it('accepts a job without a deadline', function () {
     expectEligibility($job, true);
 });
 
+it('hides jobs while the owner has a pending account deletion request', function () {
+    $owner = approvedOwner();
+    $job = eligibilityJob($owner);
+
+    $owner->forceFill(['deletion_requested_at' => now()])->save();
+
+    expectEligibility($job, false);
+});
+
 it('rejects jobs of a company that is not approved', function (RegistrationStatus $status) {
     $owner = approvedOwner();
     $job = eligibilityJob($owner);

@@ -29,7 +29,6 @@ trait ProfileValidationRules
                 'required',
                 'string',
                 'max:20',
-                Rule::unique(User::class, 'phone')->ignore($userId),
             ],
         ];
     }

@@ -132,8 +132,8 @@ test('the profile form rejects an email that belongs to another user', function 
     expect($user->refresh()->email)->not->toBe($other->email);
 });
 
-test('the profile form rejects a phone number that belongs to another user', function () {
-    $other = User::factory()->create();
+test('the profile form allows a phone number shared with another user', function () {
+    $other = User::factory()->create(['phone' => '01012345678']);
     $user = User::factory()->create();
 
     $this->actingAs($user);
@@ -141,9 +141,9 @@ test('the profile form rejects a phone number that belongs to another user', fun
     Livewire::test(Profile::class)
         ->set('phone', $other->phone)
         ->call('updateProfileInformation')
-        ->assertHasErrors(['phone' => 'unique']);
+        ->assertHasNoErrors();
 
-    expect($user->refresh()->phone)->not->toBe($other->phone);
+    expect($user->refresh()->phone)->toBe($other->phone);
 });
 
 // ---------------------------------------------------------------------------
