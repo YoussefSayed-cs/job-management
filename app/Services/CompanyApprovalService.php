@@ -49,7 +49,7 @@ class CompanyApprovalService
             return $company;
         });
 
-        $this->notifyOwner($company, new CompanyRegistrationRejected($company));
+        $this->notifyOwner($company, new CompanyRegistrationRejected($company, $reason));
 
         return $company;
     }

@@ -2,14 +2,20 @@
 
 namespace App\Notifications;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use LogicException;
 use Shagalni\Shared\Models\Company;
 
-class CompanyRegistrationRejected extends Notification
+class CompanyRegistrationRejected extends Notification implements ShouldQueue
 {
-    public function __construct(public Company $company) {}
+    use Queueable;
+
+    public int $tries = 3;
+
+    public function __construct(public Company $company, public string $reason) {}
 
     public function via(object $notifiable): array
     {
@@ -28,7 +34,7 @@ class CompanyRegistrationRejected extends Notification
             ->subject('Your company registration was rejected')
             ->greeting('Hello '.$notifiable->full_name.',')
             ->line('Unfortunately, the registration of "'.$this->company->name.'" was rejected.')
-            ->line('Reason: '.$this->company->rejection_reason)
+            ->line('Reason: '.$this->reason)
             ->line('You can edit your company details and resubmit your registration through the Job Seeker Portal.')
             ->action('Open Job Seeker Portal', $portalUrl);
     }
@@ -40,7 +46,7 @@ class CompanyRegistrationRejected extends Notification
             'company_id' => $this->company->id,
             'company_name' => $this->company->name,
             'message' => 'Your company registration was rejected.',
-            'rejection_reason' => $this->company->rejection_reason,
+            'rejection_reason' => $this->reason,
         ];
     }
 }

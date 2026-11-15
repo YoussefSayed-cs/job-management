@@ -2,12 +2,18 @@
 
 namespace App\Notifications;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Shagalni\Shared\Models\Company;
 
-class CompanyRegistrationApproved extends Notification
+class CompanyRegistrationApproved extends Notification implements ShouldQueue
 {
+    use Queueable;
+
+    public int $tries = 3;
+
     public function __construct(public Company $company) {}
 
     public function via(object $notifiable): array
