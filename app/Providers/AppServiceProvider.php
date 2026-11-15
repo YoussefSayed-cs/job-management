@@ -3,8 +3,11 @@
 namespace App\Providers;
 
 use App\Policies\ApplicationPolicy;
+use App\Policies\CompanyChangeRequestPolicy;
+use App\Policies\CompanyPolicy;
 use App\Policies\JobCategoryPolicy;
 use App\Policies\JobPolicy;
+use App\Policies\UserPolicy;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -12,8 +15,11 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Shagalni\Shared\Models\Application;
+use Shagalni\Shared\Models\Company;
+use Shagalni\Shared\Models\CompanyChangeRequest;
 use Shagalni\Shared\Models\JobCategory;
 use Shagalni\Shared\Models\JobVacancy;
+use Shagalni\Shared\Models\User;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,6 +39,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(JobVacancy::class, JobPolicy::class);
         Gate::policy(Application::class, ApplicationPolicy::class);
         Gate::policy(JobCategory::class, JobCategoryPolicy::class);
+        Gate::policy(User::class, UserPolicy::class);
+        Gate::policy(Company::class, CompanyPolicy::class);
+        Gate::policy(CompanyChangeRequest::class, CompanyChangeRequestPolicy::class);
 
         $this->configureDefaults();
     }
