@@ -2,7 +2,6 @@
 
 use Shagalni\Shared\Enums\RegistrationStatus;
 use Shagalni\Shared\Enums\UserRole;
-use Shagalni\Shared\Models\Company;
 use Shagalni\Shared\Models\User;
 
 beforeEach(function () {
@@ -22,7 +21,7 @@ test('admin can visit the dashboard', function () {
 test('company owner with an approved company can visit the dashboard', function () {
     $owner = User::factory()->create(['role' => UserRole::CompanyOwner]);
 
-    Company::create([
+    createCompanyRecord([
         'owner_id' => $owner->id,
         'name' => 'Acme Software',
         'industry' => 'Software',

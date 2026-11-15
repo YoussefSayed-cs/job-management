@@ -19,9 +19,9 @@ class JobLifecycleService
                 ]);
             }
 
-            $lockedJob->update([
+            $lockedJob->forceFill([
                 'status' => JobStatus::Closed,
-            ]);
+            ])->save();
 
             return $lockedJob;
         });
@@ -36,9 +36,9 @@ class JobLifecycleService
                 ]);
             }
 
-            $lockedJob->update([
+            $lockedJob->forceFill([
                 'status' => JobStatus::Active,
-            ]);
+            ])->save();
 
             return $lockedJob;
         });
@@ -56,10 +56,10 @@ class JobLifecycleService
                 ]);
             }
 
-            $lockedJob->update([
+            $lockedJob->forceFill([
                 'status' => JobStatus::Archived,
                 'archived_at' => now(),
-            ]);
+            ])->save();
 
             return $lockedJob;
         });
@@ -83,10 +83,10 @@ class JobLifecycleService
                 ]);
             }
 
-            $lockedJob->update([
+            $lockedJob->forceFill([
                 'status' => JobStatus::Active,
                 'archived_at' => null,
-            ]);
+            ])->save();
 
             return $lockedJob;
         });

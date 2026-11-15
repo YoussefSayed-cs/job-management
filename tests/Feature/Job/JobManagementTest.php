@@ -20,7 +20,7 @@ beforeEach(function () {
         Company $company,
         array $attributes = []
     ): JobVacancy {
-        return $company->jobVacancies()->create(array_merge([
+        $attributes = array_merge([
             'job_category_id' => $this->category->id,
             'title' => 'Laravel Developer',
             'description' => 'Build Laravel applications.',
@@ -34,7 +34,14 @@ beforeEach(function () {
             'experience_level' => 'junior',
             'application_deadline' => now()->addDays(20)->toDateString(),
             'status' => JobStatus::Active,
-        ], $attributes));
+        ], $attributes);
+        $protectedFields = ['status', 'archived_at'];
+        $protectedAttributes = array_intersect_key($attributes, array_flip($protectedFields));
+        $job = $company->jobVacancies()->make(array_diff_key($attributes, array_flip($protectedFields)));
+
+        $job->forceFill($protectedAttributes)->save();
+
+        return $job;
     };
 });
 

@@ -3,7 +3,6 @@
 use Shagalni\Shared\Enums\ApplicationStatus;
 use Shagalni\Shared\Models\Application;
 use Shagalni\Shared\Models\JobCategory;
-use Shagalni\Shared\Models\JobVacancy;
 use Shagalni\Shared\Models\User;
 
 it('renders message templates when an approved owner reviews an active application', function () {
@@ -12,8 +11,7 @@ it('renders message templates when an approved owner reviews an active applicati
     $category = JobCategory::create([
         'name' => 'Software',
     ]);
-    $job = JobVacancy::create([
-        'company_id' => $owner->company->id,
+    $job = $owner->company->jobVacancies()->create([
         'job_category_id' => $category->id,
         'title' => 'Backend Developer',
         'description' => 'Build backend services.',

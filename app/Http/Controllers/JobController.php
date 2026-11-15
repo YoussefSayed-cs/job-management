@@ -72,7 +72,8 @@ class JobController extends Controller
     {
         $company = $request->user()->company()->firstOrFail();
 
-        $job = $company->jobVacancies()->create([...$request->validated(), 'status' => JobStatus::Active]);
+        $job = $company->jobVacancies()->make($request->validated());
+        $job->forceFill(['status' => JobStatus::Active])->save();
 
         return redirect()->route('jobs.show', $job)->with('status', 'Job published successfully.');
     }

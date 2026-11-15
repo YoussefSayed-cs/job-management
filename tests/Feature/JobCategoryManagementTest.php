@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Str;
 use Shagalni\Shared\Models\JobCategory;
-use Shagalni\Shared\Models\JobVacancy;
 
 // ------------------------------------------
 // Category CRUD
@@ -220,8 +219,7 @@ it('prevents deleting a category assigned to a job', function () {
         'name' => 'Software',
     ]);
 
-    JobVacancy::create([
-        'company_id' => $owner->company->id,
+    $owner->company->jobVacancies()->create([
         'job_category_id' => $category->id,
         'title' => 'Backend Developer',
         'description' => 'Build backend services.',
@@ -272,8 +270,7 @@ it('filters jobs by category', function () {
         'name' => 'Data Engineering',
     ]);
 
-    JobVacancy::create([
-        'company_id' => $owner->company->id,
+    $owner->company->jobVacancies()->create([
         'job_category_id' => $softwareCategory->id,
         'title' => 'Backend Developer',
         'description' => 'Build backend services.',
@@ -283,8 +280,7 @@ it('filters jobs by category', function () {
         'work_location_type' => 'on_site',
     ]);
 
-    JobVacancy::create([
-        'company_id' => $owner->company->id,
+    $owner->company->jobVacancies()->create([
         'job_category_id' => $dataCategory->id,
         'title' => 'Analytics Pipeline Specialist',
         'description' => 'Build data pipelines.',

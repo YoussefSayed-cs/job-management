@@ -17,7 +17,7 @@ function companyWithOwner(array $ownerState = [], array $companyState = []): Com
 {
     $owner = User::factory()->create(array_merge(['role' => UserRole::CompanyOwner], $ownerState));
 
-    return Company::create(array_merge([
+    return createCompanyRecord(array_merge([
         'owner_id' => $owner->id,
         'name' => 'Acme Software',
         'industry' => 'Software',

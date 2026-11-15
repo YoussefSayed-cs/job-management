@@ -11,7 +11,7 @@ function eligibilityJob(User $owner, array $attributes = []): JobVacancy
 {
     $category = JobCategory::firstOrCreate(['name' => 'Software']);
 
-    return $owner->company->jobVacancies()->create(array_merge([
+    $attributes = array_merge([
         'job_category_id' => $category->id,
         'title' => 'Laravel Developer',
         'description' => 'Build Laravel applications.',
@@ -20,7 +20,14 @@ function eligibilityJob(User $owner, array $attributes = []): JobVacancy
         'employment_type' => 'full_time',
         'work_location_type' => 'hybrid',
         'status' => JobStatus::Active,
-    ], $attributes));
+    ], $attributes);
+    $protectedFields = ['status', 'archived_at'];
+    $protectedAttributes = array_intersect_key($attributes, array_flip($protectedFields));
+    $job = $owner->company->jobVacancies()->make(array_diff_key($attributes, array_flip($protectedFields)));
+
+    $job->forceFill($protectedAttributes)->save();
+
+    return $job;
 }
 
 /**
@@ -84,7 +91,7 @@ it('rejects jobs of a company that is not approved', function (RegistrationStatu
     $owner = approvedOwner();
     $job = eligibilityJob($owner);
 
-    $owner->company->update(['registration_status' => $status]);
+    $owner->company->forceFill(['registration_status' => $status])->save();
 
     expectEligibility($job, false);
 })->with([

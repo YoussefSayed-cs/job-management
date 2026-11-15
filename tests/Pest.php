@@ -56,11 +56,28 @@ function adminUser(): User
     return User::factory()->create(['role' => UserRole::Admin]);
 }
 
+function createCompanyRecord(array $attributes): Company
+{
+    $protectedFields = [
+        'owner_id',
+        'registration_status',
+        'rejection_reason',
+        'reviewed_by',
+        'reviewed_at',
+    ];
+    $protectedAttributes = array_intersect_key($attributes, array_flip($protectedFields));
+    $company = new Company(array_diff_key($attributes, array_flip($protectedFields)));
+
+    $company->forceFill($protectedAttributes)->save();
+
+    return $company;
+}
+
 function approvedOwner(): User
 {
     $owner = User::factory()->create(['role' => UserRole::CompanyOwner]);
 
-    Company::create([
+    createCompanyRecord([
         'owner_id' => $owner->id,
         'name' => 'Approved Co',
         'industry' => 'Software',

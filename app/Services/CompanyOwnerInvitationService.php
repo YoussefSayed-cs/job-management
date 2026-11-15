@@ -41,17 +41,20 @@ class CompanyOwnerInvitationService
                 'status' => AccountStatus::Active,
             ])->save();
 
-            Company::create([
-                'owner_id' => $owner->id,
+            $company = new Company([
                 'name' => $data['company_name'],
                 'industry' => $data['industry'],
                 'location' => $data['location'],
                 'description' => $data['description'] ?? null,
                 'website' => $data['website'] ?? null,
+            ]);
+
+            $company->forceFill([
+                'owner_id' => $owner->id,
                 'registration_status' => RegistrationStatus::Approved,
                 'reviewed_by' => $admin->id,
                 'reviewed_at' => now(),
-            ]);
+            ])->save();
 
             return $owner;
         });

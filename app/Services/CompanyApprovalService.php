@@ -19,12 +19,12 @@ class CompanyApprovalService
         $company = DB::transaction(function () use ($company, $admin) {
             $company = $this->lockReviewableCompany($company);
 
-            $company->update([
+            $company->forceFill([
                 'registration_status' => RegistrationStatus::Approved,
                 'rejection_reason' => null,
                 'reviewed_by' => $admin->id,
                 'reviewed_at' => now(),
-            ]);
+            ])->save();
 
             return $company;
         });
@@ -39,12 +39,12 @@ class CompanyApprovalService
         $company = DB::transaction(function () use ($company, $admin, $reason) {
             $company = $this->lockReviewableCompany($company);
 
-            $company->update([
+            $company->forceFill([
                 'registration_status' => RegistrationStatus::Rejected,
                 'rejection_reason' => $reason,
                 'reviewed_by' => $admin->id,
                 'reviewed_at' => now(),
-            ]);
+            ])->save();
 
             return $company;
         });

@@ -7,6 +7,7 @@ use Shagalni\Shared\Enums\AccountStatus;
 use Shagalni\Shared\Enums\UserRole;
 use Shagalni\Shared\Models\Application;
 use Shagalni\Shared\Models\Company;
+use Shagalni\Shared\Models\JobVacancy;
 use Shagalni\Shared\Models\User;
 
 beforeEach(function () {
@@ -99,6 +100,24 @@ test('protected user fields cannot be mass assigned', function (string $field) {
     'anonymized_at',
 ]);
 
+test('protected company fields cannot be mass assigned', function (string $field) {
+    expect((new Company)->isFillable($field))->toBeFalse();
+})->with([
+    'owner_id',
+    'registration_status',
+    'rejection_reason',
+    'reviewed_by',
+    'reviewed_at',
+]);
+
+test('protected job fields cannot be mass assigned', function (string $field) {
+    expect((new JobVacancy)->isFillable($field))->toBeFalse();
+})->with([
+    'company_id',
+    'status',
+    'archived_at',
+]);
+
 test('the profile form rejects an email that belongs to another user', function () {
     $other = User::factory()->create();
     $user = User::factory()->create();
@@ -154,7 +173,7 @@ test('a user who has applications cannot be physically deleted', function () {
 test('a company owner with a rejected registration cannot enter the backoffice', function () {
     $owner = User::factory()->create(['role' => UserRole::CompanyOwner]);
 
-    Company::create([
+    createCompanyRecord([
         'owner_id' => $owner->id,
         'name' => 'Rejected Co',
         'industry' => 'Software',
