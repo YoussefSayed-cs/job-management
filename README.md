@@ -2,6 +2,18 @@
 
 Shagalni V2 is an AI-assisted job board platform connecting Job Seekers with companies. AI evaluates a Resume against a specific Job to assist human review; it never makes final hiring decisions.
 
+## Cross-app configuration
+
+`job-management` and `job-seeker-app` share the same database. Configure both applications with:
+
+- The same database connection and database.
+- The same `APP_KEY`; signed account-deletion cancellation links are verified across apps.
+- The same `CACHE_STORE` and `CACHE_PREFIX` so reactivation and invitation tokens are visible to both apps.
+- The same `QUEUE_CONNECTION` and backing queue so queued work is available to the worker.
+- Correct public URLs: `JOB_SEEKER_PORTAL_URL` in Backoffice must match the Portal's `APP_URL`; for the local Backoffice example, configure the Portal at `http://localhost:8001`. Backoffice `APP_URL` is its public base URL and the Backoffice URL used to generate signed links. There is no separate `BACKOFFICE_URL` setting currently.
+
+The Backoffice `.env.example` uses `CACHE_STORE=database` and `CACHE_PREFIX=shagalni-cache-`; set these same values in the Portal environment.
+
 ## SRS v1.4 Overview
 
 **Version:** 1.4, 9 November 2026  
