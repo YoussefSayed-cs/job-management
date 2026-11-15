@@ -43,7 +43,7 @@ class ApplicationStatusService
                 ]);
             }
 
-            if (! $this->isAllowedTransition($currentStatus, $newStatus)) {
+            if (! $currentStatus->canTransitionTo($newStatus)) {
                 throw ValidationException::withMessages([
                     'status' => 'The requested status transition is not allowed.',
                 ]);
@@ -91,26 +91,5 @@ class ApplicationStatusService
         } catch (Throwable $e) {
             report($e);
         }
-    }
-
-    private function isAllowedTransition(
-        ApplicationStatus $current,
-        ApplicationStatus $next
-    ): bool {
-        if ($next === ApplicationStatus::Rejected) {
-            return true;
-        }
-
-        $allowedTransitions = [
-            ApplicationStatus::Pending->value => ApplicationStatus::UnderReview,
-
-            ApplicationStatus::UnderReview->value => ApplicationStatus::Shortlisted,
-
-            ApplicationStatus::Shortlisted->value => ApplicationStatus::Interview,
-
-            ApplicationStatus::Interview->value => ApplicationStatus::Accepted,
-        ];
-
-        return ($allowedTransitions[$current->value] ?? null) === $next;
     }
 }

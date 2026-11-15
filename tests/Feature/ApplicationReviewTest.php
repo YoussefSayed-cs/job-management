@@ -36,3 +36,16 @@ it('renders message templates when an approved owner reviews an active applicati
         ->assertSee('data-status="under_review"', false)
         ->assertSee('Your application is currently under review.');
 });
+
+it('shows only sequential statuses and rejection for a pending application', function () {
+    $owner = approvedOwner();
+    $application = makeApplicationFor($owner);
+
+    $this->actingAs($owner)
+        ->get(route('applications.show', $application))
+        ->assertOk()
+        ->assertSee('<option value="under_review"', false)
+        ->assertSee('<option value="rejected"', false)
+        ->assertDontSee('<option value="interview"', false)
+        ->assertDontSee('<option value="withdrawn"', false);
+});

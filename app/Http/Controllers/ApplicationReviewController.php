@@ -125,22 +125,10 @@ class ApplicationReviewController extends Controller
      */
     private function availableStatuses(ApplicationStatus $current): array
     {
-        if ($current->isTerminal()) {
-            return [];
-        }
+        $rejected = $current->canTransitionTo(ApplicationStatus::Rejected)
+            ? ApplicationStatus::Rejected
+            : null;
 
-        $nextStatuses = [
-            ApplicationStatus::Pending->value => ApplicationStatus::UnderReview,
-
-            ApplicationStatus::UnderReview->value => ApplicationStatus::Shortlisted,
-
-            ApplicationStatus::Shortlisted->value => ApplicationStatus::Interview,
-
-            ApplicationStatus::Interview->value => ApplicationStatus::Accepted,
-        ];
-
-        $next = $nextStatuses[$current->value] ?? null;
-
-        return array_values(array_filter([$next, ApplicationStatus::Rejected]));
+        return array_values(array_filter([$current->next(), $rejected]));
     }
 }
