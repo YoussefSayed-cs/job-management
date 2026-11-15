@@ -4,13 +4,16 @@ namespace App\Notifications;
 
 use App\Services\AccountLifecycleService;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\URL;
 
-class AccountDeletionRequested extends Notification
+class AccountDeletionRequested extends Notification implements ShouldQueue
 {
     use Queueable;
+
+    public int $tries = 3;
 
     public function via(object $notifiable): array
     {

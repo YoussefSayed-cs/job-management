@@ -4,9 +4,13 @@ use App\Livewire\Settings\Profile;
 use App\Notifications\AccountDeletionRequested;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Notifications\ChannelManager;
+use Illuminate\Notifications\SendQueuedNotifications;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
+use RuntimeException;
 use Shagalni\Shared\Enums\UserRole;
 use Shagalni\Shared\Models\User;
 
@@ -160,6 +164,37 @@ test('user can request account deletion', function () {
     expect(auth()->check())->toBeFalse();
 
     Notification::assertSentTo($user, AccountDeletionRequested::class);
+});
+
+test('a failed deletion email remains queued for retries without losing the request', function () {
+    Queue::fake();
+
+    $user = User::factory()->create();
+
+    $this->actingAs($user);
+
+    Livewire::test('settings.delete-user-form')
+        ->set('password', 'password')
+        ->call('deleteUser')
+        ->assertHasNoErrors()
+        ->assertRedirect('/');
+
+    $queuedJob = Queue::pushed(SendQueuedNotifications::class)->first();
+
+    expect($queuedJob)->not->toBeNull()
+        ->and($queuedJob->notification)->toBeInstanceOf(AccountDeletionRequested::class)
+        ->and($queuedJob->tries)->toBe(3);
+
+    $channelManager = Mockery::mock(ChannelManager::class);
+    $channelManager->shouldReceive('sendNow')
+        ->once()
+        ->andThrow(new RuntimeException('Mail server unavailable.'));
+
+    expect(fn () => $queuedJob->handle($channelManager))
+        ->toThrow(RuntimeException::class, 'Mail server unavailable.');
+
+    expect($user->fresh()->deletion_requested_at)->not->toBeNull()
+        ->and(auth()->check())->toBeFalse();
 });
 
 test('correct password must be provided to request account deletion', function () {
