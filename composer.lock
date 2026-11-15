@@ -4234,7 +4234,7 @@
             "dist": {
                 "type": "path",
                 "url": "../shagalni-shared",
-                "reference": "074b74ee5110b1b883f669a0ed361bf5e1ba1fae"
+                "reference": "9580e47ea5240c898f9e70d6a04e99f2cbbc29b8"
             },
             "require": {
                 "laravel/framework": "^13.17",
