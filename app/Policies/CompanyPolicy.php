@@ -19,6 +19,17 @@ class CompanyPolicy
         return $user->role === UserRole::Admin;
     }
 
+    public function viewAnalytics(User $user, Company $company): bool
+    {
+        if ($user->role === UserRole::Admin) {
+            return true;
+        }
+
+        return $user->role === UserRole::CompanyOwner
+            && $company->owner_id === $user->id
+            && $company->registration_status === RegistrationStatus::Approved;
+    }
+
     public function review(User $user, Company $company): bool
     {
         return $user->role === UserRole::Admin;

@@ -3,19 +3,20 @@
 use App\Http\Controllers\AccountDeletionController;
 use App\Http\Controllers\AccountReactivationController;
 use App\Http\Controllers\ApplicationReviewController;
+use App\Http\Controllers\CompanyAnalyticsController;
 use App\Http\Controllers\CompanyChangeRequestController;
 use App\Http\Controllers\CompanyChangeRequestReviewController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CompanyOwnerController;
 use App\Http\Controllers\CompanyOwnerInvitationController;
 use App\Http\Controllers\CompanyProfileController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JobCategoryController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\ReviewCompanyRegistrationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserStatusController;
 use App\Http\Middleware\EnsureManagementPortalAccess;
-use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/dashboard')->name('home');
@@ -56,6 +57,9 @@ Route::middleware([
     Route::get('/companies/{company}', [CompanyController::class, 'show'])
         ->name('companies.show');
 
+    Route::get('/companies/{company}/analytics', [CompanyAnalyticsController::class, 'forCompany'])
+        ->name('companies.analytics');
+
     Route::post('/companies/{company}/approve', [ReviewCompanyRegistrationController::class, 'approve'])
         ->name('companies.approve');
 
@@ -64,6 +68,9 @@ Route::middleware([
 
     Route::get('/my-company', [CompanyProfileController::class, 'show'])
         ->name('my-company.show');
+
+    Route::get('/my-company/analytics', [CompanyAnalyticsController::class, 'myCompany'])
+        ->name('my-company.analytics');
 
     Route::patch('/my-company', [CompanyProfileController::class, 'update'])
         ->name('my-company.update');
@@ -160,4 +167,4 @@ Route::middleware('signed')->group(function () {
     Route::post('/company-owner-invitation/{user}', [CompanyOwnerInvitationController::class, 'store'])->middleware('throttle:10,1')->name('company-owner-invitation.store');
 });
 
-require __DIR__ . '/settings.php';
+require __DIR__.'/settings.php';

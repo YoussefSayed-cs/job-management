@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Carbon\CarbonPeriod;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Shagalni\Shared\Enums\ApplicationStatus;
 use Shagalni\Shared\Enums\JobStatus;
 use Shagalni\Shared\Models\Application;
@@ -114,19 +115,22 @@ class AnalyticsService
 
     public function applicationsPerJob(Company $company, int $limit = 10): array
     {
-        return JobVacancy::query()
-            ->where('company_id', $company->id)
-            ->select(['id', 'title'])
-            ->withCount('applications')
-            ->orderByDesc('applications_count')
-            ->orderBy('title')
-            ->limit($limit)
-            ->get()
+        return collect($this->applicationsPerJobPaginated($company, $limit)->items())
             ->map(fn (JobVacancy $job) => [
                 'title' => $job->title,
                 'applications' => (int) $job->applications_count,
             ])
             ->all();
+    }
+
+    public function applicationsPerJobPaginated(Company $company, int $perPage = 10): LengthAwarePaginator
+    {
+        return JobVacancy::query()
+            ->where('company_id', $company->id)
+            ->withCount('applications')
+            ->orderByDesc('applications_count')
+            ->orderBy('title')
+            ->paginate($perPage);
     }
 
     public function dailyApplications(?Company $company = null): array
