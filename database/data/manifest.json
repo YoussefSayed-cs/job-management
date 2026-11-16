@@ -4,7 +4,7 @@
   "seed": 2026,
   "scale": 0.25,
   "timestamps_included": true,
-  "password_for_all_accounts": "Password@123",
+  "password_for_all_accounts_plain": "12345678",
   "demo_accounts": {
     "admin": "admin@shagalni.example",
     "job_seeker": "jobseeker@shagalni.example",
