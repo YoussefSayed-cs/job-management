@@ -4,13 +4,6 @@
 
         <x-jobs.page-heading title="Applications" description="Review applicants who applied to your company's jobs." />
 
-        <section class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-
-            <x-jobs.stat-card label="Matching Applications" :value="number_format($applications->total())"
-                description="Applications matching the current filters." />
-
-        </section>
-
         <section
             class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
 
@@ -58,6 +51,14 @@
 
         <section
             class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+
+
+            <div class="border-b border-slate-100 px-5 py-4 dark:border-slate-800">
+                <h2 class="font-semibold">Aapplications</h2>
+                <p class="mt-1 text-sm text-slate-500">
+                    {{number_format($applications->total()) }} Aapplications found
+                </p>
+            </div>
 
             <div class="overflow-x-auto">
 
@@ -160,6 +161,7 @@
             </div>
 
             <div class="border-t border-slate-100 px-5 py-4 dark:border-slate-800">
+
                 {{ $applications->links() }}
             </div>
 
