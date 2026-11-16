@@ -316,6 +316,26 @@
                 return;
             }
 
+            const refreshTemplateOptions = () => {
+                const selectedStatus = statusSelect.value;
+
+                Array.from(templateSelect.options).forEach((option) => {
+                    const matchesStatus = !option.dataset.status || option.dataset.status === selectedStatus;
+                    option.hidden = !matchesStatus;
+                    option.disabled = !matchesStatus && option.value !== '';
+                });
+
+                const currentSelection = templateSelect.value;
+                const selectedTemplate = Array.from(templateSelect.options).find(
+                    (option) => option.value === currentSelection
+                );
+
+                if (!selectedTemplate || selectedTemplate.dataset.status !== selectedStatus) {
+                    templateSelect.value = '';
+                    messageField.value = '';
+                }
+            };
+
             templateSelect.addEventListener('change', function () {
                 const selectedOption = this.options[this.selectedIndex];
 
@@ -325,17 +345,10 @@
             });
 
             statusSelect.addEventListener('change', function () {
-                const selectedTemplate = templateSelect.options[
-                    templateSelect.selectedIndex
-                ];
-
-                if (
-                    selectedTemplate.dataset.status &&
-                    selectedTemplate.dataset.status !== this.value
-                ) {
-                    templateSelect.value = '';
-                }
+                refreshTemplateOptions();
             });
+
+            refreshTemplateOptions();
         });
     </script>
 

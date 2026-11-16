@@ -52,6 +52,19 @@ it('shows only sequential statuses and rejection for a pending application', fun
         ->assertDontSee('<option value="withdrawn"', false);
 });
 
+it('shows only message templates that match the currently valid next statuses', function () {
+    $owner = approvedOwner();
+    $application = makeApplicationFor($owner);
+
+    $this->actingAs($owner)
+        ->get(route('applications.show', $application))
+        ->assertOk()
+        ->assertSee('data-status="under_review"', false)
+        ->assertSee('data-status="rejected"', false)
+        ->assertDontSee('data-status="interview"', false)
+        ->assertDontSee('data-status="accepted"', false);
+});
+
 it('shows an owner the AI analysis for an application submitted to their company', function () {
     $owner = approvedOwner();
     $application = makeApplicationFor($owner);

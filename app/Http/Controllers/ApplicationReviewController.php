@@ -75,12 +75,14 @@ class ApplicationReviewController extends Controller
             'aiAnalysis',
         ]);
 
+        $availableStatuses = $this->availableStatuses($application->status);
+
         return view('applications.show', [
             'application' => $application,
-            'availableStatuses' => $this->availableStatuses(
-                $application->status
-            ),
-            'messageTemplates' => config('application_status_messages.templates'),
+            'availableStatuses' => $availableStatuses,
+            'messageTemplates' => collect(config('application_status_messages.templates'))
+                ->only(array_map(fn (ApplicationStatus $status) => $status->value, $availableStatuses))
+                ->all(),
         ]);
     }
 
