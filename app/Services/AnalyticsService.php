@@ -63,6 +63,7 @@ class AnalyticsService
     {
         $today = now()->toDateString();
         $jobs = $company->jobVacancies();
+        $statusDistribution = $this->statusDistribution($company);
         $summary = (clone $jobs)
             ->selectRaw(
                 'COUNT(*) as total,
@@ -82,6 +83,14 @@ class AnalyticsService
             ->first();
 
         return [
+            'company' => $company,
+            'applicationStats' => [
+                'total' => array_sum($statusDistribution),
+                'applicants' => Application::where('company_id', $company->id)
+                    ->distinct()
+                    ->count('user_id'),
+            ],
+            'statusDistribution' => $statusDistribution,
             'jobStats' => [
                 'total' => (int) $summary->total,
                 'active' => (int) $summary->active,

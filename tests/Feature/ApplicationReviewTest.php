@@ -1,6 +1,8 @@
 <?php
 
+use Shagalni\Shared\Enums\AiAnalysisStatus;
 use Shagalni\Shared\Enums\ApplicationStatus;
+use Shagalni\Shared\Models\AiAnalysis;
 use Shagalni\Shared\Models\Application;
 use Shagalni\Shared\Models\JobCategory;
 use Shagalni\Shared\Models\User;
@@ -48,4 +50,34 @@ it('shows only sequential statuses and rejection for a pending application', fun
         ->assertSee('<option value="rejected"', false)
         ->assertDontSee('<option value="interview"', false)
         ->assertDontSee('<option value="withdrawn"', false);
+});
+
+it('shows an owner the AI analysis for an application submitted to their company', function () {
+    $owner = approvedOwner();
+    $application = makeApplicationFor($owner);
+
+    AiAnalysis::create([
+        'application_id' => $application->id,
+        'status' => AiAnalysisStatus::Completed,
+        'match_score' => 82,
+        'feedback' => 'Strong technical experience and relevant delivery history.',
+        'attempts' => 1,
+        'analyzed_at' => now(),
+    ]);
+
+    $this->actingAs($owner)
+        ->get(route('applications.index'))
+        ->assertOk()
+        ->assertSee('AI Analysis')
+        ->assertSee('Completed')
+        ->assertSee('Match score: 82%');
+
+    $this->actingAs($owner)
+        ->get(route('applications.show', $application))
+        ->assertOk()
+        ->assertSee('AI Resume Analysis')
+        ->assertSee('Analysis Status')
+        ->assertSee('Match Score')
+        ->assertSee('82%')
+        ->assertSee('Strong technical experience and relevant delivery history.');
 });

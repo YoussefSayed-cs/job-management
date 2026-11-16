@@ -70,6 +70,7 @@
                             <th class="px-5 py-3">Job</th>
                             <th class="px-5 py-3">Submitted</th>
                             <th class="px-5 py-3">Status</th>
+                            <th class="px-5 py-3">AI Analysis</th>
                             <th class="px-5 py-3"></th>
                         </tr>
 
@@ -115,6 +116,22 @@
                                     {{ \Illuminate\Support\Str::headline($application->status->value) }}
                                 </td>
 
+                                <td class="px-5 py-4">
+                                    @if ($application->aiAnalysis)
+                                        <div class="font-medium">
+                                            {{ \Illuminate\Support\Str::headline($application->aiAnalysis->status->value) }}
+                                        </div>
+
+                                        @if ($application->aiAnalysis->match_score !== null)
+                                            <div class="mt-1 text-xs text-slate-500">
+                                                Match score: {{ $application->aiAnalysis->match_score }}%
+                                            </div>
+                                        @endif
+                                    @else
+                                        <span class="text-slate-500">Not available</span>
+                                    @endif
+                                </td>
+
                                 <td class="px-5 py-4 text-right">
 
                                     <a href="{{ route('applications.show', $application) }}"
@@ -129,7 +146,7 @@
                         @empty
 
                             <tr>
-                                <td colspan="5" class="px-5 py-12 text-center text-slate-500">
+                                <td colspan="6" class="px-5 py-12 text-center text-slate-500">
                                     No applications found.
                                 </td>
                             </tr>

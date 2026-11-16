@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Services\CompanyOwnerInvitationService;
+use Shagalni\Shared\Enums\RegistrationStatus;
 use Shagalni\Shared\Enums\UserRole;
 use Shagalni\Shared\Models\User;
 
@@ -10,12 +11,21 @@ class UserPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->role === UserRole::Admin;
+        return $user->role === UserRole::Admin || $this->isApprovedCompanyOwner($user);
     }
 
     public function view(User $user, User $target): bool
     {
-        return $user->role === UserRole::Admin && $target->role !== UserRole::Admin;
+        if ($user->role === UserRole::Admin) {
+            return $target->role !== UserRole::Admin;
+        }
+
+        return $this->isApprovedCompanyOwner($user)
+            && $target->role === UserRole::JobSeeker
+            && $target->anonymized_at === null
+            && $target->applications()
+                ->where('company_id', $user->company->id)
+                ->exists();
     }
 
     public function suspend(User $user, User $target): bool
@@ -42,6 +52,12 @@ class UserPolicy
         return $user->role === UserRole::Admin
             && $target->role !== UserRole::Admin
             && $target->anonymized_at === null;
+    }
+
+    private function isApprovedCompanyOwner(User $user): bool
+    {
+        return $user->role === UserRole::CompanyOwner
+            && $user->company?->registration_status === RegistrationStatus::Approved;
     }
 
     public function __construct(private CompanyOwnerInvitationService $invitations) {}

@@ -19,25 +19,6 @@ it('allows an admin to view any company analytics', function () {
         ->assertViewHas('overview', fn (array $overview) => $overview['applications'] === 1);
 });
 
-it('allows a company owner to view only their own analytics', function () {
-    $owner = approvedOwner();
-    $owner->company->update(['name' => 'My Company']);
-
-    $otherOwner = approvedOwner();
-    $otherOwner->company->update(['name' => 'Other Company']);
-
-    makeApplicationFor($owner, null, ApplicationStatus::Rejected);
-    makeApplicationFor($otherOwner, null, ApplicationStatus::Accepted);
-
-    $this->actingAs($owner)
-        ->get(route('my-company.analytics'))
-        ->assertOk()
-        ->assertSee('My Company')
-        ->assertDontSee('Other Company')
-        ->assertViewHas('overview', fn (array $overview) => $overview['applications'] === 1
-            && $overview['rejection_rate'] === 100.0);
-});
-
 it('prevents a company owner from viewing another company analytics', function () {
     $owner = approvedOwner();
     $otherOwner = approvedOwner();
@@ -49,10 +30,6 @@ it('prevents a company owner from viewing another company analytics', function (
 
 it('prevents job seekers from accessing analytics', function () {
     $owner = approvedOwner();
-
-    $this->actingAs(User::factory()->create(['role' => UserRole::JobSeeker]))
-        ->get(route('my-company.analytics'))
-        ->assertForbidden();
 
     $this->actingAs(User::factory()->create(['role' => UserRole::JobSeeker]))
         ->get(route('companies.analytics', $owner->company))
@@ -141,12 +118,11 @@ it('returns a paginated, company-scoped breakdown of applications per job', func
     Application::create(['job_vacancy_id' => $jobA->id, 'company_id' => $owner->company->id, 'user_id' => User::factory()->create()->id, 'status' => ApplicationStatus::Pending, 'job_title' => $jobA->title, 'company_name' => $owner->company->name, 'submitted_at' => now()]);
     Application::create(['job_vacancy_id' => $jobB->id, 'company_id' => $owner->company->id, 'user_id' => User::factory()->create()->id, 'status' => ApplicationStatus::Pending, 'job_title' => $jobB->title, 'company_name' => $owner->company->name, 'submitted_at' => now()]);
 
-    $this->actingAs($owner)
-        ->get(route('my-company.analytics'))
-        ->assertOk()
-        ->assertViewHas('jobBreakdown', fn ($breakdown) => $breakdown->total() === 2
-            && $breakdown->items()[0]->title === 'Job A'
-            && $breakdown->items()[0]->applications_count === 2
-            && $breakdown->items()[1]->title === 'Job B'
-            && $breakdown->items()[1]->applications_count === 1);
+    $breakdown = app(AnalyticsService::class)->applicationsPerJobPaginated($owner->company);
+
+    expect($breakdown->total())->toBe(2)
+        ->and($breakdown->items()[0]->title)->toBe('Job A')
+        ->and($breakdown->items()[0]->applications_count)->toBe(2)
+        ->and($breakdown->items()[1]->title)->toBe('Job B')
+        ->and($breakdown->items()[1]->applications_count)->toBe(1);
 });

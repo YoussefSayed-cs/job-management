@@ -36,6 +36,7 @@ class ApplicationReviewController extends Controller
             ->with([
                 'user:id,full_name,email,phone,profile_picture',
                 'jobVacancy:id,title,status',
+                'aiAnalysis:id,application_id,status,match_score,analyzed_at',
             ])
             ->when($statusFilter, function ($query, $status) {
                 $query->where('status', $status);

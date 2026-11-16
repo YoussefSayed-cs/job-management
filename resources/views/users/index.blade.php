@@ -1,6 +1,9 @@
-<x-jobs.layout title="User Management">
+<x-jobs.layout :title="$isCompanyOwner ? 'Applicants' : 'User Management'">
     <div class="space-y-6">
-        <x-jobs.page-heading title="User Management" description="Manage company owners and job seekers.">
+        <x-jobs.page-heading
+            :title="$isCompanyOwner ? 'Applicants' : 'User Management'"
+            :description="$isCompanyOwner ? 'Job seekers who applied to your company.' : 'Manage company owners and job seekers.'"
+        >
             <x-slot:action>
                 @can('create', \Shagalni\Shared\Models\User::class)
                     <a href="{{ route('company-owners.create') }}"
@@ -24,6 +27,7 @@
                         class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800">
                 </div>
 
+                @unless ($isCompanyOwner)
                 <div>
                     <label for="role" class="mb-2 block text-sm font-medium">
                         Role
@@ -39,6 +43,7 @@
                         </option>
                     </select>
                 </div>
+                @endunless
 
                 <div>
                     <label for="status" class="mb-2 block text-sm font-medium">
@@ -88,7 +93,7 @@
                         <tr>
                             <th class="px-6 py-3">Name</th>
                             <th class="px-6 py-3">Email</th>
-                            <th class="px-6 py-3">Role</th>
+                            <th class="px-6 py-3">{{ $isCompanyOwner ? 'Applications' : 'Role' }}</th>
                             <th class="px-6 py-3">Status</th>
                             <th class="px-6 py-3">Joined</th>
                         </tr>
@@ -96,6 +101,7 @@
 
                     <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
                         @forelse ($users as $user)
+                            <tr>
                             <td class="px-6 py-4 font-medium">
                                 <a href="{{ route('users.show', $user) }}" class="hover:underline">
                                     {{ $user->full_name }}
@@ -107,7 +113,11 @@
                             </td>
 
                             <td class="px-6 py-4">
-                                {{ $user->role->value === 'company_owner' ? 'Company Owner' : 'Job Seeker' }}
+                                @if ($isCompanyOwner)
+                                    {{ $user->company_applications_count }}
+                                @else
+                                    {{ $user->role->value === 'company_owner' ? 'Company Owner' : 'Job Seeker' }}
+                                @endif
                             </td>
 
                             <td class="px-6 py-4">

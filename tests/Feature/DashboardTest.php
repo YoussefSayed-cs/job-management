@@ -1,5 +1,6 @@
 <?php
 
+use Shagalni\Shared\Enums\ApplicationStatus;
 use Shagalni\Shared\Enums\JobStatus;
 use Shagalni\Shared\Enums\RegistrationStatus;
 use Shagalni\Shared\Enums\UserRole;
@@ -86,6 +87,27 @@ test('company owner sees only their own company job counts and recent jobs', fun
         ->assertSee('My company job')
         ->assertDontSee('Another company private job')
         ->assertDontSee('Another company second job');
+});
+
+test('company owner dashboard shows only their company details and applicant totals', function () {
+    $owner = approvedOwner();
+    $otherOwner = approvedOwner();
+    $applicant = User::factory()->create();
+
+    makeApplicationFor($owner, $applicant, ApplicationStatus::Pending);
+    makeApplicationFor($owner, $applicant, ApplicationStatus::Accepted);
+    makeApplicationFor($otherOwner, User::factory()->create(), ApplicationStatus::Accepted);
+
+    $this->actingAs($owner)
+        ->get(route('dashboard'))
+        ->assertOk()
+        ->assertViewHas('company', fn (Company $company) => $company->is($owner->company))
+        ->assertViewHas('applicationStats', fn (array $stats) => $stats['total'] === 2
+            && $stats['applicants'] === 1)
+        ->assertViewHas('statusDistribution', fn (array $distribution) => $distribution['pending'] === 1
+            && $distribution['accepted'] === 1)
+        ->assertSee($owner->company->name)
+        ->assertDontSee($otherOwner->company->name);
 });
 
 test('dashboard categorizes active and expired jobs without overlap', function () {

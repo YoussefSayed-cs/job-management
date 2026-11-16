@@ -85,6 +85,16 @@
                         Applications
                     </a>
                 @endcan
+
+                @if (auth()->user()->company)
+                    <a href="{{ route('my-company.show') }}" @class([
+                        'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium',
+                        'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-300' => request()->routeIs('my-company.*'),
+                        'text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800' => !request()->routeIs('my-company.*'),
+                    ])>
+                        My Company
+                    </a>
+                @endif
             </nav>
 
 
@@ -163,6 +173,13 @@
                                         Applications
                                     </a>
                                 @endcan
+
+                                @if (auth()->user()->company)
+                                    <a href="{{ route('my-company.show') }}"
+                                        class="rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800">
+                                        My Company
+                                    </a>
+                                @endif
                             </nav>
                         </details>
 

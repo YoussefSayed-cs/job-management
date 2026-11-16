@@ -110,12 +110,60 @@
             @endif
         </section>
 
-        {{-- AI integration will be completed in AI Resume Processing module. --}}
         <section class="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
             <h2 class="text-lg font-semibold">AI Resume Analysis</h2>
-            <p class="mt-3 text-sm text-slate-500">
-                AI analysis will be available after the AI Resume Processing module is implemented.
-            </p>
+
+            @if ($application->aiAnalysis)
+                @php($analysis = $application->aiAnalysis)
+
+                <div class="mt-5 grid gap-5 sm:grid-cols-2">
+                    <div>
+                        <p class="text-sm text-slate-500">Analysis Status</p>
+                        <p class="mt-1 font-semibold">
+                            {{ \Illuminate\Support\Str::headline($analysis->status->value) }}
+                        </p>
+                    </div>
+
+                    <div>
+                        <p class="text-sm text-slate-500">Match Score</p>
+                        <p class="mt-1 font-semibold">
+                            {{ $analysis->match_score === null ? 'Not available' : $analysis->match_score . '%' }}
+                        </p>
+                    </div>
+
+                    <div>
+                        <p class="text-sm text-slate-500">Analyzed At</p>
+                        <p class="mt-1 font-medium">
+                            {{ $analysis->analyzed_at?->format('M j, Y h:i A') ?? 'Not completed yet' }}
+                        </p>
+                    </div>
+
+                    <div>
+                        <p class="text-sm text-slate-500">Attempts</p>
+                        <p class="mt-1 font-medium">{{ $analysis->attempts }}</p>
+                    </div>
+                </div>
+
+                @if ($analysis->feedback)
+                    <div class="mt-5 rounded-xl bg-slate-50 p-4 dark:bg-slate-800/60">
+                        <p class="text-sm font-medium">Feedback</p>
+                        <p class="mt-2 whitespace-pre-line text-sm leading-6 text-slate-600 dark:text-slate-300">
+                            {{ $analysis->feedback }}
+                        </p>
+                    </div>
+                @endif
+
+                @if ($analysis->failure_reason)
+                    <div class="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-200">
+                        <p class="font-medium">Analysis could not be completed</p>
+                        <p class="mt-1">{{ $analysis->failure_reason }}</p>
+                    </div>
+                @endif
+            @else
+                <p class="mt-3 text-sm text-slate-500">
+                    No AI analysis is available for this application yet.
+                </p>
+            @endif
         </section>
 
         @if ($availableStatuses && $application->job_vacancy_id)

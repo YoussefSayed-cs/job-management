@@ -69,9 +69,6 @@ Route::middleware([
     Route::get('/my-company', [CompanyProfileController::class, 'show'])
         ->name('my-company.show');
 
-    Route::get('/my-company/analytics', [CompanyAnalyticsController::class, 'myCompany'])
-        ->name('my-company.analytics');
-
     Route::patch('/my-company', [CompanyProfileController::class, 'update'])
         ->name('my-company.update');
 

@@ -11,13 +11,36 @@ test('guests are redirected to login', function () {
     $this->get(route('users.index'))->assertRedirect(route('login'));
 });
 
-test('job seekers and company owners cannot access user management', function () {
+test('job seekers cannot access user management', function () {
     $target = User::factory()->create();
 
-    foreach ([User::factory()->create(), approvedOwner()] as $actor) {
-        $this->actingAs($actor)->get(route('users.index'))->assertForbidden();
-        $this->actingAs($actor)->get(route('users.show', $target))->assertForbidden();
-    }
+    $this->actingAs(User::factory()->create())->get(route('users.index'))->assertForbidden();
+    $this->actingAs(User::factory()->create())->get(route('users.show', $target))->assertForbidden();
+});
+
+test('company owner sees and opens only users who applied to their company', function () {
+    $owner = approvedOwner();
+    $otherOwner = approvedOwner();
+    $applicant = User::factory()->create(['full_name' => 'My Applicant']);
+    $otherApplicant = User::factory()->create(['full_name' => 'Other Applicant']);
+
+    makeApplicationFor($owner, $applicant);
+    makeApplicationFor($otherOwner, $otherApplicant);
+
+    $this->actingAs($owner)
+        ->get(route('users.index'))
+        ->assertOk()
+        ->assertSee('My Applicant')
+        ->assertDontSee('Other Applicant');
+
+    $this->actingAs($owner)
+        ->get(route('users.show', $applicant))
+        ->assertOk()
+        ->assertSee($applicant->email);
+
+    $this->actingAs($owner)
+        ->get(route('users.show', $otherApplicant))
+        ->assertForbidden();
 });
 
 test('admin lists only company owners and job seekers', function () {
