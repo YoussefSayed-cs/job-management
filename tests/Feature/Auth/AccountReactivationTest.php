@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Notifications\SendQueuedNotifications;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\URL;
 use Shagalni\Shared\Enums\AccountStatus;
 use Shagalni\Shared\Models\User;
@@ -44,6 +46,24 @@ test('a deactivated user receives a reactivation link', function () {
         ->assertSessionHas('status');
 
     Notification::assertSentTo($user, AccountReactivationRequested::class);
+});
+
+test('reactivation notification is queued with three attempts', function () {
+    Queue::fake();
+
+    $user = User::factory()->deactivated()->create();
+
+    $this->post(route('account-reactivation.store'), ['email' => $user->email])
+        ->assertSessionHas('status');
+
+    $jobs = Queue::pushed(
+        SendQueuedNotifications::class,
+        fn (SendQueuedNotifications $job): bool => $job->notification instanceof AccountReactivationRequested
+    );
+
+    expect($jobs)->toHaveCount(1)
+        ->and($jobs->first()->tries)->toBe(3)
+        ->and($jobs->first()->channels)->toBe(['mail']);
 });
 
 test('no email is sent for active, suspended, anonymized or unknown accounts', function () {

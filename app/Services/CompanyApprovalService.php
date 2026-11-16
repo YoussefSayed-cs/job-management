@@ -2,15 +2,12 @@
 
 namespace App\Services;
 
-use App\Notifications\CompanyRegistrationApproved;
-use App\Notifications\CompanyRegistrationRejected;
-use Illuminate\Notifications\Notification;
+use App\Events\CompanyRegistrationDecided;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Shagalni\Shared\Enums\RegistrationStatus;
 use Shagalni\Shared\Models\Company;
 use Shagalni\Shared\Models\User;
-use Throwable;
 
 class CompanyApprovalService
 {
@@ -29,7 +26,7 @@ class CompanyApprovalService
             return $company;
         });
 
-        $this->notifyOwner($company, new CompanyRegistrationApproved($company));
+        CompanyRegistrationDecided::dispatch($company);
 
         return $company;
     }
@@ -49,7 +46,7 @@ class CompanyApprovalService
             return $company;
         });
 
-        $this->notifyOwner($company, new CompanyRegistrationRejected($company, $reason));
+        CompanyRegistrationDecided::dispatch($company);
 
         return $company;
     }
@@ -74,14 +71,5 @@ class CompanyApprovalService
         }
 
         return $company;
-    }
-
-    private function notifyOwner(Company $company, Notification $notification): void
-    {
-        try {
-            $company->owner->notify($notification);
-        } catch (Throwable $e) {
-            report($e);
-        }
     }
 }

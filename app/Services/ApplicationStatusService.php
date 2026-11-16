@@ -8,8 +8,6 @@ use Shagalni\Shared\Enums\ApplicationStatus;
 use Shagalni\Shared\Models\Application;
 use Shagalni\Shared\Models\ApplicationStatusHistory;
 use Shagalni\Shared\Models\User;
-use Shagalni\Shared\Notifications\ApplicationStatusChanged;
-use Throwable;
 
 class ApplicationStatusService
 {
@@ -66,30 +64,6 @@ class ApplicationStatusService
             ]);
         });
 
-        // Notify only after the transaction has been committed.
-        $this->notifyJobSeeker($application, $message);
-
         return $application;
-    }
-
-    /**
-     * Delivery is suppressed (not queued) while the Job Seeker account is
-     * Suspended, Deactivated or pending deletion. The status and history
-     * remain the source of truth. A delivery failure never rolls back the
-     * status change.
-     */
-    private function notifyJobSeeker(Application $application, ?string $message): void
-    {
-        $jobSeeker = $application->user;
-
-        if ($jobSeeker === null || ! $jobSeeker->canReceiveApplicationNotifications()) {
-            return;
-        }
-
-        try {
-            $jobSeeker->notify(new ApplicationStatusChanged($application, $message));
-        } catch (Throwable $e) {
-            report($e);
-        }
     }
 }

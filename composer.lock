@@ -4234,13 +4234,20 @@
             "dist": {
                 "type": "path",
                 "url": "../shagalni-shared",
-                "reference": "6223d78752d5cff99883617ede9d8292439f2f93"
+                "reference": "bf277d33efe3ef84761bdf45f823a61a91a9d415"
             },
             "require": {
                 "laravel/framework": "^13.17",
                 "php": "^8.3"
             },
             "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Shagalni\\Shared\\SharedServiceProvider"
+                    ]
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Shagalni\\Shared\\": "src/"

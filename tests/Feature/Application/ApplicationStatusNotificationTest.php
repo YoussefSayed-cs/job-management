@@ -1,6 +1,11 @@
 <?php
 
+use App\Services\ApplicationStatusService;
+use Illuminate\Notifications\ChannelManager;
+use Illuminate\Notifications\SendQueuedNotifications;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Queue;
+use RuntimeException;
 use Shagalni\Shared\Enums\AccountStatus;
 use Shagalni\Shared\Enums\ApplicationStatus;
 use Shagalni\Shared\Models\User;
@@ -33,6 +38,7 @@ it('notifies the job seeker by in-app and email notification when the status cha
                 && $notification->message === 'We are reviewing your CV.';
         }
     );
+    Notification::assertSentToTimes($this->applicant, ApplicationStatusChanged::class, 1);
 });
 
 it('stores the owner message in the in-app notification', function () {
@@ -81,6 +87,36 @@ it('still changes the status but suppresses delivery when the job seeker cannot 
     'deactivated' => [['status' => AccountStatus::Deactivated]],
     'deletion pending' => [['deletion_requested_at' => '2026-11-01 00:00:00']],
 ]);
+
+it('keeps the committed status and history when sending the queued mail later fails', function () {
+    Queue::fake();
+
+    app(ApplicationStatusService::class)->updateStatus(
+        $this->application,
+        ApplicationStatus::UnderReview,
+        $this->owner,
+        'We are reviewing your CV.'
+    );
+
+    $mailJob = Queue::pushed(
+        SendQueuedNotifications::class,
+        fn (SendQueuedNotifications $job): bool => $job->notification instanceof ApplicationStatusChanged
+            && $job->channels === ['mail']
+    )->first();
+
+    expect($mailJob)->not->toBeNull();
+
+    $channelManager = Mockery::mock(ChannelManager::class);
+    $channelManager->shouldReceive('sendNow')
+        ->once()
+        ->andThrow(new RuntimeException('Mail server unavailable.'));
+
+    expect(fn () => $mailJob->handle($channelManager))
+        ->toThrow(RuntimeException::class, 'Mail server unavailable.');
+
+    expect($this->application->fresh()->status)->toBe(ApplicationStatus::UnderReview)
+        ->and($this->application->statusHistories()->count())->toBe(1);
+});
 
 it('does not notify when the transition is rejected', function () {
     Notification::fake();

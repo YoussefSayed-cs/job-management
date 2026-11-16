@@ -45,7 +45,10 @@ test('admin can approve a pending company registration', function () {
         ->and($company->reviewed_at)->not->toBeNull()
         ->and($company->rejection_reason)->toBeNull();
 
-    Notification::assertSentTo($company->owner, CompanyRegistrationApproved::class);
+    Notification::assertSentTo($company->owner, CompanyRegistrationApproved::class, function ($notification, array $channels) {
+        return $channels === ['database', 'mail'];
+    });
+    Notification::assertNotSentTo($admin, CompanyRegistrationApproved::class);
 });
 
 test('approval stores an in-app notification for the owner only', function () {
@@ -97,20 +100,25 @@ test('admin can reject a company registration with a reason', function () {
 
     $admin = adminUser();
     $company = companyWithOwner();
+    $reason = 'The company description is missing.';
 
     $this->actingAs($admin)
         ->post(route('companies.reject', $company), [
-            'rejection_reason' => 'The company description is missing.',
+            'rejection_reason' => $reason,
         ])
         ->assertRedirect(route('companies.show', $company));
 
     $company->refresh();
 
     expect($company->registration_status)->toBe(RegistrationStatus::Rejected)
-        ->and($company->rejection_reason)->toBe('The company description is missing.')
+        ->and($company->rejection_reason)->toBe($reason)
         ->and($company->reviewed_by)->toBe($admin->id);
 
-    Notification::assertSentTo($company->owner, CompanyRegistrationRejected::class);
+    Notification::assertSentTo($company->owner, CompanyRegistrationRejected::class, function (CompanyRegistrationRejected $notification, array $channels) use ($reason) {
+        return $channels === ['database', 'mail']
+            && $notification->reason === $reason;
+    });
+    Notification::assertNotSentTo($admin, CompanyRegistrationRejected::class);
 });
 
 test('rejection stores the decision reason in the owners in-app notification', function () {

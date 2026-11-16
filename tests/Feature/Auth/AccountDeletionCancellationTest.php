@@ -28,6 +28,15 @@ test('the link cancels the deletion request', function () {
         ->and($user->fresh()->status)->toBe(AccountStatus::Active);
 });
 
+test('a queued deletion notification is suppressed after the request is cancelled', function () {
+    $user = User::factory()->create(['deletion_requested_at' => now()]);
+    $notification = new AccountDeletionRequested;
+
+    $user->forceFill(['deletion_requested_at' => null])->save();
+
+    expect($notification->shouldSend($user, 'mail'))->toBeFalse();
+});
+
 test('a user can sign in again after cancelling', function () {
     $user = User::factory()->create(['deletion_requested_at' => now()]);
 

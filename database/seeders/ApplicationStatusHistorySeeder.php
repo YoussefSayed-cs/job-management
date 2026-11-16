@@ -12,6 +12,8 @@ class ApplicationStatusHistorySeeder extends Seeder
 
     public function run(): void
     {
-        $this->seedFromJson(ApplicationStatusHistory::class, 'application_status_histories');
+        ApplicationStatusHistory::withoutEvents(function () {
+            $this->seedFromJson(ApplicationStatusHistory::class, 'application_status_histories');
+        });
     }
 }
