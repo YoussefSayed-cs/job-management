@@ -1,0 +1,101 @@
+[
+    {
+        "id": "fbff7295-445f-4cb1-950c-619b5554b855",
+        "company_id": "28215db0-d8b6-4d5b-9a19-67d006f594cf",
+        "new_name": "Mosaic Energy",
+        "new_industry": null,
+        "status": "approved",
+        "reviewed_by": "f38b2ffc-80a4-4f5a-91c9-bc701e7ea419",
+        "reviewed_at": "2026-11-13 23:14:00",
+        "created_at": "2026-11-12 13:32:00",
+        "updated_at": "2026-11-13 23:14:00"
+    },
+    {
+        "id": "52b9bf39-45b3-45d9-8881-833c2e674caa",
+        "company_id": "098db860-1e47-4aa6-9f68-4c509e74d650",
+        "new_name": "Quantum Travel",
+        "new_industry": "Logistics & Supply Chain",
+        "status": "pending",
+        "reviewed_by": null,
+        "reviewed_at": null,
+        "created_at": "2026-07-04 13:40:13",
+        "updated_at": "2026-07-04 13:40:13"
+    },
+    {
+        "id": "6a161893-285c-4e70-8960-9b0eb3664ca1",
+        "company_id": "8f24f14b-96cc-4fff-ae5f-364a8594bce1",
+        "new_name": "Delta Builders",
+        "new_industry": "Agriculture",
+        "status": "approved",
+        "reviewed_by": "f38b2ffc-80a4-4f5a-91c9-bc701e7ea419",
+        "reviewed_at": "2026-05-22 02:01:23",
+        "created_at": "2026-05-20 04:13:06",
+        "updated_at": "2026-05-22 02:01:23"
+    },
+    {
+        "id": "737cfcee-75d0-4c23-8618-c53b7dea6f1d",
+        "company_id": "75cfef7f-8561-4709-ba00-c8b202700135",
+        "new_name": "Pyramid Stores",
+        "new_industry": "Information Technology",
+        "status": "approved",
+        "reviewed_by": "f38b2ffc-80a4-4f5a-91c9-bc701e7ea419",
+        "reviewed_at": "2026-08-19 05:38:31",
+        "created_at": "2026-08-16 03:25:13",
+        "updated_at": "2026-08-19 05:38:31"
+    },
+    {
+        "id": "b2353301-dbea-43f8-8bac-2dfcbdbae3c0",
+        "company_id": "de98ae78-9a2a-4845-9a7c-fed706bb72f7",
+        "new_name": "Nile Mart",
+        "new_industry": null,
+        "status": "rejected",
+        "reviewed_by": "f38b2ffc-80a4-4f5a-91c9-bc701e7ea419",
+        "reviewed_at": "2026-05-19 04:42:00",
+        "created_at": "2026-05-15 21:38:37",
+        "updated_at": "2026-05-19 04:42:00"
+    },
+    {
+        "id": "6d10da74-d515-4082-a984-8f7dfacaf011",
+        "company_id": "de98ae78-9a2a-4845-9a7c-fed706bb72f7",
+        "new_name": "Sahara Mart",
+        "new_industry": "Fintech",
+        "status": "rejected",
+        "reviewed_by": "f38b2ffc-80a4-4f5a-91c9-bc701e7ea419",
+        "reviewed_at": "2026-07-10 02:07:09",
+        "created_at": "2026-07-05 22:37:29",
+        "updated_at": "2026-07-10 02:07:09"
+    },
+    {
+        "id": "724be0b8-babd-4756-8f7d-0bf982db6874",
+        "company_id": "674352dd-fec2-44be-828b-c4a0fa8cacb5",
+        "new_name": "Ankh Builders",
+        "new_industry": "Healthcare",
+        "status": "rejected",
+        "reviewed_by": "f38b2ffc-80a4-4f5a-91c9-bc701e7ea419",
+        "reviewed_at": "2026-11-03 15:59:30",
+        "created_at": "2026-10-30 13:05:37",
+        "updated_at": "2026-11-03 15:59:30"
+    },
+    {
+        "id": "ef94c854-e57d-49a6-baf1-45b3fe549909",
+        "company_id": "df4a5fe5-1c3e-46e0-8fb0-d4de43f6697d",
+        "new_name": "Amun Capital",
+        "new_industry": null,
+        "status": "approved",
+        "reviewed_by": "f38b2ffc-80a4-4f5a-91c9-bc701e7ea419",
+        "reviewed_at": "2026-10-22 12:01:07",
+        "created_at": "2026-10-20 12:15:00",
+        "updated_at": "2026-10-22 12:01:07"
+    },
+    {
+        "id": "5e015f83-acb3-400f-a83a-7500cf02f1e4",
+        "company_id": "62495879-42f9-417e-ae87-86ac54b32368",
+        "new_name": "Isis Hotels",
+        "new_industry": null,
+        "status": "approved",
+        "reviewed_by": "f38b2ffc-80a4-4f5a-91c9-bc701e7ea419",
+        "reviewed_at": "2026-06-26 14:22:55",
+        "created_at": "2026-06-23 05:25:46",
+        "updated_at": "2026-06-26 14:22:55"
+    }
+]

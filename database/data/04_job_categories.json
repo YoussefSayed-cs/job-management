@@ -1,0 +1,122 @@
+[
+    {
+        "id": "d0944996-02f0-4e99-b31c-94521919e93a",
+        "name": "Software Development",
+        "created_at": "2026-01-05 16:55:40",
+        "updated_at": "2026-01-05 16:55:40"
+    },
+    {
+        "id": "35d14880-5071-450e-adec-6f117d836e77",
+        "name": "Data Science & AI",
+        "created_at": "2026-01-05 12:04:21",
+        "updated_at": "2026-01-05 12:04:21"
+    },
+    {
+        "id": "ede7bd0c-ffb8-4309-badb-890859001ac9",
+        "name": "IT & Infrastructure",
+        "created_at": "2026-01-05 11:40:24",
+        "updated_at": "2026-01-05 11:40:24"
+    },
+    {
+        "id": "837a7935-bef7-4268-bfe9-76ab60581cca",
+        "name": "UI/UX & Graphic Design",
+        "created_at": "2026-01-05 14:26:15",
+        "updated_at": "2026-01-05 14:26:15"
+    },
+    {
+        "id": "8eb5140f-16f4-4881-9724-1955b91dddd9",
+        "name": "Digital Marketing",
+        "created_at": "2026-01-05 13:27:27",
+        "updated_at": "2026-01-05 13:27:27"
+    },
+    {
+        "id": "e060a724-2411-4258-b51b-4c8349a047dc",
+        "name": "Sales & Business Development",
+        "created_at": "2026-01-05 14:30:25",
+        "updated_at": "2026-01-05 14:30:25"
+    },
+    {
+        "id": "06555096-4f1a-4a1d-93d2-0470b766ff10",
+        "name": "Customer Service",
+        "created_at": "2026-01-05 16:30:11",
+        "updated_at": "2026-01-05 16:30:11"
+    },
+    {
+        "id": "6c167229-7608-4942-9d11-1a9d5e6c9992",
+        "name": "Finance & Accounting",
+        "created_at": "2026-01-05 09:03:30",
+        "updated_at": "2026-01-05 09:03:30"
+    },
+    {
+        "id": "7f9ac098-8df0-4f25-95f1-9a51e41686cd",
+        "name": "Human Resources",
+        "created_at": "2026-01-05 16:41:39",
+        "updated_at": "2026-01-05 16:41:39"
+    },
+    {
+        "id": "c0099eba-cd73-4e00-81a0-ba056ce9da66",
+        "name": "Engineering",
+        "created_at": "2026-01-05 16:41:23",
+        "updated_at": "2026-01-05 16:41:23"
+    },
+    {
+        "id": "eab06e9b-65ed-4de4-bdb4-304de01c683e",
+        "name": "Healthcare & Pharmacy",
+        "created_at": "2026-01-05 13:19:32",
+        "updated_at": "2026-01-05 13:19:32"
+    },
+    {
+        "id": "ed1d9d16-9062-4fe3-ab82-e6c9d82fb0f1",
+        "name": "Education & Training",
+        "created_at": "2026-01-05 17:49:32",
+        "updated_at": "2026-01-05 17:49:32"
+    },
+    {
+        "id": "067f0cfc-ce1f-43d9-849a-cfb58350a73f",
+        "name": "Logistics & Supply Chain",
+        "created_at": "2026-01-05 13:49:33",
+        "updated_at": "2026-01-05 13:49:33"
+    },
+    {
+        "id": "0c83e786-d171-4cbd-a106-119ec40d31b5",
+        "name": "Administration & Office",
+        "created_at": "2026-01-05 17:38:00",
+        "updated_at": "2026-01-05 17:38:00"
+    },
+    {
+        "id": "1a42721e-aba4-470e-a306-f0c485f184e0",
+        "name": "Legal & Compliance",
+        "created_at": "2026-01-05 15:13:12",
+        "updated_at": "2026-01-05 15:13:12"
+    },
+    {
+        "id": "7b6bc3c6-2475-463c-b854-90146dedc86a",
+        "name": "Content Writing & Translation",
+        "created_at": "2026-01-05 16:51:44",
+        "updated_at": "2026-01-05 16:51:44"
+    },
+    {
+        "id": "a06d7a69-1f3c-42b2-a2cb-bb93d9814559",
+        "name": "Hospitality & Tourism",
+        "created_at": "2026-01-05 15:03:25",
+        "updated_at": "2026-01-05 15:03:25"
+    },
+    {
+        "id": "edf165da-b6ea-4ff5-b82a-fe6bac9f21df",
+        "name": "Manufacturing & Production",
+        "created_at": "2026-01-05 17:36:10",
+        "updated_at": "2026-01-05 17:36:10"
+    },
+    {
+        "id": "8f4ecb4f-4041-45ee-8bae-8e66fa97002c",
+        "name": "Project & Product Management",
+        "created_at": "2026-01-05 12:07:13",
+        "updated_at": "2026-01-05 12:07:13"
+    },
+    {
+        "id": "ccbfd2ec-8c53-465f-8ec0-a954ff8b2a6a",
+        "name": "Media & Production",
+        "created_at": "2026-01-05 14:31:38",
+        "updated_at": "2026-01-05 14:31:38"
+    }
+]

@@ -1,0 +1,42 @@
+{
+  "generated_for": "Shagalni V2 - ERD v1.4 / SRS v1.4",
+  "reference_now": "2026-11-16 12:00:00",
+  "seed": 2026,
+  "scale": 0.25,
+  "timestamps_included": true,
+  "password_for_all_accounts": "Password@123",
+  "demo_accounts": {
+    "admin": "admin@shagalni.example",
+    "job_seeker": "jobseeker@shagalni.example",
+    "company_owner": "owner@shagalni.example"
+  },
+  "insert_order": [
+    "users",
+    "companies",
+    "company_change_requests",
+    "job_categories",
+    "job_vacancies",
+    "saved_jobs",
+    "resumes",
+    "applications",
+    "resume_snapshots",
+    "ai_analyses",
+    "application_status_histories",
+    "notifications"
+  ],
+  "row_counts": {
+    "users": 675,
+    "companies": 46,
+    "company_change_requests": 9,
+    "job_categories": 20,
+    "job_vacancies": 236,
+    "saved_jobs": 1033,
+    "resumes": 463,
+    "applications": 1810,
+    "resume_snapshots": 1810,
+    "ai_analyses": 1810,
+    "application_status_histories": 4901,
+    "notifications": 5070
+  },
+  "total_rows": 17883
+}
