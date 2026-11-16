@@ -1,9 +1,9 @@
 <?php
 
-use App\Notifications\AccountDeletionRequested;
 use Illuminate\Support\Facades\URL;
 use Shagalni\Shared\Enums\AccountStatus;
 use Shagalni\Shared\Models\User;
+use Shagalni\Shared\Notifications\AccountDeletionRequested;
 
 beforeEach(function () {
     $this->withoutVite();

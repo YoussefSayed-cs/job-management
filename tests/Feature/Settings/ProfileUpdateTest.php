@@ -1,7 +1,6 @@
 <?php
 
 use App\Livewire\Settings\Profile;
-use App\Notifications\AccountDeletionRequested;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\ChannelManager;
@@ -13,6 +12,7 @@ use Livewire\Livewire;
 use RuntimeException;
 use Shagalni\Shared\Enums\UserRole;
 use Shagalni\Shared\Models\User;
+use Shagalni\Shared\Notifications\AccountDeletionRequested;
 
 beforeEach(function () {
     $this->withoutVite();

@@ -1,11 +1,11 @@
 <?php
 
-use App\Notifications\AccountReactivationRequested;
-use App\Services\AccountLifecycleService;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 use Shagalni\Shared\Enums\AccountStatus;
 use Shagalni\Shared\Models\User;
+use Shagalni\Shared\Notifications\AccountReactivationRequested;
+use Shagalni\Shared\Services\AccountLifecycleService;
 
 beforeEach(function () {
     $this->withoutVite();

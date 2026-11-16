@@ -14,6 +14,8 @@ Shagalni V2 is an AI-assisted job board platform connecting Job Seekers with com
 
 The Backoffice `.env.example` uses `CACHE_STORE=database` and `CACHE_PREFIX=shagalni-cache-`; set these same values in the Portal environment.
 
+After deploying the shared account lifecycle class-name changes, flush old queued jobs in development with `php artisan queue:flush`.
+
 ## SRS v1.4 Overview
 
 **Version:** 1.4, 9 November 2026  
