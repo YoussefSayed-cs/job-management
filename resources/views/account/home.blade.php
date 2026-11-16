@@ -7,45 +7,10 @@
     <div class="flex flex-col gap-8">
         <x-jobs.page-heading
             title="Dashboard"
-            :description="'Company workspace for '.auth()->user()->full_name.'."
+            :description="'Company workspace for '.auth()->user()->full_name.'.'"
         />
 
-        <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <h2 class="text-lg font-semibold">My Company</h2>
-
-            <div class="mt-5 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-                <div>
-                    <p class="text-sm text-slate-500">Company</p>
-                    <p class="mt-1 font-medium">{{ $company->name }}</p>
-                </div>
-                <div>
-                    <p class="text-sm text-slate-500">Industry</p>
-                    <p class="mt-1 font-medium">{{ $company->industry }}</p>
-                </div>
-                <div>
-                    <p class="text-sm text-slate-500">Location</p>
-                    <p class="mt-1 font-medium">{{ $company->location }}</p>
-                </div>
-                <div>
-                    <p class="text-sm text-slate-500">Website</p>
-                    @if ($company->website)
-                        <a href="{{ $company->website }}" class="mt-1 block truncate font-medium text-indigo-600 hover:underline">
-                            {{ $company->website }}
-                        </a>
-                    @else
-                        <p class="mt-1 font-medium">—</p>
-                    @endif
-                </div>
-            </div>
-
-            @if ($company->description)
-                <p class="mt-5 border-t border-slate-100 pt-5 text-sm leading-6 text-slate-600 dark:border-slate-800 dark:text-slate-300">
-                    {{ $company->description }}
-                </p>
-            @endif
-        </section>
-
-        <section aria-label="Applicant statistics" class="grid gap-4 sm:grid-cols-2">
+        <section aria-label="Company overview" class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
                 <p class="text-sm font-medium text-slate-500">Total applications</p>
                 <p class="mt-2 text-3xl font-semibold">{{ $totalApplications }}</p>
@@ -54,74 +19,77 @@
             <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
                 <p class="text-sm font-medium text-slate-500">Applicants</p>
                 <p class="mt-2 text-3xl font-semibold">{{ $totalApplicants }}</p>
-                <p class="mt-2 text-sm text-slate-500">Unique users who applied to your jobs.</p>
+                <p class="mt-2 text-sm text-slate-500">Unique applicants across your company.</p>
             </div>
-        </section>
-
-        <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <h2 class="text-base font-semibold">Applications by status</h2>
-            <p class="mt-1 text-sm text-slate-500">Only applications submitted to your company.</p>
-
-            <div class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                @foreach ($statusDistribution as $status => $total)
-                    <div class="rounded-xl bg-slate-50 p-4 dark:bg-slate-800/60">
-                        <p class="text-sm text-slate-500">{{ \Illuminate\Support\Str::headline($status) }}</p>
-                        <p class="mt-1 text-2xl font-semibold">{{ number_format($total) }}</p>
-                    </div>
-                @endforeach
-            </div>
-        </section>
-
-        <section aria-label="Job statistics" class="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
             <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
                 <p class="text-sm font-medium text-slate-500">Total jobs</p>
                 <p class="mt-2 text-3xl font-semibold">{{ number_format($jobStats['total']) }}</p>
-                <p class="mt-2 text-sm text-slate-500">All jobs in your company workspace.</p>
-            </div>
-            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-                <p class="text-sm font-medium text-slate-500">Active jobs</p>
-                <p class="mt-2 text-3xl font-semibold">{{ number_format($jobStats['active']) }}</p>
-                <p class="mt-2 text-sm text-slate-500">Active jobs whose deadline has not passed.</p>
-            </div>
-            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-                <p class="text-sm font-medium text-slate-500">Expired jobs</p>
-                <p class="mt-2 text-3xl font-semibold">{{ number_format($jobStats['expired']) }}</p>
-                <p class="mt-2 text-sm text-slate-500">Active jobs whose deadline has passed.</p>
-            </div>
-            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-                <p class="text-sm font-medium text-slate-500">Closed jobs</p>
-                <p class="mt-2 text-3xl font-semibold">{{ number_format($jobStats['closed']) }}</p>
-                <p class="mt-2 text-sm text-slate-500">Jobs closed by your company.</p>
-            </div>
-            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-                <p class="text-sm font-medium text-slate-500">Archived jobs</p>
-                <p class="mt-2 text-3xl font-semibold">{{ number_format($jobStats['archived']) }}</p>
-                <p class="mt-2 text-sm text-slate-500">Jobs archived by your company.</p>
+                <p class="mt-2 text-sm text-slate-500">All jobs in your workspace.</p>
             </div>
         </section>
 
+        <div class="grid gap-6 xl:grid-cols-2">
+            <x-analytics.chart-card
+                title="Applications by status"
+                description="Distribution of applications submitted to your company."
+            >
+                <x-analytics.status-chart :distribution="$statusDistribution" />
+            </x-analytics.chart-card>
+
+            <x-analytics.chart-card
+                title="Jobs by status"
+                description="Active jobs exclude those whose application deadline has passed."
+            >
+                <x-analytics.chart
+                    type="bar"
+                    label="Jobs by status"
+                    :labels="$jobStatusChart['labels']"
+                    :values="$jobStatusChart['values']"
+                    :colors="['#22c55e']"
+                />
+            </x-analytics.chart-card>
+        </div>
+
         <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <div class="border-b border-slate-100 px-5 py-5 sm:px-6 dark:border-slate-800">
-                <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">Recently created jobs</h2>
-                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">The latest vacancies added to your workspace.</p>
+            <div class="flex items-center justify-between gap-3 border-b border-slate-100 px-5 py-5 sm:px-6 dark:border-slate-800">
+                <div>
+                    <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">Recently created jobs</h2>
+                    <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Latest additions across your workspace.</p>
+                </div>
             </div>
 
-            @forelse ($recentJobs as $job)
-                <div class="flex flex-col gap-2 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-                    <div>
-                        <p class="font-medium text-slate-900 dark:text-slate-100">{{ $job->title }}</p>
-                        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                            {{ ucfirst($job->status->value) }}
-                        </p>
-                    </div>
-                    <time
-                        class="text-sm text-slate-500 dark:text-slate-400"
-                        datetime="{{ $job->created_at->toAtomString() }}"
-                    >
-                        {{ $job->created_at->format('M j, Y') }}
-                    </time>
+            @if ($recentJobs->isNotEmpty())
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-200 text-left dark:divide-slate-800">
+                        <thead class="bg-slate-50 dark:bg-slate-800/50">
+                            <tr>
+                                <th class="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500 sm:px-6">Job</th>
+                                <th class="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500 sm:px-6">Status</th>
+                                <th class="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500 sm:px-6">Created</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+                            @foreach ($recentJobs as $job)
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                                    <td class="px-5 py-4 sm:px-6">
+                                        <p class="font-medium text-slate-900 dark:text-slate-100">{{ $job->title }}</p>
+                                    </td>
+                                    <td class="px-5 py-4 sm:px-6">
+                                        <span class="inline-flex rounded-full border border-slate-200 bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200">
+                                            {{ ucfirst($job->status->value) }}
+                                        </span>
+                                    </td>
+                                    <td class="px-5 py-4 text-sm text-slate-500 sm:px-6 dark:text-slate-400">
+                                        <time datetime="{{ $job->created_at->toAtomString() }}">
+                                            {{ $job->created_at->format('M j, Y') }}
+                                        </time>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
-            @empty
+            @else
                 <div class="px-6 py-14 text-center">
                     <span class="mx-auto flex size-12 items-center justify-center rounded-full bg-indigo-50 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-300" aria-hidden="true">▤</span>
                     <p class="mt-4 text-sm font-semibold text-slate-900 dark:text-slate-100">No jobs yet</p>
@@ -129,7 +97,7 @@
                         Jobs you create will appear here.
                     </p>
                 </div>
-            @endforelse
+            @endif
         </section>
     </div>
 </x-jobs.layout>

@@ -94,6 +94,9 @@ test('company owner dashboard shows only their company details and applicant tot
     $otherOwner = approvedOwner();
     $applicant = User::factory()->create();
 
+    $owner->company()->update(['name' => 'Owner Company']);
+    $otherOwner->company()->update(['name' => 'Other Company']);
+
     makeApplicationFor($owner, $applicant, ApplicationStatus::Pending);
     makeApplicationFor($owner, $applicant, ApplicationStatus::Accepted);
     makeApplicationFor($otherOwner, User::factory()->create(), ApplicationStatus::Accepted);
@@ -106,8 +109,26 @@ test('company owner dashboard shows only their company details and applicant tot
             && $stats['applicants'] === 1)
         ->assertViewHas('statusDistribution', fn (array $distribution) => $distribution['pending'] === 1
             && $distribution['accepted'] === 1)
-        ->assertSee($owner->company->name)
+        ->assertDontSee($owner->company->name)
         ->assertDontSee($otherOwner->company->name);
+});
+
+test('company owner dashboard renders application and job charts with company-scoped data', function () {
+    $owner = approvedOwner();
+    makeApplicationFor($owner, User::factory()->create(), ApplicationStatus::Pending);
+    createDashboardJob($owner->company, ['status' => JobStatus::Closed]);
+
+    $response = $this->actingAs($owner)->get(route('dashboard'));
+
+    $response->assertOk()
+        ->assertViewHas('jobStatusChart', [
+            'labels' => ['Active', 'Expired', 'Closed', 'Archived'],
+            'values' => [1, 0, 1, 0],
+        ])
+        ->assertSee('Applications by status')
+        ->assertSee('Jobs by status');
+
+    expect(substr_count($response->getContent(), '<canvas'))->toBe(2);
 });
 
 test('dashboard categorizes active and expired jobs without overlap', function () {

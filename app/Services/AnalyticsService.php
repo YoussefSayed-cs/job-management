@@ -98,6 +98,15 @@ class AnalyticsService
                 'closed' => (int) $summary->closed,
                 'archived' => (int) $summary->archived,
             ],
+            'jobStatusChart' => [
+                'labels' => ['Active', 'Expired', 'Closed', 'Archived'],
+                'values' => [
+                    (int) $summary->active,
+                    (int) $summary->expired,
+                    (int) $summary->closed,
+                    (int) $summary->archived,
+                ],
+            ],
             'recentJobs' => $company->jobVacancies()
                 ->orderByDesc('created_at')
                 ->limit(5)
