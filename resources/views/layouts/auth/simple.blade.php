@@ -3,57 +3,51 @@
     <head>
         @include('partials.head')
     </head>
-    <body class="min-h-screen bg-slate-50 antialiased dark:bg-slate-950">
-        <main class="grid min-h-svh lg:grid-cols-[minmax(0,1fr)_minmax(28rem,0.9fr)]">
-            <section class="relative hidden overflow-hidden bg-slate-950 px-12 py-10 text-white lg:flex lg:flex-col lg:justify-between xl:px-20">
-                <div aria-hidden="true" class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-indigo-500/30 via-slate-950 to-slate-950"></div>
-                <div aria-hidden="true" class="absolute -right-32 bottom-[-8rem] size-[34rem] rounded-full border border-white/10"></div>
-                <div aria-hidden="true" class="absolute -right-16 bottom-[-4rem] size-[22rem] rounded-full border border-white/10"></div>
+    <body class="min-h-screen bg-[#EEF2FF] antialiased">
+        <!-- Main container with overlapping panels -->
+        <main class="flex min-h-screen">
+            <!-- Branding Panel (visible on lg+ screens) -->
+            <section class="hidden lg:flex w-1/2 bg-gradient-to-b from-[#17243B] to-[#4F46E5] text-white p-12 relative rounded-r-3xl shadow-xl overflow-hidden">
+                <!-- Decorative geometry (simple circles) -->
+                <div class="absolute -right-24 -bottom-24 size-[34rem] rounded-full border border-white/10"></div>
+                <div class="absolute -right-12 -bottom-12 size-[22rem] rounded-full border border-white/10"></div>
 
-                <a href="{{ route('home') }}" class="relative flex w-fit items-center gap-3" wire:navigate>
+                <!-- Logo -->
+                <a href="{{ route('home') }}" class="flex items-center gap-3 mb-8">
                     <span class="flex size-11 items-center justify-center rounded-xl bg-indigo-500 text-xl font-bold text-white shadow-lg shadow-indigo-950/30">S</span>
-                    <span>
+                    <div class="flex flex-col">
                         <span class="block text-base font-semibold tracking-tight">Shagalni</span>
-                        <span class="block text-xs text-slate-400">Job management</span>
-                    </span>
+                        <span class="block text-xs text-indigo-200">Management</span>
+                    </div>
                 </a>
 
-                <div class="relative max-w-xl">
-                    <p class="mb-5 text-xs font-semibold tracking-[0.2em] text-indigo-300 uppercase">Built for better work</p>
-                    <h1 class="text-4xl leading-tight font-semibold tracking-tight xl:text-5xl">
-                        Good work starts with the right opportunity.
-                    </h1>
-                    <p class="mt-6 max-w-lg text-base leading-7 text-slate-300">
-                        Sign in to access your Shagalni workspace.
-                    </p>
-                    <div class="mt-10 flex items-center gap-3 text-sm text-slate-300">
-                        <span class="flex size-9 items-center justify-center rounded-full bg-white/10 text-indigo-200">✓</span>
-                        A focused workspace for your next step
-                    </div>
+                <!-- Branding copy -->
+                <div class="mt-8 max-w-md">
+                    <p class="text-sm font-medium uppercase tracking-wider text-indigo-300 mb-4">Recruitment Management</p>
+                    <h1 class="text-3xl font-bold leading-tight mb-4">Your hiring operations, all in one place.</h1>
+                    <p class="text-base text-indigo-100 mb-6">Manage companies, job vacancies, and applications through one focused workspace.</p>
+                    <ul class="space-y-3">
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Company Management
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Job Management
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Application Tracking
+                        </li>
+                    </ul>
                 </div>
-
-                <p class="relative text-xs text-slate-500">© {{ date('Y') }} Shagalni. All rights reserved.</p>
+                <p class="absolute bottom-4 left-8 text-xs text-indigo-200">© {{ date('Y') }} Shagalni. All rights reserved.</p>
             </section>
 
-            <section class="flex min-h-svh flex-col bg-white dark:bg-slate-900">
-                <div class="flex items-center justify-between px-5 py-5 sm:px-8 lg:justify-end lg:px-12">
-                    <a href="{{ route('home') }}" class="flex items-center gap-2 lg:hidden" wire:navigate>
-                        <span class="flex size-9 items-center justify-center rounded-lg bg-indigo-600 font-bold text-white">S</span>
-                        <span class="text-sm font-bold text-slate-900 dark:text-slate-100">Shagalni</span>
-                    </a>
-                    <div class="flex items-center gap-3">
-                        <a href="{{ route('home') }}" class="hidden text-sm font-medium text-slate-500 hover:text-slate-900 lg:inline dark:text-slate-400 dark:hover:text-white" wire:navigate>
-                            Back to home
-                        </a>
-                    </div>
-                </div>
-                <div class="flex flex-1 items-center justify-center px-5 pb-12 sm:px-8 lg:px-12">
-                    <div class="w-full max-w-md">
-                        {{ $slot }}
-                    </div>
-                </div>
-                <div class="px-5 pb-6 text-center text-xs text-slate-400 sm:px-8 lg:px-12 dark:text-slate-500">
-                    Secure access to your Shagalni account
+            <!-- Login Card -->
+            <section class="flex flex-1 items-center justify-center px-4 py-12 lg:px-12 lg:py-0">
+                <div class="w-full max-w-md lg:max-w-lg bg-white rounded-2xl shadow-xl p-8 lg:-ml-12 relative z-10">
+                    {{ $slot }}
                 </div>
             </section>
         </main>
