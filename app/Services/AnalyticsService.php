@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Carbon\CarbonPeriod;
 use Shagalni\Shared\Enums\ApplicationStatus;
+use Shagalni\Shared\Enums\JobStatus;
 use Shagalni\Shared\Models\Application;
 use Shagalni\Shared\Models\ApplicationStatusHistory;
 use Shagalni\Shared\Models\Company;
@@ -54,6 +55,43 @@ class AnalyticsService
                 ->count('user_id'),
             'status_distribution' => $distribution,
             ...$this->rates($distribution),
+        ];
+    }
+
+    public function companyDashboard(Company $company): array
+    {
+        $today = now()->toDateString();
+        $jobs = $company->jobVacancies();
+        $summary = (clone $jobs)
+            ->selectRaw(
+                'COUNT(*) as total,
+                SUM(CASE WHEN status = ? AND (application_deadline IS NULL OR application_deadline >= ?) THEN 1 ELSE 0 END) as active,
+                SUM(CASE WHEN status = ? AND application_deadline < ? THEN 1 ELSE 0 END) as expired,
+                SUM(CASE WHEN status = ? THEN 1 ELSE 0 END) as closed,
+                SUM(CASE WHEN status = ? THEN 1 ELSE 0 END) as archived',
+                [
+                    JobStatus::Active->value,
+                    $today,
+                    JobStatus::Active->value,
+                    $today,
+                    JobStatus::Closed->value,
+                    JobStatus::Archived->value,
+                ],
+            )
+            ->first();
+
+        return [
+            'jobStats' => [
+                'total' => (int) $summary->total,
+                'active' => (int) $summary->active,
+                'expired' => (int) $summary->expired,
+                'closed' => (int) $summary->closed,
+                'archived' => (int) $summary->archived,
+            ],
+            'recentJobs' => $company->jobVacancies()
+                ->orderByDesc('created_at')
+                ->limit(5)
+                ->get(['id', 'title', 'status', 'created_at']),
         ];
     }
 

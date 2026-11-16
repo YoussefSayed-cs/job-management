@@ -16,7 +16,10 @@ class DashboardController extends Controller
             return $this->adminDashboard($analytics);
         }
 
-        return view('account.home');
+        $company = $request->user()->company;
+        abort_unless($request->user()->role === UserRole::CompanyOwner && $company !== null, 403);
+
+        return view('account.home', $analytics->companyDashboard($company));
     }
 
     private function adminDashboard(AnalyticsService $analytics): View
