@@ -8,11 +8,12 @@
         ->implode('');
 @endphp
 
-<flux:dropdown position="bottom" align="start">
+<flux:dropdown position="bottom" align="start" class="w-full">
     <flux:sidebar.profile :name="$user->full_name" :initials="$userInitials" :avatar="$user->profile_picture_url"
-        icon:trailing="chevrons-up-down" data-test="sidebar-menu-button" />
-    <flux:menu>
-        <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
+        icon:trailing="chevrons-up-down" data-test="sidebar-menu-button"
+        class="w-full rounded-xl px-2 py-2 transition-colors hover:!bg-indigo-50/80" />
+    <flux:menu class="!border-indigo-100 shadow-lg shadow-indigo-950/10">
+        <div class="flex items-center gap-2 rounded-lg bg-indigo-50/70 px-2 py-2 text-start text-sm">
             <flux:avatar :name="$user->full_name" :initials="$userInitials" :src="$user->profile_picture_url" />
 
             <div class="grid flex-1 text-start text-sm leading-tight">
