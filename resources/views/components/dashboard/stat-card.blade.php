@@ -2,45 +2,53 @@
     'label',
     'value',
     'description' => null,
-    'accent' => 'indigo',
+    'accent' => 'teal',
     'icon' => null,
     'badge' => null,
 ])
 
 @php
     $accentStyles = match ($accent) {
+        'teal' => [
+            'icon_bg' => 'border border-teal-200/80 bg-teal-50 text-teal-800 dark:border-teal-800/40 dark:bg-teal-950/40 dark:text-teal-300',
+            'border_hover' => 'hover:border-teal-300 dark:hover:border-teal-700',
+        ],
+        'cobalt', 'blue', 'indigo' => [
+            'icon_bg' => 'border border-blue-200/80 bg-blue-50 text-blue-800 dark:border-blue-800/40 dark:bg-blue-950/40 dark:text-blue-300',
+            'border_hover' => 'hover:border-blue-300 dark:hover:border-blue-700',
+        ],
         'emerald' => [
-            'icon_bg' => 'bg-emerald-50 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400',
-            'border_hover' => 'hover:border-emerald-200 dark:hover:border-emerald-800',
+            'icon_bg' => 'border border-emerald-200/80 bg-emerald-50 text-emerald-800 dark:border-emerald-800/40 dark:bg-emerald-950/40 dark:text-emerald-300',
+            'border_hover' => 'hover:border-emerald-300 dark:hover:border-emerald-700',
         ],
         'amber' => [
-            'icon_bg' => 'bg-amber-50 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400',
-            'border_hover' => 'hover:border-amber-200 dark:hover:border-amber-800',
+            'icon_bg' => 'border border-amber-200/80 bg-amber-50 text-amber-900 dark:border-amber-800/40 dark:bg-amber-950/40 dark:text-amber-300',
+            'border_hover' => 'hover:border-amber-300 dark:hover:border-amber-700',
         ],
         'rose' => [
-            'icon_bg' => 'bg-rose-50 text-rose-600 dark:bg-rose-400/10 dark:text-rose-400',
-            'border_hover' => 'hover:border-rose-200 dark:hover:border-rose-800',
+            'icon_bg' => 'border border-rose-200/80 bg-rose-50 text-rose-800 dark:border-rose-800/40 dark:bg-rose-950/40 dark:text-rose-300',
+            'border_hover' => 'hover:border-rose-300 dark:hover:border-rose-700',
         ],
         'sky' => [
-            'icon_bg' => 'bg-sky-50 text-sky-600 dark:bg-sky-400/10 dark:text-sky-400',
-            'border_hover' => 'hover:border-sky-200 dark:hover:border-sky-800',
+            'icon_bg' => 'border border-sky-200/80 bg-sky-50 text-sky-800 dark:border-sky-800/40 dark:bg-sky-950/40 dark:text-sky-300',
+            'border_hover' => 'hover:border-sky-300 dark:hover:border-sky-700',
         ],
-        'violet' => [
-            'icon_bg' => 'bg-violet-50 text-violet-600 dark:bg-violet-400/10 dark:text-violet-400',
-            'border_hover' => 'hover:border-violet-200 dark:hover:border-violet-800',
+        'violet', 'purple' => [
+            'icon_bg' => 'border border-purple-200/80 bg-purple-50 text-purple-800 dark:border-purple-800/40 dark:bg-purple-950/40 dark:text-purple-300',
+            'border_hover' => 'hover:border-purple-300 dark:hover:border-purple-700',
         ],
         'slate' => [
-            'icon_bg' => 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400',
+            'icon_bg' => 'border border-slate-200 bg-slate-100 text-slate-700 dark:border-slate-700/60 dark:bg-slate-800/80 dark:text-slate-300',
             'border_hover' => 'hover:border-slate-300 dark:hover:border-slate-700',
         ],
         default => [
-            'icon_bg' => 'bg-indigo-50 text-indigo-600 dark:bg-indigo-400/10 dark:text-indigo-400',
-            'border_hover' => 'hover:border-indigo-200 dark:hover:border-indigo-800',
+            'icon_bg' => 'border border-teal-200/80 bg-teal-50 text-teal-800 dark:border-teal-800/40 dark:bg-teal-950/40 dark:text-teal-300',
+            'border_hover' => 'hover:border-teal-300 dark:hover:border-teal-700',
         ],
     };
 @endphp
 
-<article {{ $attributes->merge(['class' => 'group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all duration-200 hover:shadow-sm dark:border-slate-800 dark:bg-slate-900 ' . $accentStyles['border_hover']]) }}>
+<article {{ $attributes->merge(['class' => 'group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-xs transition-all duration-200 hover:shadow-sm dark:border-slate-800 dark:bg-slate-900 ' . $accentStyles['border_hover']]) }}>
     <div>
         <div class="flex items-center justify-between gap-3">
             @if ($icon)
@@ -64,7 +72,7 @@
             <p class="text-xs font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400">
                 {{ $label }}
             </p>
-            <p class="mt-1.5 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
+            <p class="mt-1.5 font-mono text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
                 {{ $value }}
             </p>
         </div>

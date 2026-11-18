@@ -29,10 +29,17 @@
                     {{ $user->email }}
                 </flux:text>
 
-                <span
-                    class="mt-1.5 inline-flex w-fit rounded-full border border-indigo-100 bg-indigo-50 px-2 py-0.5 text-[0.6875rem] font-semibold text-indigo-700 dark:border-indigo-400/20 dark:bg-indigo-400/10 dark:text-indigo-200">
-                    {{ $roleLabel }}
-                </span>
+                @if ($user->role === \Shagalni\Shared\Enums\UserRole::Admin)
+                    <span
+                        class="mt-1.5 inline-flex w-fit items-center rounded-full border border-teal-200/80 bg-teal-50 px-2 py-0.5 text-[0.6875rem] font-semibold text-teal-800 dark:border-teal-800/40 dark:bg-teal-950/40 dark:text-teal-300">
+                        {{ $roleLabel }}
+                    </span>
+                @else
+                    <span
+                        class="mt-1.5 inline-flex w-fit items-center rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-[0.6875rem] font-medium text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                        {{ $roleLabel }}
+                    </span>
+                @endif
             </div>
         </div>
 

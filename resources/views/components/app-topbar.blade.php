@@ -27,11 +27,11 @@
         {{-- Desktop: breadcrumb --}}
         <nav aria-label="{{ __('Breadcrumb') }}" class="hidden min-w-0 items-center gap-2 text-sm sm:flex">
             <a href="{{ route('dashboard') }}" wire:navigate
-                class="font-medium text-slate-500 transition-colors hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-300">
+                class="font-medium text-slate-500 transition-colors hover:text-teal-700 dark:text-slate-400 dark:hover:text-teal-300">
                 Shagalni
             </a>
 
-            <flux:icon.chevron-right class="size-3.5 shrink-0 text-slate-300 dark:text-slate-600" />
+            <flux:icon.chevron-right class="size-3.5 shrink-0 text-slate-400 dark:text-slate-600" />
 
             <span aria-current="page" class="truncate font-semibold text-slate-900 dark:text-white">
                 {{ $pageTitle }}
@@ -41,13 +41,13 @@
         <div class="ms-auto flex items-center gap-2">
             @if ($isAdmin)
                 <span
-                    class="hidden items-center gap-1.5 rounded-full border border-indigo-100 bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700 sm:inline-flex dark:border-indigo-400/20 dark:bg-indigo-400/10 dark:text-indigo-200">
+                    class="hidden items-center gap-1.5 rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-800 sm:inline-flex dark:border-teal-800/40 dark:bg-teal-950/40 dark:text-teal-300">
                     <flux:icon.shield-check class="size-3.5" />
                     {{ __('Administrator') }}
                 </span>
             @elseif ($company)
                 <span
-                    class="hidden max-w-56 items-center gap-1.5 rounded-full border border-indigo-100 bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700 sm:inline-flex dark:border-indigo-400/20 dark:bg-indigo-400/10 dark:text-indigo-200">
+                    class="hidden max-w-56 items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-700 sm:inline-flex dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
                     <flux:icon.building-office class="size-3.5 shrink-0" />
                     <span class="truncate">{{ $company->name }}</span>
                 </span>

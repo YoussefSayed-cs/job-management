@@ -5,13 +5,13 @@
 
 @if($sidebar)
     <flux:sidebar.brand :name="$name" {{ $attributes }}>
-        <x-slot name="logo" class="flex aspect-square size-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-base font-bold text-white shadow-md shadow-indigo-600/30">
+        <x-slot name="logo" class="flex aspect-square size-9 items-center justify-center rounded-xl border border-teal-600/40 bg-teal-700 text-base font-bold tracking-tight text-white shadow-xs dark:border-teal-500/40 dark:bg-teal-600">
             S
         </x-slot>
     </flux:sidebar.brand>
 @else
     <flux:brand :name="$name" {{ $attributes }}>
-        <x-slot name="logo" class="flex aspect-square size-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-base font-bold text-white shadow-md shadow-indigo-600/30">
+        <x-slot name="logo" class="flex aspect-square size-9 items-center justify-center rounded-xl border border-teal-600/40 bg-teal-700 text-base font-bold tracking-tight text-white shadow-xs dark:border-teal-500/40 dark:bg-teal-600">
             S
         </x-slot>
     </flux:brand>

@@ -12,7 +12,7 @@
                     {{ $title }}
                 </h2>
                 @if ($badge)
-                    <span class="inline-flex items-center rounded-full border border-indigo-100 bg-indigo-50 px-2 py-0.5 text-[0.6875rem] font-semibold text-indigo-700 dark:border-indigo-400/20 dark:bg-indigo-400/10 dark:text-indigo-300">
+                    <span class="inline-flex items-center rounded-full border border-teal-200/80 bg-teal-50 px-2 py-0.5 text-[0.6875rem] font-semibold text-teal-800 dark:border-teal-800/40 dark:bg-teal-950/40 dark:text-teal-300">
                         {{ $badge }}
                     </span>
                 @endif

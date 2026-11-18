@@ -31,16 +31,18 @@ Chart.register(
 );
 
 
-const PALETTE = ['#6366f1', '#22c55e', '#f59e0b', '#ef4444', '#06b6d4', '#a855f7', '#64748b'];
+const PALETTE_LIGHT = ['#0F766E', '#1D4ED8', '#059669', '#D97706', '#E11D48', '#6366F1', '#475569'];
+const PALETTE_DARK = ['#14B8A6', '#3B82F6', '#10B981', '#F59E0B', '#F43F5E', '#818CF8', '#94A3B8'];
 
 const charts = new Map();
 
 function buildChart(canvas) {
     const config = JSON.parse(canvas.dataset.chart);
     const dark = document.documentElement.classList.contains('dark');
-    const textColor = dark ? '#cbd5e1' : '#475569';
-    const gridColor = dark ? '#334155' : '#e2e8f0';
-    const colors = config.colors && config.colors.length ? config.colors : PALETTE;
+    const textColor = dark ? '#94A3B8' : '#475569';
+    const gridColor = dark ? '#1E293B' : '#E2E8F0';
+    const defaultPalette = dark ? PALETTE_DARK : PALETTE_LIGHT;
+    const colors = config.colors && config.colors.length ? config.colors : defaultPalette;
     const isDoughnut = config.type === 'doughnut';
 
     const dataset = { label: config.label, data: config.values };
@@ -50,7 +52,7 @@ function buildChart(canvas) {
         dataset.borderWidth = 0;
     } else if (config.type === 'line') {
         dataset.borderColor = colors[0];
-        dataset.backgroundColor = colors[0] + '33';
+        dataset.backgroundColor = colors[0] + (dark ? '26' : '1A');
         dataset.fill = true;
         dataset.tension = 0.3;
         dataset.pointRadius = 2;

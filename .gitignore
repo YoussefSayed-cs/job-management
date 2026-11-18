@@ -38,4 +38,5 @@ yarn-error.log
 /boost.json
 /opencode.json
 /opencode.jsonc
+/.qoder
 .env.before_lerd

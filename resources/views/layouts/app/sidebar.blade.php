@@ -3,6 +3,8 @@
 @php
     $user = auth()->user();
     $company = $user->company;
+    $isAdmin = $user->role === \Shagalni\Shared\Enums\UserRole::Admin;
+    $isCompanyOwner = $user->role === \Shagalni\Shared\Enums\UserRole::CompanyOwner;
 
     $canUsers = \Illuminate\Support\Facades\Gate::allows('viewAny', \Shagalni\Shared\Models\User::class);
     $canCompanies = \Illuminate\Support\Facades\Gate::allows('viewAny', \Shagalni\Shared\Models\Company::class);
@@ -12,9 +14,6 @@
     $canApplications = \Illuminate\Support\Facades\Gate::allows('viewAny', \Shagalni\Shared\Models\Application::class);
     $canMyCompany = $company !== null
         && \Illuminate\Support\Facades\Gate::allows('viewOwnProfile', $company);
-
-    $showManagement = $canUsers || $canCompanies || $canChangeRequests;
-    $showRecruitment = $canJobs || $canCategories || $canApplications;
 @endphp
 
 <!DOCTYPE html>
@@ -26,13 +25,6 @@
 </head>
 
 <body class="app-body min-h-screen antialiased">
-
-    {{-- Background decoration (same drifting glows as the Login page) --}}
-    <div aria-hidden="true" class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div class="app-orb app-orb-1"></div>
-        <div class="app-orb app-orb-2"></div>
-        <div class="app-orb app-orb-3"></div>
-    </div>
 
     {{-- ================= Sidebar ================= --}}
     <flux:sidebar sticky collapsible class="app-sidebar">
@@ -48,10 +40,10 @@
         {{-- Navigation --}}
         <flux:sidebar.nav class="app-nav py-3">
 
-            {{-- Workspace --}}
+            {{-- Overview --}}
             <div class="app-nav-group">
                 <div class="app-nav-heading in-data-flux-sidebar-collapsed-desktop:hidden">
-                    {{ __('Workspace') }}
+                    {{ __('Overview') }}
                 </div>
 
                 <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
@@ -60,12 +52,12 @@
                 </flux:sidebar.item>
             </div>
 
-            {{-- Management: Users (Admin + Company Owner), Companies / Change Requests (Admin only) --}}
-            @if ($showManagement)
+            @if ($isAdmin)
+                {{-- Governance (Admin) --}}
                 <div class="app-nav-group">
                     <div class="app-nav-divider hidden in-data-flux-sidebar-collapsed-desktop:block"></div>
                     <div class="app-nav-heading in-data-flux-sidebar-collapsed-desktop:hidden">
-                        {{ __('Management') }}
+                        {{ __('Governance') }}
                     </div>
 
                     @if ($canUsers)
@@ -91,10 +83,32 @@
                         </flux:sidebar.item>
                     @endif
                 </div>
+
+                {{-- Recruitment Catalog (Admin) --}}
+                <div class="app-nav-group">
+                    <div class="app-nav-divider hidden in-data-flux-sidebar-collapsed-desktop:block"></div>
+                    <div class="app-nav-heading in-data-flux-sidebar-collapsed-desktop:hidden">
+                        {{ __('Recruitment Catalog') }}
+                    </div>
+
+                    @if ($canJobs)
+                        <flux:sidebar.item icon="briefcase" :href="route('jobs.index')"
+                            :current="request()->routeIs('jobs.*')" class="app-nav-item" wire:navigate>
+                            {{ __('All Jobs') }}
+                        </flux:sidebar.item>
+                    @endif
+
+                    @if ($canCategories)
+                        <flux:sidebar.item icon="squares-2x2" :href="route('categories.index')"
+                            :current="request()->routeIs('categories.*')" class="app-nav-item" wire:navigate>
+                            {{ __('Job Categories') }}
+                        </flux:sidebar.item>
+                    @endif
+                </div>
             @endif
 
-            {{-- Recruitment: Jobs (both), Job Categories (Admin), Applications (Company Owner) --}}
-            @if ($showRecruitment)
+            @if ($isCompanyOwner)
+                {{-- Recruitment (Company Owner) --}}
                 <div class="app-nav-group">
                     <div class="app-nav-divider hidden in-data-flux-sidebar-collapsed-desktop:block"></div>
                     <div class="app-nav-heading in-data-flux-sidebar-collapsed-desktop:hidden">
@@ -108,35 +122,40 @@
                         </flux:sidebar.item>
                     @endif
 
-                    @if ($canCategories)
-                        <flux:sidebar.item icon="squares-2x2" :href="route('categories.index')"
-                            :current="request()->routeIs('categories.*')" class="app-nav-item" wire:navigate>
-                            {{ __('Job Categories') }}
-                        </flux:sidebar.item>
-                    @endif
-
                     @if ($canApplications)
                         <flux:sidebar.item icon="document-text" :href="route('applications.index')"
                             :current="request()->routeIs('applications.*')" class="app-nav-item" wire:navigate>
                             {{ __('Applications') }}
                         </flux:sidebar.item>
                     @endif
-                </div>
-            @endif
 
-            {{-- Company (Company Owner) --}}
-            @if ($canMyCompany)
-                <div class="app-nav-group">
-                    <div class="app-nav-divider hidden in-data-flux-sidebar-collapsed-desktop:block"></div>
-                    <div class="app-nav-heading in-data-flux-sidebar-collapsed-desktop:hidden">
-                        {{ __('Company') }}
+                    @if ($canUsers)
+                        <flux:sidebar.item icon="users" :href="route('users.index')"
+                            :current="request()->routeIs('users.*')" class="app-nav-item" wire:navigate>
+                            {{ __('Candidates') }}
+                        </flux:sidebar.item>
+                    @endif
+                </div>
+
+                {{-- Company (Company Owner) --}}
+                @if ($canMyCompany)
+                    <div class="app-nav-group">
+                        <div class="app-nav-divider hidden in-data-flux-sidebar-collapsed-desktop:block"></div>
+                        <div class="app-nav-heading in-data-flux-sidebar-collapsed-desktop:hidden">
+                            {{ __('Company') }}
+                        </div>
+
+                        <flux:sidebar.item icon="building-office" :href="route('my-company.show')"
+                            :current="request()->routeIs('my-company.show')" class="app-nav-item" wire:navigate>
+                            {{ __('My Company') }}
+                        </flux:sidebar.item>
+
+                        <flux:sidebar.item icon="clipboard-document-check" :href="route('my-company.change-requests.index')"
+                            :current="request()->routeIs('my-company.change-requests.*')" class="app-nav-item" wire:navigate>
+                            {{ __('Change Requests') }}
+                        </flux:sidebar.item>
                     </div>
-
-                    <flux:sidebar.item icon="building-office" :href="route('my-company.show')"
-                        :current="request()->routeIs('my-company.*')" class="app-nav-item" wire:navigate>
-                        {{ __('My Company') }}
-                    </flux:sidebar.item>
-                </div>
+                @endif
             @endif
 
             {{-- Account (both roles) --}}
