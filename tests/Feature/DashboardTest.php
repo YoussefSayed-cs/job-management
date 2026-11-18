@@ -109,7 +109,7 @@ test('company owner dashboard shows only their company details and applicant tot
             && $stats['applicants'] === 1)
         ->assertViewHas('statusDistribution', fn (array $distribution) => $distribution['pending'] === 1
             && $distribution['accepted'] === 1)
-        ->assertDontSee($owner->company->name)
+        ->assertSee($owner->company->name)
         ->assertDontSee($otherOwner->company->name);
 });
 
