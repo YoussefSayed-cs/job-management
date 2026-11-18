@@ -2,16 +2,19 @@
 
 @php
     $user = auth()->user();
+    $company = $user->company;
 
-    $userInitials = collect(preg_split('/\s+/', trim($user->full_name)))
-        ->filter()
-        ->take(2)
-        ->map(fn ($part) => mb_substr($part, 0, 1))
-        ->implode('');
+    $canUsers = \Illuminate\Support\Facades\Gate::allows('viewAny', \Shagalni\Shared\Models\User::class);
+    $canCompanies = \Illuminate\Support\Facades\Gate::allows('viewAny', \Shagalni\Shared\Models\Company::class);
+    $canChangeRequests = \Illuminate\Support\Facades\Gate::allows('viewAny', \Shagalni\Shared\Models\CompanyChangeRequest::class);
+    $canJobs = \Illuminate\Support\Facades\Gate::allows('viewAny', \Shagalni\Shared\Models\JobVacancy::class);
+    $canCategories = \Illuminate\Support\Facades\Gate::allows('viewAny', \Shagalni\Shared\Models\JobCategory::class);
+    $canApplications = \Illuminate\Support\Facades\Gate::allows('viewAny', \Shagalni\Shared\Models\Application::class);
+    $canMyCompany = $company !== null
+        && \Illuminate\Support\Facades\Gate::allows('viewOwnProfile', $company);
 
-    $pageTitle = $title ?: __('Workspace');
-    $navGroupClass = 'grid [&>div:first-child]:px-3 [&>div:first-child]:py-2 [&>div:first-child]:text-[0.6875rem] [&>div:first-child]:font-semibold [&>div:first-child]:uppercase [&>div:first-child]:tracking-[0.12em] [&>div:first-child]:text-slate-400';
-    $navItemClass = 'transition-colors data-current:!border-indigo-100 data-current:!bg-indigo-50 data-current:!text-indigo-700 data-current:!shadow-sm hover:!bg-indigo-50/70 hover:!text-indigo-700';
+    $showManagement = $canUsers || $canCompanies || $canChangeRequests;
+    $showRecruitment = $canJobs || $canCategories || $canApplications;
 @endphp
 
 <!DOCTYPE html>
@@ -19,384 +22,159 @@
 
 <head>
     @include('partials.head')
+    @livewireStyles
 </head>
 
-<body class="min-h-screen bg-[#EEF2FF] text-slate-900 antialiased">
+<body class="app-body min-h-screen antialiased">
 
-    {{-- Background Decoration --}}
-    <div aria-hidden="true" class="pointer-events-none fixed inset-0 overflow-hidden">
-        <div class="absolute -right-24 -top-32 size-[28rem] rounded-full bg-indigo-300/25 blur-3xl"></div>
-        <div class="absolute -bottom-40 left-1/3 size-[26rem] rounded-full bg-sky-300/20 blur-3xl"></div>
+    {{-- Background decoration (same drifting glows as the Login page) --}}
+    <div aria-hidden="true" class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        <div class="app-orb app-orb-1"></div>
+        <div class="app-orb app-orb-2"></div>
+        <div class="app-orb app-orb-3"></div>
     </div>
 
-    {{-- Application Sidebar --}}
-    <flux:sidebar
-        sticky
-        collapsible="mobile"
-        class="border-e border-indigo-100/80 bg-white/95 shadow-lg shadow-indigo-950/[0.05] backdrop-blur-xl"
-    >
+    {{-- ================= Sidebar ================= --}}
+    <flux:sidebar sticky collapsible class="app-sidebar">
 
-        {{-- Branding --}}
-        <flux:sidebar.header class="border-b border-indigo-100/70 px-4 py-4 sm:px-5">
+        {{-- Branding + collapse / close button --}}
+        <flux:sidebar.header class="px-1">
+            <x-app-logo :sidebar="true" href="{{ route('dashboard') }}" wire:navigate />
 
-            <x-app-logo
-                :sidebar="true"
-                href="{{ route('dashboard') }}"
-                wire:navigate
-            />
-
-            <flux:sidebar.collapse class="lg:hidden" />
-
+            <flux:sidebar.collapse
+                class="in-data-flux-sidebar-on-desktop:not-in-data-flux-sidebar-collapsed-desktop:-me-2" />
         </flux:sidebar.header>
 
         {{-- Navigation --}}
-        <flux:sidebar.nav class="space-y-4 px-3 py-5">
+        <flux:sidebar.nav class="app-nav py-3">
 
             {{-- Workspace --}}
-            <flux:sidebar.group
-                :heading="__('Workspace')"
-                :class="$navGroupClass"
-            >
+            <div class="app-nav-group">
+                <div class="app-nav-heading in-data-flux-sidebar-collapsed-desktop:hidden">
+                    {{ __('Workspace') }}
+                </div>
 
-                <flux:sidebar.item
-                    icon="home"
-                    :href="route('dashboard')"
-                    :current="request()->routeIs('dashboard')"
-                    :class="$navItemClass"
-                    wire:navigate
-                >
+                <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
+                    class="app-nav-item" wire:navigate>
                     {{ __('Dashboard') }}
                 </flux:sidebar.item>
+            </div>
 
-            </flux:sidebar.group>
+            {{-- Management: Users (Admin + Company Owner), Companies / Change Requests (Admin only) --}}
+            @if ($showManagement)
+                <div class="app-nav-group">
+                    <div class="app-nav-divider hidden in-data-flux-sidebar-collapsed-desktop:block"></div>
+                    <div class="app-nav-heading in-data-flux-sidebar-collapsed-desktop:hidden">
+                        {{ __('Management') }}
+                    </div>
 
-
-            {{-- Management --}}
-            <flux:sidebar.group
-                :heading="__('Management')"
-                :class="$navGroupClass"
-            >
-
-                {{-- Users: Admin + Company Owner --}}
-                @can('viewAny', \Shagalni\Shared\Models\User::class)
-
-                    <flux:sidebar.item
-                        icon="users"
-                        :href="route('users.index')"
-                        :current="request()->routeIs('users.*')"
-                        :class="$navItemClass"
-                        wire:navigate
-                    >
-                        {{ __('Users') }}
-                    </flux:sidebar.item>
-
-                @endcan
-
-
-                {{-- Companies: Admin Only --}}
-                @can('viewAny', \Shagalni\Shared\Models\Company::class)
-
-                    <flux:sidebar.item
-                        icon="building-office-2"
-                        :href="route('companies.index')"
-                        :current="request()->routeIs('companies.*')"
-                        :class="$navItemClass"
-                        wire:navigate
-                    >
-                        {{ __('Companies') }}
-                    </flux:sidebar.item>
-
-                @endcan
-
-
-                {{-- Company Change Requests: Admin Only --}}
-                @can('viewAny', \Shagalni\Shared\Models\CompanyChangeRequest::class)
-
-                    <flux:sidebar.item
-                        icon="clipboard-document-check"
-                        :href="route('company-change-requests.index')"
-                        :current="request()->routeIs('company-change-requests.*')"
-                        :class="$navItemClass"
-                        wire:navigate
-                    >
-                        {{ __('Company Change Requests') }}
-                    </flux:sidebar.item>
-
-                @endcan
-
-
-                {{-- Job Categories: Admin Only --}}
-                @can('viewAny', \Shagalni\Shared\Models\JobCategory::class)
-
-                    <flux:sidebar.item
-                        icon="squares-2x2"
-                        :href="route('categories.index')"
-                        :current="request()->routeIs('categories.*')"
-                        :class="$navItemClass"
-                        wire:navigate
-                    >
-                        {{ __('Job Categories') }}
-                    </flux:sidebar.item>
-
-                @endcan
-
-            </flux:sidebar.group>
-
-
-            {{-- Recruitment --}}
-            <flux:sidebar.group
-                :heading="__('Recruitment')"
-                :class="$navGroupClass"
-            >
-
-                {{-- Jobs: Admin + Company Owner --}}
-                @can('viewAny', \Shagalni\Shared\Models\JobVacancy::class)
-
-                    <flux:sidebar.item
-                        icon="briefcase"
-                        :href="route('jobs.index')"
-                        :current="request()->routeIs('jobs.*')"
-                        :class="$navItemClass"
-                        wire:navigate
-                    >
-                        {{ __('Jobs') }}
-                    </flux:sidebar.item>
-
-                @endcan
-
-
-                {{-- Applications: Approved Company Owners Only --}}
-                @can('viewAny', \Shagalni\Shared\Models\Application::class)
-
-                    <flux:sidebar.item
-                        icon="document-text"
-                        :href="route('applications.index')"
-                        :current="request()->routeIs('applications.*')"
-                        :class="$navItemClass"
-                        wire:navigate
-                    >
-                        {{ __('Applications') }}
-                    </flux:sidebar.item>
-
-                @endcan
-
-            </flux:sidebar.group>
-
-
-            {{-- Company --}}
-            @if ($user->company)
-
-                @can('viewOwnProfile', $user->company)
-
-                    <flux:sidebar.group
-                        :heading="__('Company')"
-                        :class="$navGroupClass"
-                    >
-
-                        <flux:sidebar.item
-                            icon="building-office"
-                            :href="route('my-company.show')"
-                            :current="request()->routeIs('my-company.*')"
-                            :class="$navItemClass"
-                            wire:navigate
-                        >
-                            {{ __('My Company') }}
+                    @if ($canUsers)
+                        <flux:sidebar.item icon="users" :href="route('users.index')"
+                            :current="request()->routeIs('users.*')" class="app-nav-item" wire:navigate>
+                            {{ __('Users') }}
                         </flux:sidebar.item>
+                    @endif
 
-                    </flux:sidebar.group>
+                    @if ($canCompanies)
+                        <flux:sidebar.item icon="building-office-2" :href="route('companies.index')"
+                            :current="request()->routeIs('companies.*')" class="app-nav-item" wire:navigate>
+                            {{ __('Companies') }}
+                        </flux:sidebar.item>
+                    @endif
 
-                @endcan
-
+                    @if ($canChangeRequests)
+                        <flux:sidebar.item icon="clipboard-document-check"
+                            :href="route('company-change-requests.index')"
+                            :current="request()->routeIs('company-change-requests.*')" class="app-nav-item"
+                            wire:navigate>
+                            {{ __('Company Change Requests') }}
+                        </flux:sidebar.item>
+                    @endif
+                </div>
             @endif
 
+            {{-- Recruitment: Jobs (both), Job Categories (Admin), Applications (Company Owner) --}}
+            @if ($showRecruitment)
+                <div class="app-nav-group">
+                    <div class="app-nav-divider hidden in-data-flux-sidebar-collapsed-desktop:block"></div>
+                    <div class="app-nav-heading in-data-flux-sidebar-collapsed-desktop:hidden">
+                        {{ __('Recruitment') }}
+                    </div>
 
-            {{-- Account --}}
-            <flux:sidebar.group
-                :heading="__('Account')"
-                :class="$navGroupClass"
-            >
+                    @if ($canJobs)
+                        <flux:sidebar.item icon="briefcase" :href="route('jobs.index')"
+                            :current="request()->routeIs('jobs.*')" class="app-nav-item" wire:navigate>
+                            {{ __('Jobs') }}
+                        </flux:sidebar.item>
+                    @endif
 
-                <flux:sidebar.item
-                    icon="user-circle"
-                    :href="route('profile.edit')"
-                    :current="request()->routeIs('profile.edit')"
-                    :class="$navItemClass"
-                    wire:navigate
-                >
+                    @if ($canCategories)
+                        <flux:sidebar.item icon="squares-2x2" :href="route('categories.index')"
+                            :current="request()->routeIs('categories.*')" class="app-nav-item" wire:navigate>
+                            {{ __('Job Categories') }}
+                        </flux:sidebar.item>
+                    @endif
+
+                    @if ($canApplications)
+                        <flux:sidebar.item icon="document-text" :href="route('applications.index')"
+                            :current="request()->routeIs('applications.*')" class="app-nav-item" wire:navigate>
+                            {{ __('Applications') }}
+                        </flux:sidebar.item>
+                    @endif
+                </div>
+            @endif
+
+            {{-- Company (Company Owner) --}}
+            @if ($canMyCompany)
+                <div class="app-nav-group">
+                    <div class="app-nav-divider hidden in-data-flux-sidebar-collapsed-desktop:block"></div>
+                    <div class="app-nav-heading in-data-flux-sidebar-collapsed-desktop:hidden">
+                        {{ __('Company') }}
+                    </div>
+
+                    <flux:sidebar.item icon="building-office" :href="route('my-company.show')"
+                        :current="request()->routeIs('my-company.*')" class="app-nav-item" wire:navigate>
+                        {{ __('My Company') }}
+                    </flux:sidebar.item>
+                </div>
+            @endif
+
+            {{-- Account (both roles) --}}
+            <div class="app-nav-group">
+                <div class="app-nav-divider hidden in-data-flux-sidebar-collapsed-desktop:block"></div>
+                <div class="app-nav-heading in-data-flux-sidebar-collapsed-desktop:hidden">
+                    {{ __('Account') }}
+                </div>
+
+                <flux:sidebar.item icon="user-circle" :href="route('profile.edit')"
+                    :current="request()->routeIs('profile.edit')" class="app-nav-item" wire:navigate>
                     {{ __('Profile') }}
                 </flux:sidebar.item>
 
-
-                <flux:sidebar.item
-                    icon="shield-check"
-                    :href="route('security.edit')"
-                    :current="request()->routeIs('security.edit')"
-                    :class="$navItemClass"
-                    wire:navigate
-                >
+                <flux:sidebar.item icon="shield-check" :href="route('security.edit')"
+                    :current="request()->routeIs('security.edit')" class="app-nav-item" wire:navigate>
                     {{ __('Security') }}
                 </flux:sidebar.item>
 
-
-                <flux:sidebar.item
-                    icon="adjustments-horizontal"
-                    :href="route('appearance.edit')"
-                    :current="request()->routeIs('appearance.edit')"
-                    :class="$navItemClass"
-                    wire:navigate
-                >
+                <flux:sidebar.item icon="adjustments-horizontal" :href="route('appearance.edit')"
+                    :current="request()->routeIs('appearance.edit')" class="app-nav-item" wire:navigate>
                     {{ __('Appearance') }}
                 </flux:sidebar.item>
-
-            </flux:sidebar.group>
+            </div>
 
         </flux:sidebar.nav>
 
-
         <flux:spacer />
 
-
-        {{-- Desktop User Menu --}}
-        <div class="hidden border-t border-indigo-100/70 p-3 lg:block">
+        {{-- User menu (desktop + mobile drawer) --}}
+        <div class="app-sidebar-footer">
             <x-desktop-user-menu />
         </div>
 
     </flux:sidebar>
 
-
-    {{-- Main Application Area --}}
-    <div class="relative min-h-screen">
-
-        {{-- Topbar --}}
-        <flux:header class="sticky top-0 z-20 border-b border-indigo-100/80 bg-white/90 px-4 py-3 shadow-sm shadow-indigo-950/[0.03] backdrop-blur-xl sm:px-6 lg:px-8">
-
-            {{-- Mobile Sidebar Toggle --}}
-            <flux:sidebar.toggle
-                class="lg:hidden"
-                icon="bars-2"
-            />
-
-
-            {{-- Mobile Logo --}}
-            <x-app-logo
-                class="sm:hidden"
-                href="{{ route('dashboard') }}"
-                wire:navigate
-            />
-
-
-            {{-- Page Heading --}}
-            <div class="hidden min-w-0 sm:block">
-
-                <flux:heading
-                    size="lg"
-                    class="truncate font-semibold text-slate-900"
-                >
-                    {{ $pageTitle }}
-                </flux:heading>
-
-                <flux:text class="mt-1 text-xs text-slate-500">
-                    {{ __('Shagalni management workspace') }}
-                </flux:text>
-
-            </div>
-
-
-            <flux:spacer />
-
-
-            {{-- Mobile User Menu --}}
-            <flux:dropdown
-                position="bottom"
-                align="end"
-                class="lg:hidden"
-            >
-
-                <flux:profile
-                    :initials="$userInitials"
-                    :avatar="$user->profile_picture_url"
-                    icon-trailing="chevron-down"
-                    class="rounded-full border border-indigo-100 bg-white shadow-sm shadow-indigo-950/[0.04]"
-                />
-
-                <flux:menu class="!border-indigo-100 shadow-lg shadow-indigo-950/10">
-
-                    {{-- User Information --}}
-                    <div class="p-2">
-
-                        <div class="flex items-center gap-2 text-start text-sm">
-
-                            <flux:avatar
-                                :name="$user->full_name"
-                                :initials="$userInitials"
-                                :src="$user->profile_picture_url"
-                            />
-
-                            <div class="grid min-w-0 flex-1 text-start text-sm leading-tight">
-
-                                <flux:heading class="truncate">
-                                    {{ $user->full_name }}
-                                </flux:heading>
-
-                                <flux:text class="truncate text-xs">
-                                    {{ $user->email }}
-                                </flux:text>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <flux:menu.separator />
-
-
-                    {{-- Account Settings --}}
-                    <flux:menu.item
-                        :href="route('profile.edit')"
-                        icon="cog"
-                        wire:navigate
-                    >
-                        {{ __('Settings') }}
-                    </flux:menu.item>
-
-
-                    <flux:menu.separator />
-
-
-                    {{-- Logout --}}
-                    <form
-                        method="POST"
-                        action="{{ route('logout') }}"
-                        class="w-full"
-                    >
-                        @csrf
-
-                        <flux:menu.item
-                            as="button"
-                            type="submit"
-                            icon="arrow-right-start-on-rectangle"
-                            class="w-full cursor-pointer"
-                            data-test="logout-button"
-                        >
-                            {{ __('Log out') }}
-                        </flux:menu.item>
-
-                    </form>
-
-                </flux:menu>
-
-            </flux:dropdown>
-
-        </flux:header>
-
-
-        {{-- Page Content --}}
-        {{ $slot }}
-
-    </div>
-
+    {{-- Page content (flux:main + topbar are provided by layouts/app.blade.php) --}}
+    {{ $slot }}
 
     {{-- Toast Notifications --}}
     @persist('toast')
@@ -405,9 +183,8 @@
         </flux:toast.group>
     @endpersist
 
-
-    {{-- Flux Scripts --}}
     @fluxScripts
-
+    @livewireScripts
 </body>
+
 </html>
