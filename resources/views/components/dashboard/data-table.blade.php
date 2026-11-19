@@ -6,8 +6,12 @@
     'viewAllText' => null,
 ])
 
-<div {{ $attributes->merge(['class' => 'overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900']) }}>
-    @if ($title || $viewAllUrl)
+<div {{ $attributes->merge(['class' => 'overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs transition-[border-color,box-shadow] duration-200 hover:border-slate-300 hover:shadow-sm motion-reduce:transition-none dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700']) }}>
+    @if (isset($header))
+        <div class="border-b border-slate-200 px-5 py-3.5 dark:border-slate-800">
+            {{ $header }}
+        </div>
+    @elseif ($title || $viewAllUrl)
         <div class="flex items-center justify-between border-b border-slate-200 px-5 py-3.5 dark:border-slate-800">
             <div>
                 @if ($title)

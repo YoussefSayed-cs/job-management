@@ -8,28 +8,28 @@
     $statusMeta = [
         'pending' => [
             'label' => __('Pending'),
-            'bar' => 'bg-indigo-300 dark:bg-indigo-400',
-            'dot' => 'bg-indigo-400',
+            'bar' => 'bg-indigo-200 dark:bg-indigo-300',
+            'dot' => 'bg-indigo-300 dark:bg-indigo-300',
         ],
         'under_review' => [
             'label' => __('Under Review'),
-            'bar' => 'bg-indigo-400 dark:bg-indigo-500',
-            'dot' => 'bg-indigo-500',
+            'bar' => 'bg-indigo-300 dark:bg-indigo-400',
+            'dot' => 'bg-indigo-400 dark:bg-indigo-400',
         ],
         'shortlisted' => [
             'label' => __('Shortlisted'),
-            'bar' => 'bg-indigo-500 dark:bg-indigo-600',
-            'dot' => 'bg-indigo-600',
+            'bar' => 'bg-indigo-400 dark:bg-indigo-500',
+            'dot' => 'bg-indigo-500 dark:bg-indigo-500',
         ],
         'interview' => [
             'label' => __('Interview'),
             'bar' => 'bg-indigo-600 dark:bg-indigo-700',
-            'dot' => 'bg-indigo-700',
+            'dot' => 'bg-indigo-600 dark:bg-indigo-600',
         ],
         'accepted' => [
             'label' => __('Accepted'),
-            'bar' => 'bg-blue-800 dark:bg-blue-600',
-            'dot' => 'bg-blue-800 dark:bg-blue-600',
+            'bar' => 'bg-indigo-800 dark:bg-indigo-700',
+            'dot' => 'bg-indigo-800 dark:bg-indigo-700',
         ],
         'rejected' => [
             'label' => __('Rejected'),
@@ -63,17 +63,18 @@
             @endforeach
         </div>
 
-        {{-- Legend underneath with counts --}}
-        <div class="grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-3 lg:grid-cols-4">
+        {{-- Full status names and their share of the pipeline --}}
+        <div class="flex flex-col gap-2">
             @foreach ($statusMeta as $key => $meta)
                 @php
                     $count = $distribution[$key] ?? 0;
                     $pct = $total > 0 ? round(($count / $total) * 100, 1) : 0;
                 @endphp
-                <div class="flex items-center gap-2 text-xs">
+                <div class="flex items-center gap-2.5 text-xs">
                     <span class="size-2 shrink-0 rounded-full {{ $meta['dot'] }}"></span>
-                    <span class="truncate text-slate-600 dark:text-slate-400">{{ $meta['label'] }}</span>
-                    <span class="ms-auto font-medium tabular-nums text-slate-900 dark:text-white">{{ number_format($count) }}</span>
+                    <span class="min-w-0 flex-1 text-slate-600 dark:text-slate-400">{{ $meta['label'] }}</span>
+                    <span class="min-w-10 text-right font-medium tabular-nums text-slate-900 dark:text-white">{{ number_format($count) }}</span>
+                    <span class="w-12 text-right tabular-nums text-slate-500 dark:text-slate-400">{{ $pct }}%</span>
                 </div>
             @endforeach
         </div>

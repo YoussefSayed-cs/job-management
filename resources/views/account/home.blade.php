@@ -1,9 +1,6 @@
 <x-jobs.layout title="Dashboard">
     @php
         $pendingCount = $statusDistribution[\Shagalni\Shared\Enums\ApplicationStatus::Pending->value] ?? 0;
-        $activePipelineCount = ($statusDistribution[\Shagalni\Shared\Enums\ApplicationStatus::UnderReview->value] ?? 0)
-            + ($statusDistribution[\Shagalni\Shared\Enums\ApplicationStatus::Shortlisted->value] ?? 0)
-            + ($statusDistribution[\Shagalni\Shared\Enums\ApplicationStatus::Interview->value] ?? 0);
 
         $jobChips = [
             [
@@ -75,74 +72,61 @@
             </x-slot:actions>
         </x-dashboard.page-header>
 
-        {{-- 2. Metric Stat Cards Grid --}}
-        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            <x-dashboard.stat-card
-                :label="__('Total Applications')"
-                :value="number_format($applicationStats['total'])"
-                :subtext="__('All candidate submissions')"
-                icon="document-text"
-                accent="indigo"
-            />
+        {{-- 2. Key metrics --}}
+        <x-dashboard.kpi-strip :stats="[
+            [
+                'label' => __('Total Applications'),
+                'value' => number_format($applicationStats['total']),
+                'subtext' => __('All candidate submissions'),
+            ],
+            [
+                'label' => __('Pending Review'),
+                'value' => number_format($pendingCount),
+                'subtext' => __('Requires candidate screening'),
+                'accent' => true,
+                'href' => route('applications.index', ['status' => 'pending']),
+            ],
+            [
+                'label' => __('Active Jobs'),
+                'value' => number_format($jobStats['active']),
+                'subtext' => __('Open for applicants'),
+            ],
+            [
+                'label' => __('Unique Applicants'),
+                'value' => number_format($applicationStats['applicants']),
+                'subtext' => __('Distinct talent pool'),
+            ],
+        ]" />
 
-            <x-dashboard.stat-card
-                :label="__('Pending Review')"
-                :value="number_format($pendingCount)"
-                :subtext="__('Requires candidate screening')"
-                icon="clock"
-                accent="amber"
-                :badge="$pendingCount > 0 ? __('Action needed') : null"
-            />
-
-            <x-dashboard.stat-card
-                :label="__('Active Jobs')"
-                :value="number_format($jobStats['active'])"
-                :subtext="__('Open for applicants')"
-                icon="briefcase"
-                accent="blue"
-            />
-
-            <x-dashboard.stat-card
-                :label="__('Unique Applicants')"
-                :value="number_format($applicationStats['applicants'])"
-                :subtext="__('Distinct talent pool')"
-                icon="users"
-                accent="sky"
-            />
-        </div>
-
-        {{-- 3. Analytics Charts Row (2 Balanced Columns) --}}
+        {{-- 3. Analytics --}}
         <div class="grid gap-6 lg:grid-cols-2">
-            {{-- Jobs by Status Bar Chart --}}
             <x-dashboard.chart-card
                 :title="__('Jobs by status')"
-                :subtitle="__('Portfolio distribution across vacancy lifecycles.')"
+                :subtitle="__('Current distribution across vacancy lifecycles.')"
             >
                 <x-analytics.chart
                     type="bar"
                     label="Jobs by status"
                     :labels="$jobStatusChart['labels']"
                     :values="$jobStatusChart['values']"
-                    height="h-56"
+                    :horizontal="true"
+                    height="h-52"
                 />
 
                 <x-slot:footer>
-                    <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+                    <div class="grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-4">
                         <span>
                             <span class="text-slate-500 dark:text-slate-400">{{ __('Active:') }}</span>
                             <span class="font-semibold tabular-nums text-slate-900 dark:text-white">{{ number_format($jobStats['active']) }}</span>
                         </span>
-                        <span class="text-slate-300 dark:text-slate-700">·</span>
                         <span>
                             <span class="text-slate-500 dark:text-slate-400">{{ __('Expired:') }}</span>
                             <span class="font-semibold tabular-nums text-slate-900 dark:text-white">{{ number_format($jobStats['expired']) }}</span>
                         </span>
-                        <span class="text-slate-300 dark:text-slate-700">·</span>
                         <span>
                             <span class="text-slate-500 dark:text-slate-400">{{ __('Closed:') }}</span>
                             <span class="font-semibold tabular-nums text-slate-900 dark:text-white">{{ number_format($jobStats['closed']) }}</span>
                         </span>
-                        <span class="text-slate-300 dark:text-slate-700">·</span>
                         <span>
                             <span class="text-slate-500 dark:text-slate-400">{{ __('Archived:') }}</span>
                             <span class="font-semibold tabular-nums text-slate-900 dark:text-white">{{ number_format($jobStats['archived']) }}</span>
@@ -151,7 +135,6 @@
                 </x-slot:footer>
             </x-dashboard.chart-card>
 
-            {{-- Applications by Status Funnel --}}
             <x-dashboard.chart-card
                 :title="__('Applications by status')"
                 :subtitle="__('Current candidate progression across all hiring stages.')"
@@ -161,7 +144,7 @@
                 <x-slot:footer>
                     <div class="flex items-center justify-between text-xs">
                         <span>
-                            <span class="text-slate-500 dark:text-slate-400">{{ __('Total processed:') }}</span>
+                            <span class="text-slate-500 dark:text-slate-400">{{ __('Total:') }}</span>
                             <span class="font-semibold tabular-nums text-slate-900 dark:text-white">{{ number_format($applicationStats['total']) }}</span>
                         </span>
                         <a href="{{ route('applications.index') }}" wire:navigate
@@ -174,185 +157,79 @@
             </x-dashboard.chart-card>
         </div>
 
-        {{-- 4. Operations & Tables Row (2 Balanced Columns) --}}
-        <div class="grid gap-6 lg:grid-cols-2">
-            {{-- Recent Jobs Table with Filter Chips --}}
-            <div class="flex flex-col gap-3">
-                <div class="flex items-center justify-between">
-                    <h2 class="text-sm font-semibold tracking-tight text-slate-900 dark:text-white">
-                        {{ __('Recent Job Postings') }}
-                    </h2>
-                    <x-dashboard.filter-chips :chips="$jobChips" />
-                </div>
-
-                <x-dashboard.data-table
-                    :headers="[__('Job Title'), __('Status'), __('Created'), ['label' => __('Action'), 'align' => 'right']]"
-                    :view-all-url="auth()->user()->can('viewAny', \Shagalni\Shared\Models\JobVacancy::class) ? route('jobs.index') : null"
-                    :view-all-text="__('All jobs')"
-                >
-                    @forelse ($recentJobs as $job)
-                        <tr class="transition-colors hover:bg-slate-50/75 dark:hover:bg-slate-800/40">
-                            <td class="px-5 py-3 font-medium text-slate-900 dark:text-white">
-                                @can('view', $job)
-                                    <a href="{{ route('jobs.show', $job) }}" wire:navigate
-                                        class="transition hover:text-indigo-600 dark:hover:text-indigo-400">
-                                        {{ $job->title }}
-                                    </a>
-                                @else
-                                    {{ $job->title }}
-                                @endcan
-                            </td>
-                            <td class="px-5 py-3">
-                                <x-jobs.status-badge :status="$job->status" />
-                            </td>
-                            <td class="px-5 py-3 text-slate-500 dark:text-slate-400">
-                                <time datetime="{{ $job->created_at->toAtomString() }}">
-                                    {{ $job->created_at->format('M j, Y') }}
-                                </time>
-                            </td>
-                            <td class="px-5 py-3 text-right">
-                                @can('view', $job)
-                                    <a href="{{ route('jobs.show', $job) }}" wire:navigate
-                                        class="inline-flex items-center gap-1 font-medium text-indigo-600 transition hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300">
-                                        <span>{{ __('View') }}</span>
-                                        <flux:icon.arrow-right class="size-3" />
-                                    </a>
-                                @endcan
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="px-5 py-8 text-center">
-                                <p class="text-xs font-medium text-slate-600 dark:text-slate-400">
-                                    {{ __('No jobs yet') }}
-                                </p>
-                                <p class="mt-1 text-xs text-slate-400">
-                                    {{ __('Jobs you publish will appear here.') }}
-                                </p>
-                                @can('create', \Shagalni\Shared\Models\JobVacancy::class)
-                                    <div class="mt-3">
-                                        <a href="{{ route('jobs.create') }}" wire:navigate
-                                            class="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400">
-                                            <flux:icon.plus class="size-3" />
-                                            {{ __('Post your first job') }}
-                                        </a>
-                                    </div>
-                                @endcan
-                            </td>
-                        </tr>
-                    @endforelse
-                </x-dashboard.data-table>
-            </div>
-
-            {{-- Candidate Review Queue Table --}}
-            <div class="flex flex-col gap-3">
-                <div class="flex items-center justify-between">
-                    <h2 class="text-sm font-semibold tracking-tight text-slate-900 dark:text-white">
-                        {{ __('Candidate Review Queue') }}
-                    </h2>
-                    @can('viewAny', \Shagalni\Shared\Models\Application::class)
-                        <a href="{{ route('applications.index') }}" wire:navigate
-                            class="inline-flex items-center gap-1 text-xs font-medium text-indigo-600 transition hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300">
-                            {{ __('All applications') }}
+        {{-- 4. Jobs --}}
+        <x-dashboard.data-table
+            :headers="[__('Job Title'), __('Status'), __('Created'), ['label' => __('Action'), 'align' => 'right']]"
+        >
+            <x-slot:header>
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div class="flex min-w-0 flex-col gap-2">
+                        <h2 class="text-sm font-semibold tracking-tight text-slate-900 dark:text-white">
+                            {{ __('Jobs') }}
+                        </h2>
+                        <x-dashboard.filter-chips :chips="$jobChips" />
+                    </div>
+                    @can('viewAny', \Shagalni\Shared\Models\JobVacancy::class)
+                        <a href="{{ route('jobs.index') }}" wire:navigate
+                            class="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-indigo-600 transition hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300">
+                            {{ __('All jobs') }}
                             <flux:icon.arrow-right class="size-3" />
                         </a>
                     @endcan
                 </div>
+            </x-slot:header>
 
-                <x-dashboard.data-table
-                    :headers="[__('Queue / Stage'), __('Count'), ['label' => __('Action'), 'align' => 'right']]"
-                >
-                    <tr class="transition-colors hover:bg-slate-50/75 dark:hover:bg-slate-800/40">
-                        <td class="px-5 py-3">
-                            <div class="flex items-center gap-2.5">
-                                <div class="flex size-7 items-center justify-center rounded-md border border-amber-200/80 bg-amber-50 text-amber-700 dark:border-amber-800/40 dark:bg-amber-950/40 dark:text-amber-300">
-                                    <flux:icon.clock class="size-3.5" />
-                                </div>
-                                <div>
-                                    <p class="font-medium text-slate-900 dark:text-white">{{ __('Pending Review') }}</p>
-                                    <p class="text-[0.6875rem] text-slate-500 dark:text-slate-400">
-                                        {{ __('New candidates awaiting initial screening') }}
-                                    </p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-5 py-3">
-                            <span class="inline-flex items-center rounded-full border border-amber-200/80 bg-amber-50 px-2.5 py-0.5 text-xs font-semibold tabular-nums text-amber-900 dark:border-amber-800/40 dark:bg-amber-950/40 dark:text-amber-300">
-                                {{ number_format($pendingCount) }}
-                            </span>
-                        </td>
-                        <td class="px-5 py-3 text-right">
-                            @can('viewAny', \Shagalni\Shared\Models\Application::class)
-                                <a href="{{ route('applications.index', ['status' => 'pending']) }}" wire:navigate
-                                    class="inline-flex items-center gap-1 font-medium text-indigo-600 transition hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300">
-                                    <span>{{ __('Review') }}</span>
-                                    <flux:icon.arrow-right class="size-3" />
+            @forelse ($recentJobs as $job)
+                <tr class="transition-colors hover:bg-slate-50/75 dark:hover:bg-slate-800/40">
+                    <td class="px-5 py-3 font-medium text-slate-900 dark:text-white">
+                        @can('view', $job)
+                            <a href="{{ route('jobs.show', $job) }}" wire:navigate
+                                class="transition hover:text-indigo-600 dark:hover:text-indigo-400">
+                                {{ $job->title }}
+                            </a>
+                        @else
+                            {{ $job->title }}
+                        @endcan
+                    </td>
+                    <td class="px-5 py-3">
+                        <x-jobs.status-badge :status="$job->status" />
+                    </td>
+                    <td class="px-5 py-3 text-slate-500 dark:text-slate-400">
+                        <time datetime="{{ $job->created_at->toAtomString() }}">
+                            {{ $job->created_at->format('M j, Y') }}
+                        </time>
+                    </td>
+                    <td class="px-5 py-3 text-right">
+                        @can('view', $job)
+                            <a href="{{ route('jobs.show', $job) }}" wire:navigate
+                                class="inline-flex items-center gap-1 font-medium text-indigo-600 transition hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300">
+                                <span>{{ __('View') }}</span>
+                                <flux:icon.arrow-right class="size-3" />
+                            </a>
+                        @endcan
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="4" class="px-5 py-8 text-center">
+                        <p class="text-xs font-medium text-slate-600 dark:text-slate-400">
+                            {{ __('No jobs yet') }}
+                        </p>
+                        <p class="mt-1 text-xs text-slate-400">
+                            {{ __('Jobs you publish will appear here.') }}
+                        </p>
+                        @can('create', \Shagalni\Shared\Models\JobVacancy::class)
+                            <div class="mt-3">
+                                <a href="{{ route('jobs.create') }}" wire:navigate
+                                    class="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400">
+                                    <flux:icon.plus class="size-3" />
+                                    {{ __('Post your first job') }}
                                 </a>
-                            @endcan
-                        </td>
-                    </tr>
-
-                    <tr class="transition-colors hover:bg-slate-50/75 dark:hover:bg-slate-800/40">
-                        <td class="px-5 py-3">
-                            <div class="flex items-center gap-2.5">
-                                <div class="flex size-7 items-center justify-center rounded-md border border-indigo-200/80 bg-indigo-50 text-indigo-600 dark:border-indigo-800/40 dark:bg-indigo-950/40 dark:text-indigo-400">
-                                    <flux:icon.user-group class="size-3.5" />
-                                </div>
-                                <div>
-                                    <p class="font-medium text-slate-900 dark:text-white">{{ __('Active Pipeline') }}</p>
-                                    <p class="text-[0.6875rem] text-slate-500 dark:text-slate-400">
-                                        {{ __('Under review, shortlisted, and interview stages') }}
-                                    </p>
-                                </div>
                             </div>
-                        </td>
-                        <td class="px-5 py-3">
-                            <span class="inline-flex items-center rounded-full border border-indigo-200/80 bg-indigo-50 px-2.5 py-0.5 text-xs font-semibold tabular-nums text-indigo-800 dark:border-indigo-800/40 dark:bg-indigo-950/40 dark:text-indigo-300">
-                                {{ number_format($activePipelineCount) }}
-                            </span>
-                        </td>
-                        <td class="px-5 py-3 text-right">
-                            @can('viewAny', \Shagalni\Shared\Models\Application::class)
-                                <a href="{{ route('applications.index') }}" wire:navigate
-                                    class="inline-flex items-center gap-1 font-medium text-indigo-600 transition hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300">
-                                    <span>{{ __('Open pipeline') }}</span>
-                                    <flux:icon.arrow-right class="size-3" />
-                                </a>
-                            @endcan
-                        </td>
-                    </tr>
-
-                    <tr class="transition-colors hover:bg-slate-50/75 dark:hover:bg-slate-800/40">
-                        <td class="px-5 py-3">
-                            <div class="flex items-center gap-2.5">
-                                <div class="flex size-7 items-center justify-center rounded-md border border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                                    <flux:icon.document-text class="size-3.5" />
-                                </div>
-                                <div>
-                                    <p class="font-medium text-slate-900 dark:text-white">{{ __('All Applications') }}</p>
-                                    <p class="text-[0.6875rem] text-slate-500 dark:text-slate-400">
-                                        {{ __('Total historical candidate submissions') }}
-                                    </p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-5 py-3">
-                            <span class="inline-flex items-center rounded-full border border-slate-200 bg-slate-100 px-2.5 py-0.5 text-xs font-semibold tabular-nums text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                                {{ number_format($applicationStats['total']) }}
-                            </span>
-                        </td>
-                        <td class="px-5 py-3 text-right">
-                            @can('viewAny', \Shagalni\Shared\Models\Application::class)
-                                <a href="{{ route('applications.index') }}" wire:navigate
-                                    class="inline-flex items-center gap-1 font-medium text-indigo-600 transition hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300">
-                                    <span>{{ __('View all') }}</span>
-                                    <flux:icon.arrow-right class="size-3" />
-                                </a>
-                            @endcan
-                        </td>
-                    </tr>
-                </x-dashboard.data-table>
-            </div>
-        </div>
+                        @endcan
+                    </td>
+                </tr>
+            @endforelse
+        </x-dashboard.data-table>
     </div>
 </x-jobs.layout>
