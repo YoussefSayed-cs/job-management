@@ -2,7 +2,7 @@ domains:
   - job-management
   - shagalni-v2
 php_version: "8.5"
-node_version: "22"
+node_version: "26"
 framework: laravel
 framework_version: "13"
 secured: true
@@ -11,4 +11,6 @@ services:
   - mysql
   - redis
 workers:
+  - queue
+  - schedule
   - vite
