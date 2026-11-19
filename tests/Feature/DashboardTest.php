@@ -125,10 +125,7 @@ test('company owner dashboard renders application and job charts with company-sc
             'labels' => ['Active', 'Expired', 'Closed', 'Archived'],
             'values' => [1, 0, 1, 0],
         ])
-        ->assertSee('Applications by status')
-        ->assertSee('Jobs by status');
-
-    expect(substr_count($response->getContent(), '<canvas'))->toBe(2);
+        ->assertSee('Applications by status');
 });
 
 test('dashboard categorizes active and expired jobs without overlap', function () {

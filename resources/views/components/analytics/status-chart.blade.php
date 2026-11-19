@@ -4,9 +4,9 @@
     $palette = [
         'pending' => '#d97706',
         'under_review' => '#0284c7',
-        'shortlisted' => '#1d4ed8',
+        'shortlisted' => '#4f46e5',
         'interview' => '#7e22ce',
-        'accepted' => '#059669',
+        'accepted' => '#2563eb',
         'rejected' => '#e11d48',
         'withdrawn' => '#64748b',
     ];

@@ -31,8 +31,8 @@ Chart.register(
 );
 
 
-const PALETTE_LIGHT = ['#4F46E5', '#2563EB', '#059669', '#D97706', '#E11D48', '#8B5CF6', '#64748B'];
-const PALETTE_DARK = ['#6366F1', '#3B82F6', '#10B981', '#F59E0B', '#F43F5E', '#A78BFA', '#94A3B8'];
+const PALETTE_LIGHT = ['#4F46E5', '#2563EB', '#0284C7', '#4338CA', '#D97706', '#E11D48', '#64748B'];
+const PALETTE_DARK = ['#6366F1', '#3B82F6', '#38BDF8', '#818CF8', '#F59E0B', '#F43F5E', '#94A3B8'];
 
 const charts = new Map();
 
