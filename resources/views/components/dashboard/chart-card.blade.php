@@ -12,7 +12,7 @@
     <div class="flex flex-1 flex-col">
         <div class="flex items-start justify-between gap-4">
             <div>
-                <h2 class="text-sm font-semibold tracking-tight text-slate-900 dark:text-white">
+                <h2 class="text-sm font-semibold tracking-tight text-slate-900 transition-colors group-hover:text-indigo-700 dark:text-white dark:group-hover:text-indigo-300">
                     {{ $title }}
                 </h2>
 
@@ -30,7 +30,7 @@
             @endif
         </div>
 
-        <div class="mt-4 flex-1 rounded-lg border border-slate-100 bg-slate-50/50 p-3 dark:border-slate-800/80 dark:bg-slate-950/30">
+        <div class="mt-4 flex-1 rounded-lg border border-slate-100 bg-slate-50/50 p-3 transition-colors duration-200 group-hover:border-indigo-100 dark:border-slate-800/80 dark:bg-slate-950/30 dark:group-hover:border-indigo-950/70">
             {{ $slot }}
         </div>
     </div>
