@@ -40,10 +40,10 @@
         </x-dashboard.hero>
 
         {{-- Company Overview Card --}}
-        <section aria-label="Company overview" class="overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs sm:p-6 dark:border-slate-800 dark:bg-slate-900">
+        <section aria-label="Company overview" class="overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-xs sm:p-6 dark:border-slate-800 dark:bg-slate-900">
             <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div class="flex items-center gap-4">
-                    <div class="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-xl font-bold text-white shadow-md shadow-indigo-600/20">
+                    <div class="flex size-14 shrink-0 items-center justify-center rounded-2xl border border-indigo-600/30 bg-indigo-600 text-xl font-bold tracking-tight text-white shadow-sm shadow-indigo-600/30 dark:border-indigo-500/30 dark:bg-indigo-500">
                         {{ strtoupper(substr($company->name, 0, 1)) }}
                     </div>
 
@@ -72,7 +72,7 @@
 
                             @if ($company->website)
                                 <a href="{{ $company->website }}" target="_blank" rel="noopener noreferrer"
-                                    class="inline-flex items-center gap-1 font-medium text-indigo-600 hover:text-indigo-700 hover:underline dark:text-indigo-400">
+                                    class="inline-flex items-center gap-1 font-medium text-indigo-600 hover:text-indigo-700 hover:underline dark:text-indigo-400 dark:hover:text-indigo-300">
                                     <flux:icon.globe-alt class="size-3.5" />
                                     {{ parse_url($company->website, PHP_URL_HOST) ?? $company->website }}
                                 </a>
@@ -118,7 +118,7 @@
                     :value="number_format($jobStats['total'])"
                     :description="__('All jobs in your workspace.')"
                     icon="briefcase"
-                    accent="violet"
+                    accent="indigo"
                 />
 
                 <x-dashboard.stat-card
@@ -189,13 +189,13 @@
                     label="Jobs by status"
                     :labels="$jobStatusChart['labels']"
                     :values="$jobStatusChart['values']"
-                    :colors="['#4f46e5', '#94a3b8', '#64748b', '#f59e0b']"
+                    :colors="['#4f46e5', '#64748b', '#475569', '#f59e0b']"
                 />
             </x-analytics.chart-card>
         </div>
 
         {{-- Recently Created Jobs --}}
-        <section class="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
+        <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
             <div class="flex items-center justify-between gap-3 border-b border-slate-100 px-5 py-4 sm:px-6 dark:border-slate-800">
                 <div>
                     <h2 class="text-base font-semibold tracking-tight text-slate-900 dark:text-white">
@@ -217,7 +217,7 @@
 
             @if ($recentJobs->isNotEmpty())
                 <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-slate-200/80 text-left dark:divide-slate-800">
+                    <table class="min-w-full divide-y divide-slate-200 text-left dark:divide-slate-800">
                         <thead class="bg-slate-50/75 dark:bg-slate-800/40">
                             <tr>
                                 <th scope="col" class="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500 sm:px-6 dark:text-slate-400">
@@ -234,7 +234,7 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-200/80 dark:divide-slate-800">
+                        <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
                             @foreach ($recentJobs as $job)
                                 <tr class="transition-colors hover:bg-slate-50/80 dark:hover:bg-slate-800/40">
                                     <td class="px-5 py-3.5 sm:px-6">

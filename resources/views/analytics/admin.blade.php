@@ -69,7 +69,7 @@
                     :value="number_format($totals['jobs'])"
                     :description="__('All jobs across platform.')"
                     icon="briefcase"
-                    accent="violet"
+                    accent="indigo"
                 />
 
                 <x-dashboard.stat-card
@@ -127,7 +127,7 @@
                     :value="number_format($activity['jobs_published'])"
                     :description="__('New openings posted.')"
                     icon="briefcase"
-                    accent="violet"
+                    accent="indigo"
                 />
 
                 <x-dashboard.stat-card

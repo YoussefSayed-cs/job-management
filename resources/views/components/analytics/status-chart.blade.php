@@ -2,13 +2,13 @@
 
 @php
     $palette = [
-        'pending' => '#f59e0b',
-        'under_review' => '#3b82f6',
-        'shortlisted' => '#6366f1',
-        'interview' => '#a855f7',
-        'accepted' => '#22c55e',
-        'rejected' => '#ef4444',
-        'withdrawn' => '#94a3b8',
+        'pending' => '#d97706',
+        'under_review' => '#0284c7',
+        'shortlisted' => '#1d4ed8',
+        'interview' => '#7e22ce',
+        'accepted' => '#059669',
+        'rejected' => '#e11d48',
+        'withdrawn' => '#64748b',
     ];
 
     $statuses = array_keys($distribution);

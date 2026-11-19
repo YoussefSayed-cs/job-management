@@ -2,20 +2,20 @@
     'label',
     'value',
     'description' => null,
-    'accent' => 'teal',
+    'accent' => 'indigo',
     'icon' => null,
     'badge' => null,
 ])
 
 @php
     $accentStyles = match ($accent) {
+        'indigo', 'blue', 'cobalt' => [
+            'icon_bg' => 'border border-indigo-200/80 bg-indigo-50 text-indigo-700 dark:border-indigo-800/40 dark:bg-indigo-950/40 dark:text-indigo-300',
+            'border_hover' => 'hover:border-indigo-300 dark:hover:border-indigo-700',
+        ],
         'teal' => [
             'icon_bg' => 'border border-teal-200/80 bg-teal-50 text-teal-800 dark:border-teal-800/40 dark:bg-teal-950/40 dark:text-teal-300',
             'border_hover' => 'hover:border-teal-300 dark:hover:border-teal-700',
-        ],
-        'cobalt', 'blue', 'indigo' => [
-            'icon_bg' => 'border border-blue-200/80 bg-blue-50 text-blue-800 dark:border-blue-800/40 dark:bg-blue-950/40 dark:text-blue-300',
-            'border_hover' => 'hover:border-blue-300 dark:hover:border-blue-700',
         ],
         'emerald' => [
             'icon_bg' => 'border border-emerald-200/80 bg-emerald-50 text-emerald-800 dark:border-emerald-800/40 dark:bg-emerald-950/40 dark:text-emerald-300',
@@ -42,8 +42,8 @@
             'border_hover' => 'hover:border-slate-300 dark:hover:border-slate-700',
         ],
         default => [
-            'icon_bg' => 'border border-teal-200/80 bg-teal-50 text-teal-800 dark:border-teal-800/40 dark:bg-teal-950/40 dark:text-teal-300',
-            'border_hover' => 'hover:border-teal-300 dark:hover:border-teal-700',
+            'icon_bg' => 'border border-indigo-200/80 bg-indigo-50 text-indigo-700 dark:border-indigo-800/40 dark:bg-indigo-950/40 dark:text-indigo-300',
+            'border_hover' => 'hover:border-indigo-300 dark:hover:border-indigo-700',
         ],
     };
 @endphp

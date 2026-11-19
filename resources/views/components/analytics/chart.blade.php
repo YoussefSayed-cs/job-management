@@ -21,7 +21,7 @@
     </div>
 @else
     <div
-        class="flex {{ $height }} items-center justify-center rounded-lg border border-dashed border-slate-200 text-sm text-slate-500 dark:border-slate-700 dark:text-slate-400">
+        class="flex {{ $height }} items-center justify-center rounded-xl border border-dashed border-slate-200 text-sm text-slate-500 dark:border-slate-800 dark:text-slate-400">
         {{ __('No data yet') }}
     </div>
 @endif

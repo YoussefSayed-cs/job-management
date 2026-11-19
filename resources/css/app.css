@@ -23,16 +23,16 @@
     --color-zinc-900: #171717;
     --color-zinc-950: #0a0a0a;
 
-    --color-accent: #0f766e;
-    --color-accent-content: #115e59;
+    --color-accent: #4f46e5;
+    --color-accent-content: #4338ca;
     --color-accent-foreground: var(--color-white);
 }
 
 @layer theme {
     .dark {
-        --color-accent: #14b8a6;
-        --color-accent-content: #2dd4bf;
-        --color-accent-foreground: #042f2e;
+        --color-accent: #6366f1;
+        --color-accent-content: #818cf8;
+        --color-accent-foreground: var(--color-white);
     }
 }
 
@@ -277,26 +277,26 @@ select:focus[data-flux-control] {
 
 /* =====================================================================
    Application shell (authenticated layout)
-   Theme: Precision Talent Atelier
-   Palette: Nordic Teal, Prussian Cobalt, Warm Alabaster, Obsidian Carbon
+   Theme: Shagalni Precision Atelier
+   Palette: Indigo Royal, Electric Cobalt, Slate, Obsidian Carbon (aligned with Login Master)
    ===================================================================== */
 :root {
-    --canvas-bg: #f8f9fa;
+    --canvas-bg: #f8fafc;
     --surface-solid: #ffffff;
     --surface-subtle: #f1f5f9;
     --border-hairline: #e2e8f0;
     --border-medium: #cbd5e1;
     --text-primary: #0f172a;
     --text-secondary: #334155;
-    --text-muted: #475569;
+    --text-muted: #64748b;
 
-    --brand-primary: #0f766e;
-    --brand-primary-hover: #115e59;
-    --brand-primary-soft: #f0fdfa;
-    --brand-primary-border: #ccfbf1;
+    --brand-primary: #4f46e5;
+    --brand-primary-hover: #4338ca;
+    --brand-primary-soft: #eef2ff;
+    --brand-primary-border: #c7d2fe;
 
-    --brand-accent: #1d4ed8;
-    --brand-accent-hover: #1e40af;
+    --brand-accent: #2563eb;
+    --brand-accent-hover: #1d4ed8;
     --brand-accent-soft: #eff6ff;
 
     --app-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.05);
@@ -312,10 +312,10 @@ select:focus[data-flux-control] {
     --text-secondary: #cbd5e1;
     --text-muted: #94a3b8;
 
-    --brand-primary: #14b8a6;
-    --brand-primary-hover: #2dd4bf;
-    --brand-primary-soft: rgba(20, 184, 166, 0.12);
-    --brand-primary-border: rgba(45, 212, 191, 0.25);
+    --brand-primary: #6366f1;
+    --brand-primary-hover: #818cf8;
+    --brand-primary-soft: rgba(99, 102, 241, 0.12);
+    --brand-primary-border: rgba(99, 102, 241, 0.25);
 
     --brand-accent: #3b82f6;
     --brand-accent-hover: #60a5fa;
