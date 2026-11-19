@@ -1,10 +1,9 @@
-<section class="mt-10 space-y-6">
-    <div class="relative mb-5">
-        <flux:heading>{{ __('Request Account Deletion') }}</flux:heading>
-
-        <flux:subheading>
+<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div class="space-y-1">
+        <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">{{ __('Request Account Deletion') }}</h3>
+        <p class="text-sm text-slate-500 dark:text-slate-400">
             {{ __('Request the permanent deletion of your account.') }}
-        </flux:subheading>
+        </p>
     </div>
 
     <flux:modal.trigger name="confirm-user-deletion">

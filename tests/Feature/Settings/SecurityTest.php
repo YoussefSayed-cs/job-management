@@ -16,7 +16,7 @@ test('security settings page can be rendered', function () {
         ->withSession(['auth.password_confirmed_at' => time()])
         ->get(route('security.edit'))
         ->assertOk()
-        ->assertSee('Update password')
+        ->assertSee('Current password')
         ->assertDontSee('Two-factor authentication');
 });
 
@@ -27,7 +27,7 @@ test('security settings page can be rendered without password confirmation', fun
         ->get(route('security.edit'))
     ->assertOk()
     ->assertSessionMissing('auth.password_confirmed_at')
-    ->assertSee('Update password');
+        ->assertSee('Current password');
 });
 
 test('password can be updated', function () {

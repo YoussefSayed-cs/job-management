@@ -1,14 +1,13 @@
-<section class="mt-10 space-y-6">
-    <div class="relative mb-5">
-        <flux:heading>{{ __('Deactivate Account') }}</flux:heading>
-
-        <flux:subheading>
+<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div class="space-y-1">
+        <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">{{ __('Deactivate Account') }}</h3>
+        <p class="text-sm text-slate-500 dark:text-slate-400">
             {{ __('Temporarily deactivate your account. You can reactivate it later with a link sent to your email.') }}
-        </flux:subheading>
+        </p>
     </div>
 
     <flux:modal.trigger name="confirm-account-deactivation">
-        <flux:button variant="filled" x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-account-deactivation')">
+        <flux:button variant="outline" x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-account-deactivation')">
             {{ __('Deactivate account') }}
         </flux:button>
     </flux:modal.trigger>
@@ -40,4 +39,4 @@
             </div>
         </form>
     </flux:modal>
-</section>
+</div>
