@@ -20,12 +20,14 @@ test('security settings page can be rendered', function () {
         ->assertDontSee('Two-factor authentication');
 });
 
-test('security settings page requires password confirmation', function () {
+test('security settings page can be rendered without password confirmation', function () {
     $user = User::factory()->create();
 
     $this->actingAs($user)
         ->get(route('security.edit'))
-        ->assertRedirect(route('password.confirm'));
+    ->assertOk()
+    ->assertSessionMissing('auth.password_confirmed_at')
+    ->assertSee('Update password');
 });
 
 test('password can be updated', function () {
