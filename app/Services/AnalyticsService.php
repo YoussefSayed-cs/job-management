@@ -6,6 +6,7 @@ use Carbon\CarbonPeriod;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Shagalni\Shared\Enums\ApplicationStatus;
 use Shagalni\Shared\Enums\JobStatus;
+use Shagalni\Shared\Enums\UserRole;
 use Shagalni\Shared\Models\Application;
 use Shagalni\Shared\Models\ApplicationStatusHistory;
 use Shagalni\Shared\Models\Company;
@@ -21,7 +22,9 @@ class AnalyticsService
         $distribution = $this->statusDistribution();
 
         return [
-            'users' => User::whereNull('anonymized_at')->count(),
+            'users' => User::whereNull('anonymized_at')
+                ->where('role', '!=', UserRole::Admin->value)
+                ->count(),
             'companies' => Company::count(),
             'jobs' => JobVacancy::count(),
             'applications' => array_sum($distribution),
@@ -34,7 +37,9 @@ class AnalyticsService
         $since = now()->subDays(self::ACTIVITY_DAYS);
 
         return [
-            'new_users' => User::where('created_at', '>=', $since)->count(),
+            'new_users' => User::where('role', '!=', UserRole::Admin->value)
+                ->where('created_at', '>=', $since)
+                ->count(),
             'company_registrations' => Company::where('created_at', '>=', $since)->count(),
             'jobs_published' => JobVacancy::where('created_at', '>=', $since)->count(),
             'applications_submitted' => Application::where('submitted_at', '>=', $since)->count(),

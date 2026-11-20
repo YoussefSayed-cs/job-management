@@ -105,7 +105,14 @@ it('does not count anonymized users in platform totals', function () {
     User::factory()->create();
     User::factory()->create(['anonymized_at' => now()]);
 
-    expect(analytics()->platformTotals()['users'])->toBe(2);
+    expect(analytics()->platformTotals()['users'])->toBe(1);
+});
+
+it('does not count the admin account in new-user activity', function () {
+    adminUser();
+    User::factory()->create();
+
+    expect(analytics()->platformActivity()['new_users'])->toBe(1);
 });
 
 it('reports rolling 30-day activity and ignores older records', function () {
