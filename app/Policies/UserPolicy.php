@@ -17,7 +17,7 @@ class UserPolicy
     public function view(User $user, User $target): bool
     {
         if ($user->role === UserRole::Admin) {
-            return $target->role !== UserRole::Admin;
+            return $target->role !== UserRole::Admin && $target->anonymized_at === null;
         }
 
         return $this->isApprovedCompanyOwner($user)

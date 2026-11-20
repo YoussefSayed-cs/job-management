@@ -55,7 +55,7 @@ test('admin lists only company owners and job seekers', function () {
 });
 
 test('anonymized users are not listed', function () {
-    User::factory()->deactivated()->create([
+    $user = User::factory()->deactivated()->create([
         'full_name' => 'Gone Person',
         'anonymized_at' => now(),
     ]);
@@ -63,6 +63,10 @@ test('anonymized users are not listed', function () {
     $this->actingAs(adminUser())
         ->get(route('users.index'))
         ->assertDontSee('Gone Person');
+
+    $this->actingAs(adminUser())
+        ->get(route('users.show', $user))
+        ->assertForbidden();
 });
 
 test('admin can filter users by role, status and search', function () {
