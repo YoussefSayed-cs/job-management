@@ -13,6 +13,7 @@ use App\Http\Controllers\CompanyProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JobCategoryController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ReviewCompanyRegistrationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserStatusController;
@@ -27,6 +28,9 @@ Route::middleware([
     EnsureManagementPortalAccess::class,
 ])->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
+    Route::post('notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
 
     Route::get('/users', [UserController::class, 'index'])
         ->name('users.index');
