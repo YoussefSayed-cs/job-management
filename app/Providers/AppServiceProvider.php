@@ -9,6 +9,7 @@ use App\Policies\JobCategoryPolicy;
 use App\Policies\JobPolicy;
 use App\Policies\UserPolicy;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -36,6 +37,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        EloquentBuilder::macro('whereEscapedLike', function (string $column, string $value, string $boolean = 'and') {
+            /** @var EloquentBuilder $this */
+            $escaped = str_replace(['!', '%', '_'], ['!!', '!%', '!_'], $value);
+
+            return $this->whereRaw(
+                $this->getModel()->qualifyColumn($column)." like ? escape '!'",
+                ["%{$escaped}%"],
+                $boolean
+            );
+        });
+
         Gate::policy(JobVacancy::class, JobPolicy::class);
         Gate::policy(Application::class, ApplicationPolicy::class);
         Gate::policy(JobCategory::class, JobCategoryPolicy::class);

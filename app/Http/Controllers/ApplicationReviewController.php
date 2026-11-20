@@ -43,13 +43,13 @@ class ApplicationReviewController extends Controller
             })
             ->when($search, function ($query, $search) {
                 $query->where(function ($query) use ($search) {
-                    $query->where('job_title', 'like', "%{$search}%")
+                    $query->whereEscapedLike('job_title', $search)
                         ->orWhereHas('user', function ($userQuery) use ($search) {
-                            $userQuery->where('full_name', 'like', "%{$search}%")
-                                ->orWhere('email', 'like', "%{$search}%");
+                            $userQuery->whereEscapedLike('full_name', $search)
+                                ->whereEscapedLike('email', $search, 'or');
                         });
                 });
-            })->latest('submitted_at')->paginate(15)->withQueryString();
+            })->latest('submitted_at')->orderBy('id')->paginate(15)->withQueryString();
 
         $statuses = ApplicationStatus::cases();
 

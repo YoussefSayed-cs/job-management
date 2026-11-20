@@ -34,10 +34,10 @@ class JobController extends Controller
 
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
-                $query->where('title', 'like', "%{$search}%")
-                    ->orWhere('location', 'like', "%{$search}%")
+                $query->whereEscapedLike('title', $search)
+                    ->whereEscapedLike('location', $search, 'or')
                     ->orWhereHas('company', function ($companyQuery) use ($search) {
-                        $companyQuery->where('name', 'like', "%{$search}%");
+                        $companyQuery->whereEscapedLike('name', $search);
                     });
             });
         })->when($filters['status'] ?? null, function ($query, $status) {
@@ -52,7 +52,7 @@ class JobController extends Controller
             $query->where('experience_level', $level);
         });
 
-        $jobs = $query->latest()->paginate(10)->withQueryString();
+        $jobs = $query->latest()->orderBy('id')->paginate(10)->withQueryString();
 
         $categories = JobCategory::query()->orderBy('name')->get();
 
