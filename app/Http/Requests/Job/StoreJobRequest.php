@@ -32,7 +32,7 @@ class StoreJobRequest extends FormRequest
             'salary_min' => ['nullable', 'numeric', 'min:0'],
             'salary_max' => ['nullable', 'numeric', 'min:0'],
             'experience_level' => ['nullable', Rule::enum(ExperienceLevel::class)],
-            'application_deadline' => ['nullable', 'date'],
+            'application_deadline' => ['nullable', 'date', 'after_or_equal:today'],
 
         ];
     }

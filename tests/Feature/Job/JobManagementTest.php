@@ -69,6 +69,39 @@ it('allows a company owner to create and publish a job', function () {
     ]);
 });
 
+it('rejects past application deadlines on create but accepts today and future dates', function () {
+    $payload = [
+        'job_category_id' => $this->category->id,
+        'description' => 'Build APIs.',
+        'requirements' => 'Laravel experience.',
+        'location' => 'Cairo',
+        'employment_type' => 'full_time',
+        'work_location_type' => 'remote',
+    ];
+
+    $this->actingAs($this->owner)
+        ->post(route('jobs.store'), $payload + [
+            'title' => 'Past Deadline Job',
+            'application_deadline' => now()->subDay()->toDateString(),
+        ])
+        ->assertSessionHasErrors('application_deadline');
+
+    foreach ([
+        'Today Deadline Job' => today()->toDateString(),
+        'Future Deadline Job' => today()->addDay()->toDateString(),
+    ] as $title => $deadline) {
+        $this->actingAs($this->owner)
+            ->post(route('jobs.store'), $payload + [
+                'title' => $title,
+                'application_deadline' => $deadline,
+            ])
+            ->assertRedirect();
+    }
+
+    $this->assertDatabaseHas('job_vacancies', ['title' => 'Today Deadline Job']);
+    $this->assertDatabaseHas('job_vacancies', ['title' => 'Future Deadline Job']);
+});
+
 it('does not allow an admin to create jobs', function () {
     $admin = adminUser();
 
@@ -207,6 +240,32 @@ it('allows an owner to update job fields without changing company or lifecycle s
         'location' => 'Alexandria',
         'status' => JobStatus::Active->value,
         'archived_at' => null,
+    ]);
+});
+
+it('allows editing a job whose application deadline has passed', function () {
+    $pastDeadline = now()->subDay()->toDateString();
+    $job = ($this->makeJob)($this->owner->company, [
+        'application_deadline' => $pastDeadline,
+    ]);
+
+    $this->actingAs($this->owner)
+        ->put(route('jobs.update', $job), [
+            'job_category_id' => $this->category->id,
+            'title' => 'Updated Past Deadline Job',
+            'description' => 'Updated description.',
+            'requirements' => 'Updated requirements.',
+            'location' => 'Cairo',
+            'employment_type' => 'full_time',
+            'work_location_type' => 'remote',
+            'application_deadline' => $pastDeadline,
+        ])
+        ->assertRedirect();
+
+    $this->assertDatabaseHas('job_vacancies', [
+        'id' => $job->id,
+        'title' => 'Updated Past Deadline Job',
+        'application_deadline' => $pastDeadline.' 00:00:00',
     ]);
 });
 
