@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Category\StoreJobCategoryRequest;
 use App\Http\Requests\Category\UpdateJobCategoryRequest;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
@@ -62,13 +63,25 @@ class JobCategoryController extends Controller
 
         // FR-129: a category in use can never be deleted (no reassignment).
         // The RESTRICT foreign key stays as the final guard in the database.
+        $message = 'This category is used by one or more jobs and cannot be deleted.';
+
         if ($category->jobVacancies()->exists()) {
             throw ValidationException::withMessages([
-                'category' => 'This category is used by one or more jobs and cannot be deleted.',
+                'category' => $message,
             ]);
         }
 
-        $category->delete();
+        try {
+            $category->delete();
+        } catch (QueryException $e) {
+            if ((string) $e->getCode() === '23000') {
+                throw ValidationException::withMessages([
+                    'category' => $message,
+                ]);
+            }
+
+            throw $e;
+        }
 
         return redirect()
             ->route('categories.index')
