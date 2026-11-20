@@ -94,3 +94,22 @@ it('shows an owner the AI analysis for an application submitted to their company
         ->assertSee('82%')
         ->assertSee('Strong technical experience and relevant delivery history.');
 });
+
+it('validates application list filters and filters by valid status', function () {
+    $owner = approvedOwner();
+    $pendingApplicant = User::factory()->create(['full_name' => 'Pending Applicant']);
+    $acceptedApplicant = User::factory()->create(['full_name' => 'Accepted Applicant']);
+
+    makeApplicationFor($owner, $pendingApplicant, ApplicationStatus::Pending);
+    makeApplicationFor($owner, $acceptedApplicant, ApplicationStatus::Accepted);
+
+    $this->actingAs($owner)
+        ->get(route('applications.index', ['status' => 'banana']))
+        ->assertSessionHasErrors('status');
+
+    $this->actingAs($owner)
+        ->get(route('applications.index', ['status' => ApplicationStatus::Accepted->value]))
+        ->assertOk()
+        ->assertSee('Accepted Applicant')
+        ->assertDontSee('Pending Applicant');
+});

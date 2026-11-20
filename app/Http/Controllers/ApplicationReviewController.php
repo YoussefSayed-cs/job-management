@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Application\IndexApplicationsRequest;
 use App\Http\Requests\Application\UpdateApplicationStatusRequest;
 use App\Services\ApplicationStatusService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
@@ -21,15 +21,13 @@ class ApplicationReviewController extends Controller
     /**
      * List applications belonging to the authenticated owner's company.
      */
-    public function index(Request $request): View
+    public function index(IndexApplicationsRequest $request): View
     {
-        Gate::authorize('viewAny', Application::class);
-
         $company = $request->user()->company()->firstOrFail();
+        $filters = $request->validated();
 
-        $statusFilter = $request->query('status');
-
-        $search = $request->query('search');
+        $statusFilter = $filters['status'] ?? null;
+        $search = $filters['search'] ?? null;
 
         $applications = Application::query()
             ->where('company_id', $company->id)
