@@ -23,6 +23,11 @@
         <section class="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
             <h2 class="text-lg font-semibold">Applicant Information</h2>
 
+            <div class="mt-5 flex items-center gap-4">
+                <flux:avatar :name="$application->user?->full_name" :src="$application->user?->profile_picture_url" size="lg" />
+                <p class="text-sm text-slate-500">{{ __('Applicant') }}</p>
+            </div>
+
             <div class="mt-5 grid gap-5 sm:grid-cols-2">
                 <div>
                     <p class="text-sm text-slate-500">Full Name</p>

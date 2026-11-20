@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Job;
 
+use App\Http\Requests\Job\Concerns\ValidatesSalaryRange;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 use Shagalni\Shared\Enums\EmploymentType;
 use Shagalni\Shared\Enums\ExperienceLevel;
 use Shagalni\Shared\Enums\WorkLocationType;
@@ -12,6 +12,8 @@ use Shagalni\Shared\Models\JobVacancy;
 
 class UpdateJobRequest extends FormRequest
 {
+    use ValidatesSalaryRange;
+
     public function authorize(): bool
     {
         $job = $this->route('job');
@@ -36,29 +38,6 @@ class UpdateJobRequest extends FormRequest
             'experience_level' => ['nullable', Rule::enum(ExperienceLevel::class)],
             'application_deadline' => ['nullable', 'date'],
 
-        ];
-    }
-
-    public function after(): array
-    {
-        return [
-            function (Validator $validator) {
-                $min = $this->input('salary_min');
-                $max = $this->input('salary_max');
-
-                if (
-                    $min !== null &&
-                    $max !== null &&
-                    is_numeric($min) &&
-                    is_numeric($max) &&
-                    (float) $max < (float) $min
-                ) {
-                    $validator->errors()->add(
-                        'salary_max',
-                        'The maximum salary must be greater than or equal to the minimum salary.'
-                    );
-                }
-            },
         ];
     }
 }

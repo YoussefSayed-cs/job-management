@@ -286,6 +286,24 @@ it('rejects invalid salary ranges', function () {
     $response->assertSessionHasErrors('salary_max');
 });
 
+it('rejects invalid salary ranges when updating a job', function () {
+    $job = ($this->makeJob)($this->owner->company);
+
+    $this->actingAs($this->owner)
+        ->put(route('jobs.update', $job), [
+            'job_category_id' => $this->category->id,
+            'title' => 'Updated Developer',
+            'description' => 'Description.',
+            'requirements' => 'Requirements.',
+            'location' => 'Cairo',
+            'employment_type' => 'full_time',
+            'work_location_type' => 'remote',
+            'salary_min' => 20000,
+            'salary_max' => 10000,
+        ])
+        ->assertSessionHasErrors('salary_max');
+});
+
 it('closes active jobs and reopens closed jobs', function () {
     $job = ($this->makeJob)($this->owner->company);
 
