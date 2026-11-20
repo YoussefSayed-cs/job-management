@@ -2,6 +2,7 @@
 
 @php
     $user = auth()->user();
+    $unreadNotifications = $user->unreadNotifications()->count();
     $company = $user->company;
     $isAdmin = $user->role === \Shagalni\Shared\Enums\UserRole::Admin;
     $isCompanyOwner = $user->role === \Shagalni\Shared\Enums\UserRole::CompanyOwner;
@@ -49,6 +50,11 @@
                 <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
                     class="app-nav-item" wire:navigate>
                     {{ __('Dashboard') }}
+                </flux:sidebar.item>
+
+                <flux:sidebar.item icon="bell" :href="route('notifications.index')" :current="request()->routeIs('notifications.*')"
+                    :badge="$unreadNotifications ?: null" class="app-nav-item" wire:navigate>
+                    {{ __('Notifications') }}
                 </flux:sidebar.item>
             </div>
 
