@@ -65,14 +65,36 @@ it('allows an owner to request name and industry changes together', function () 
     ]);
 });
 
-it('rejects a request when the proposed value is the same as the current value', function () {
+it('ignores an unchanged name when the industry is changing', function () {
+    $owner = approvedOwner();
+    $company = $owner->company;
+
+    $this->actingAs($owner)
+        ->post(route('my-company.change-requests.store'), [
+            'new_name' => ' approved co ',
+            'new_industry' => 'Financial Technology',
+        ])
+        ->assertRedirect(route('my-company.change-requests.index'));
+
+    $this->assertDatabaseHas('company_change_requests', [
+        'company_id' => $company->id,
+        'new_name' => null,
+        'new_industry' => 'Financial Technology',
+        'status' => 'pending',
+    ]);
+});
+
+it('rejects a request when all submitted values match current company information', function () {
     $owner = approvedOwner();
 
     $this->actingAs($owner)
         ->post(route('my-company.change-requests.store'), [
             'new_name' => ' approved co ',
+            'new_industry' => ' software ',
         ])
-        ->assertSessionHasErrors('new_name');
+        ->assertSessionHasErrors([
+            'change_request' => 'Nothing to change: the submitted values match your current company information.',
+        ]);
 
     $this->assertDatabaseCount('company_change_requests', 0);
 });

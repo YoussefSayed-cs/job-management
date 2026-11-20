@@ -29,14 +29,16 @@ class CompanyChangeRequestService
             $newIndustry = $data['new_industry'] ?? null;
 
             if ($newName !== null && mb_strtolower(trim($newName)) === mb_strtolower(trim($lockedCompany->name))) {
-                throw ValidationException::withMessages([
-                    'new_name' => 'The new company name must be different from the current name.',
-                ]);
+                $newName = null;
             }
 
             if ($newIndustry !== null && mb_strtolower(trim($newIndustry)) === mb_strtolower(trim($lockedCompany->industry))) {
+                $newIndustry = null;
+            }
+
+            if ($newName === null && $newIndustry === null) {
                 throw ValidationException::withMessages([
-                    'new_industry' => 'The new industry must be different from the current industry.',
+                    'change_request' => 'Nothing to change: the submitted values match your current company information.',
                 ]);
             }
 
