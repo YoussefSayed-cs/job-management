@@ -52,8 +52,14 @@ class AccountReactivationController extends Controller
                 ->with('status', $e->validator->errors()->first('account'));
         }
 
+        $user->refresh();
+
+        $message = $user->deletion_requested_at !== null
+            ? 'Your account has been reactivated, but it still has a pending deletion request. Cancel the deletion using the link in your email before signing in.'
+            : 'Your account has been reactivated. You can sign in now.';
+
         return redirect()
             ->route('login')
-            ->with('status', 'Your account has been reactivated. You can sign in now.');
+            ->with('status', $message);
     }
 }

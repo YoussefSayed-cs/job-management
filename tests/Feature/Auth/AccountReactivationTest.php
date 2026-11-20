@@ -87,9 +87,26 @@ test('the link reactivates the account', function () {
 
     $url = requestReactivationUrl($user);
 
-    $this->get($url)->assertRedirect(route('login'));
+    $this->get($url)
+        ->assertRedirect(route('login'))
+        ->assertSessionHas('status', 'Your account has been reactivated. You can sign in now.');
 
     expect($user->fresh()->status)->toBe(AccountStatus::Active);
+});
+
+test('the link warns about a pending deletion request after reactivation', function () {
+    $user = User::factory()->deactivated()->create([
+        'deletion_requested_at' => now(),
+    ]);
+
+    $url = requestReactivationUrl($user);
+
+    $this->get($url)
+        ->assertRedirect(route('login'))
+        ->assertSessionHas(
+            'status',
+            'Your account has been reactivated, but it still has a pending deletion request. Cancel the deletion using the link in your email before signing in.'
+        );
 });
 
 test('the link can only be used once', function () {
