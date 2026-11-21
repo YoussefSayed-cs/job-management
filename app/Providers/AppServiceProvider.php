@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Policies\ApplicationPolicy;
+use App\Policies\AiAnalysisPolicy;
 use App\Policies\CompanyChangeRequestPolicy;
 use App\Policies\CompanyPolicy;
 use App\Policies\JobCategoryPolicy;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Shagalni\Shared\Models\Application;
+use Shagalni\Shared\Models\AiAnalysis;
 use Shagalni\Shared\Models\Company;
 use Shagalni\Shared\Models\CompanyChangeRequest;
 use Shagalni\Shared\Models\JobCategory;
@@ -49,6 +51,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Gate::policy(JobVacancy::class, JobPolicy::class);
+        Gate::policy(AiAnalysis::class, AiAnalysisPolicy::class);
         Gate::policy(Application::class, ApplicationPolicy::class);
         Gate::policy(JobCategory::class, JobCategoryPolicy::class);
         Gate::policy(User::class, UserPolicy::class);
