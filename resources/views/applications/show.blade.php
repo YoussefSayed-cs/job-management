@@ -164,6 +164,24 @@
                         <p class="mt-1">{{ $analysis->failure_reason }}</p>
                     </div>
                 @endif
+
+                @can('retry', $application->aiAnalysis)
+                    <form method="POST" action="{{ route('ai-analyses.retry', $application->aiAnalysis) }}" class="mt-4">
+                        @csrf
+                        <button type="submit" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">
+                            Retry analysis
+                        </button>
+                    </form>
+                @endcan
+
+                @if (in_array($analysis->status, [
+                    \Shagalni\Shared\Enums\AiAnalysisStatus::Pending,
+                    \Shagalni\Shared\Enums\AiAnalysisStatus::Processing,
+                ], true))
+                    <p class="mt-4 text-sm text-slate-500">
+                        The analysis is in progress. Refresh the page in a moment.
+                    </p>
+                @endif
             @else
                 <p class="mt-3 text-sm text-slate-500">
                     No AI analysis is available for this application yet.

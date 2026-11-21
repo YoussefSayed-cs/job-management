@@ -88,6 +88,13 @@
                             {{ __('Company Change Requests') }}
                         </flux:sidebar.item>
                     @endif
+
+                    @can('viewFailed', \Shagalni\Shared\Models\AiAnalysis::class)
+                        <flux:sidebar.item icon="exclamation-triangle" :href="route('ai-analyses.failed')"
+                            :current="request()->routeIs('ai-analyses.failed')" class="app-nav-item" wire:navigate>
+                            {{ __('Failed AI analyses') }}
+                        </flux:sidebar.item>
+                    @endcan
                 </div>
 
                 {{-- Recruitment Catalog (Admin) --}}
