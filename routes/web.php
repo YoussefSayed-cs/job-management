@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountDeletionController;
 use App\Http\Controllers\AccountReactivationController;
+use App\Http\Controllers\AiAnalysisController;
 use App\Http\Controllers\ApplicationReviewController;
 use App\Http\Controllers\CompanyAnalyticsController;
 use App\Http\Controllers\CompanyChangeRequestController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\CompanyOwnerController;
 use App\Http\Controllers\CompanyOwnerInvitationController;
 use App\Http\Controllers\CompanyProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FailedAiAnalysisController;
 use App\Http\Controllers\JobCategoryController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\NotificationController;
@@ -31,6 +33,8 @@ Route::middleware([
     Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::post('notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
     Route::post('notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::get('ai-analyses/failed', [FailedAiAnalysisController::class, 'index'])->name('ai-analyses.failed');
+    Route::post('ai-analyses/{analysis}/retry', [AiAnalysisController::class, 'retry'])->name('ai-analyses.retry');
 
     Route::get('/users', [UserController::class, 'index'])
         ->name('users.index');
