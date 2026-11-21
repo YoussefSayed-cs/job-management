@@ -16,6 +16,34 @@ The Backoffice `.env.example` uses `CACHE_STORE=database` and `CACHE_PREFIX=shag
 
 After deploying the shared account lifecycle class-name changes, flush old queued jobs in development with `php artisan queue:flush`.
 
+## Queues and workers
+
+Both applications use the same database and should set `QUEUE_CONNECTION=database`. The database queue is shared, but each named queue has a specific worker owner:
+
+| Queue | Work | Worker |
+| --- | --- | --- |
+| `default` | Mail and notifications | Either application's worker may process it. |
+| `ai` | Resume analysis (`ProcessResumeAnalysis`) | Only the Job Seeker Portal worker may process it. |
+
+Run the workers with these queue selections:
+
+```sh
+# Backoffice
+php artisan queue:work --queue=default
+
+# Job Seeker Portal
+php artisan queue:work --queue=ai,default
+```
+
+**Never start a Backoffice worker with `--queue=ai`.** Backoffice has no parser or analyzer bindings; processing an AI job there would consume its three attempts and mark the analysis Failed.
+
+The Backoffice dispatches an AI job only when someone clicks Retry. That job waits on `ai` until the Portal worker runs. In local development, start the Portal worker too, or retried analyses will remain Pending. AI provider settings (`AI_API_KEY`, `AI_MODEL`, and related values) belong only in the Portal environment, never in Backoffice or the shared package.
+
+```text
+Portal (apply) -> event -> ai queue -> Portal worker -> ai_analyses row -> Backoffice shows it to the Company Owner only
+Backoffice Retry -> ai queue -> Portal worker
+```
+
 ## SRS v1.4 Overview
 
 **Version:** 1.4, 9 November 2026  
