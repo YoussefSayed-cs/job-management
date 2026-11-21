@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Policies\ApplicationPolicy;
 use App\Policies\AiAnalysisPolicy;
+use App\Policies\ApplicationPolicy;
 use App\Policies\CompanyChangeRequestPolicy;
 use App\Policies\CompanyPolicy;
 use App\Policies\JobCategoryPolicy;
@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
-use Shagalni\Shared\Models\Application;
 use Shagalni\Shared\Models\AiAnalysis;
+use Shagalni\Shared\Models\Application;
 use Shagalni\Shared\Models\Company;
 use Shagalni\Shared\Models\CompanyChangeRequest;
 use Shagalni\Shared\Models\JobCategory;

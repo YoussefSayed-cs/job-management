@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Queue;
 use Shagalni\Shared\Enums\AiAnalysisStatus;
 use Shagalni\Shared\Enums\ApplicationStatus;
 use Shagalni\Shared\Enums\UserRole;
@@ -7,7 +8,6 @@ use Shagalni\Shared\Jobs\ProcessResumeAnalysis;
 use Shagalni\Shared\Models\AiAnalysis;
 use Shagalni\Shared\Models\Application;
 use Shagalni\Shared\Models\User;
-use Illuminate\Support\Facades\Queue;
 
 function failedAnalysisFor(Application $application, array $attributes = []): AiAnalysis
 {

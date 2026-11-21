@@ -1,15 +1,15 @@
 <?php
 
-use App\Policies\ApplicationPolicy;
 use App\Policies\AiAnalysisPolicy;
+use App\Policies\ApplicationPolicy;
 use App\Policies\CompanyChangeRequestPolicy;
 use App\Policies\CompanyPolicy;
 use App\Policies\JobCategoryPolicy;
 use App\Policies\JobPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Support\Facades\Gate;
-use Shagalni\Shared\Models\Application;
 use Shagalni\Shared\Models\AiAnalysis;
+use Shagalni\Shared\Models\Application;
 use Shagalni\Shared\Models\Company;
 use Shagalni\Shared\Models\CompanyChangeRequest;
 use Shagalni\Shared\Models\JobCategory;
