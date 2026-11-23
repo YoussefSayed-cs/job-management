@@ -15,7 +15,7 @@ use Throwable;
 
 class AccountAnonymizationService
 {
-    public const GRACE_PERIOD_DAYS = 30;
+    public const GRACE_PERIOD_DAYS = AccountLifecycleService::DELETION_GRACE_DAYS;
 
     public function anonymize(User $user): void
     {

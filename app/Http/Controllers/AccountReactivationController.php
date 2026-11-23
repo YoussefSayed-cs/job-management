@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\RequestReactivationLinkRequest;
+use App\Services\AccountLifecycleService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Shagalni\Shared\Models\User;
 use Shagalni\Shared\Notifications\AccountReactivationRequested;
-use Shagalni\Shared\Services\AccountLifecycleService;
-use Throwable;
 
 class AccountReactivationController extends Controller
 {
@@ -23,15 +23,17 @@ class AccountReactivationController extends Controller
 
     public function store(RequestReactivationLinkRequest $request): RedirectResponse
     {
-        $user = User::where('email', $request->validated('email'))->first();
+        $user = User::where('email', Str::lower($request->validated('email')))->first();
 
         if ($user && $this->service->canRequestReactivation($user)) {
             try {
                 $token = $this->service->issueReactivationToken($user);
+            } catch (ValidationException) {
+                $token = null;
+            }
 
+            if ($token !== null) {
                 $user->notify(new AccountReactivationRequested($token));
-            } catch (Throwable $e) {
-                report($e);
             }
         }
 

@@ -3,6 +3,7 @@
 namespace App\Livewire\Settings;
 
 use App\Concerns\ProfileValidationRules;
+use App\Services\AccountLifecycleService;
 use Flux\Flux;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Auth;
@@ -11,7 +12,6 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Shagalni\Shared\Enums\UserRole;
 use Shagalni\Shared\Models\User;
 
 #[Title('Profile settings')]
@@ -164,10 +164,7 @@ class Profile extends Component
         /** @var User $user */
         $user = Auth::user();
 
-        if ($user->role === UserRole::Admin) {
-            return false;
-        }
-
-        return ! $user instanceof MustVerifyEmail || $user->hasVerifiedEmail();
+        return app(AccountLifecycleService::class)->canManageFromBackoffice($user)
+            && (! $user instanceof MustVerifyEmail || $user->hasVerifiedEmail());
     }
 }

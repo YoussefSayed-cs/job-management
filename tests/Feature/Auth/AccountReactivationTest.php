@@ -1,13 +1,16 @@
 <?php
 
 use Illuminate\Notifications\SendQueuedNotifications;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 use Shagalni\Shared\Enums\AccountStatus;
+use Shagalni\Shared\Enums\RegistrationStatus;
+use Shagalni\Shared\Enums\UserRole;
 use Shagalni\Shared\Models\User;
 use Shagalni\Shared\Notifications\AccountReactivationRequested;
-use Shagalni\Shared\Services\AccountLifecycleService;
 
 beforeEach(function () {
     $this->withoutVite();
@@ -33,6 +36,23 @@ function requestReactivationUrl(User $user): string
     return $url ?? '';
 }
 
+function approvedReactivationOwner(array $attributes = []): User
+{
+    $owner = User::factory()->create(array_merge([
+        'role' => UserRole::CompanyOwner,
+    ], $attributes));
+
+    createCompanyRecord([
+        'owner_id' => $owner->id,
+        'name' => 'Approved Co',
+        'industry' => 'Software',
+        'location' => 'Cairo',
+        'registration_status' => RegistrationStatus::Approved,
+    ]);
+
+    return $owner;
+}
+
 test('the request page can be rendered', function () {
     $this->get(route('account-reactivation.create'))->assertOk();
 });
@@ -40,7 +60,7 @@ test('the request page can be rendered', function () {
 test('a deactivated user receives a reactivation link', function () {
     Notification::fake();
 
-    $user = User::factory()->deactivated()->create();
+    $user = approvedReactivationOwner(['status' => AccountStatus::Deactivated]);
 
     $this->post(route('account-reactivation.store'), ['email' => $user->email])
         ->assertSessionHas('status');
@@ -48,10 +68,33 @@ test('a deactivated user receives a reactivation link', function () {
     Notification::assertSentTo($user, AccountReactivationRequested::class);
 });
 
+test('job seekers and unapproved company owners use the Job Seeker Portal reactivation flow', function () {
+    Notification::fake();
+
+    $jobSeeker = User::factory()->deactivated()->create();
+    $pendingOwner = User::factory()->deactivated()->create([
+        'role' => UserRole::CompanyOwner,
+    ]);
+    createCompanyRecord([
+        'owner_id' => $pendingOwner->id,
+        'name' => 'Pending Co',
+        'industry' => 'Software',
+        'location' => 'Cairo',
+        'registration_status' => RegistrationStatus::PendingApproval,
+    ]);
+
+    foreach ([$jobSeeker, $pendingOwner] as $user) {
+        $this->post(route('account-reactivation.store'), ['email' => $user->email])
+            ->assertSessionHas('status');
+    }
+
+    Notification::assertNothingSent();
+});
+
 test('reactivation notification is queued with three attempts', function () {
     Queue::fake();
 
-    $user = User::factory()->deactivated()->create();
+    $user = approvedReactivationOwner(['status' => AccountStatus::Deactivated]);
 
     $this->post(route('account-reactivation.store'), ['email' => $user->email])
         ->assertSessionHas('status');
@@ -69,7 +112,7 @@ test('reactivation notification is queued with three attempts', function () {
 test('no email is sent for active, suspended, anonymized or unknown accounts', function () {
     Notification::fake();
 
-    $active = User::factory()->create();
+    $active = approvedReactivationOwner();
     $suspended = User::factory()->suspended()->create();
     $tombstone = User::factory()->deactivated()->create(['anonymized_at' => now()]);
 
@@ -83,7 +126,7 @@ test('no email is sent for active, suspended, anonymized or unknown accounts', f
 });
 
 test('the link reactivates the account', function () {
-    $user = User::factory()->deactivated()->create();
+    $user = approvedReactivationOwner(['status' => AccountStatus::Deactivated]);
 
     $url = requestReactivationUrl($user);
 
@@ -95,7 +138,8 @@ test('the link reactivates the account', function () {
 });
 
 test('the link warns about a pending deletion request after reactivation', function () {
-    $user = User::factory()->deactivated()->create([
+    $user = approvedReactivationOwner([
+        'status' => AccountStatus::Deactivated,
         'deletion_requested_at' => now(),
     ]);
 
@@ -110,7 +154,7 @@ test('the link warns about a pending deletion request after reactivation', funct
 });
 
 test('the link can only be used once', function () {
-    $user = User::factory()->deactivated()->create();
+    $user = approvedReactivationOwner(['status' => AccountStatus::Deactivated]);
 
     $url = requestReactivationUrl($user);
 
@@ -127,7 +171,7 @@ test('the link can only be used once', function () {
 });
 
 test('a newer link replaces the older one', function () {
-    $user = User::factory()->deactivated()->create();
+    $user = approvedReactivationOwner(['status' => AccountStatus::Deactivated]);
 
     $oldUrl = requestReactivationUrl($user);
     requestReactivationUrl($user);
@@ -138,7 +182,7 @@ test('a newer link replaces the older one', function () {
 });
 
 test('the link expires after 24 hours', function () {
-    $user = User::factory()->deactivated()->create();
+    $user = approvedReactivationOwner(['status' => AccountStatus::Deactivated]);
 
     $url = requestReactivationUrl($user);
 
@@ -150,7 +194,7 @@ test('the link expires after 24 hours', function () {
 });
 
 test('a tampered link is rejected', function () {
-    $user = User::factory()->deactivated()->create();
+    $user = approvedReactivationOwner(['status' => AccountStatus::Deactivated]);
 
     $url = requestReactivationUrl($user);
 
@@ -160,9 +204,10 @@ test('a tampered link is rejected', function () {
 });
 
 test('a suspended account cannot use a reactivation link', function () {
-    $user = User::factory()->suspended()->create();
+    $user = approvedReactivationOwner(['status' => AccountStatus::Suspended]);
 
-    $token = app(AccountLifecycleService::class)->issueReactivationToken($user);
+    $token = Str::random(64);
+    Cache::put('account-reactivation:'.$user->id, $token, now()->addHours(24));
 
     $url = URL::temporarySignedRoute(
         'account-reactivation.confirm',
@@ -176,9 +221,13 @@ test('a suspended account cannot use a reactivation link', function () {
 });
 
 test('an anonymized account cannot be reactivated even with a valid token', function () {
-    $user = User::factory()->deactivated()->create(['anonymized_at' => now()]);
+    $user = approvedReactivationOwner([
+        'status' => AccountStatus::Deactivated,
+        'anonymized_at' => now(),
+    ]);
 
-    $token = app(AccountLifecycleService::class)->issueReactivationToken($user);
+    $token = Str::random(64);
+    Cache::put('account-reactivation:'.$user->id, $token, now()->addHours(24));
 
     $url = URL::temporarySignedRoute(
         'account-reactivation.confirm',
@@ -192,7 +241,7 @@ test('an anonymized account cannot be reactivated even with a valid token', func
 });
 
 test('a reactivated user can sign in again', function () {
-    $user = User::factory()->deactivated()->create();
+    $user = approvedReactivationOwner(['status' => AccountStatus::Deactivated]);
 
     $this->get(requestReactivationUrl($user));
 

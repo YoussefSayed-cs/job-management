@@ -3,14 +3,13 @@
 use App\Livewire\Settings\DeactivateAccountForm;
 use Livewire\Livewire;
 use Shagalni\Shared\Enums\AccountStatus;
-use Shagalni\Shared\Models\User;
 
 beforeEach(function () {
     $this->withoutVite();
 });
 
 test('user can deactivate their own account', function () {
-    $user = User::factory()->create();
+    $user = approvedOwner();
 
     $this->actingAs($user);
 
@@ -37,7 +36,7 @@ test('company owner can deactivate their own account', function () {
 });
 
 test('correct password must be provided to deactivate the account', function () {
-    $user = User::factory()->create();
+    $user = approvedOwner();
 
     $this->actingAs($user);
 

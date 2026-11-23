@@ -1,10 +1,10 @@
 <?php
 
+use App\Services\AccountLifecycleService;
 use App\Services\CompanyOwnerInvitationService;
 use Shagalni\Shared\Enums\AccountStatus;
 use Shagalni\Shared\Enums\UserRole;
 use Shagalni\Shared\Models\User;
-use Shagalni\Shared\Services\AccountLifecycleService;
 
 test('reactivation and invitation tokens remain usable across app names with a fixed cache prefix', function () {
     config([
@@ -12,7 +12,8 @@ test('reactivation and invitation tokens remain usable across app names with a f
         'cache.prefix' => 'shagalni-cache-',
     ]);
 
-    $reactivationUser = User::factory()->deactivated()->create();
+    $reactivationUser = approvedOwner();
+    $reactivationUser->forceFill(['status' => AccountStatus::Deactivated])->save();
     $lifecycle = app(AccountLifecycleService::class);
     $reactivationToken = $lifecycle->issueReactivationToken($reactivationUser);
 

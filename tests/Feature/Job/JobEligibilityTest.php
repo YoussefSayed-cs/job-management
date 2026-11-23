@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\AccountLifecycleService;
 use Shagalni\Shared\Enums\AccountStatus;
 use Shagalni\Shared\Enums\JobStatus;
 use Shagalni\Shared\Enums\RegistrationStatus;
@@ -117,6 +118,23 @@ it('hides jobs while the owner is suspended or deactivated and restores them on 
 
     $owner->forceFill(['status' => AccountStatus::Active])->save();
     expectEligibility($job, true);
+})->with([
+    AccountStatus::Suspended,
+    AccountStatus::Deactivated,
+]);
+
+it('restores publicly eligible jobs after Admin reactivation while preserving job-level restrictions', function (AccountStatus $status) {
+    $owner = approvedOwner();
+    $eligible = eligibilityJob($owner, ['application_deadline' => now()->addDay()->toDateString()]);
+    $closed = eligibilityJob($owner, ['status' => JobStatus::Closed]);
+    $expired = eligibilityJob($owner, ['application_deadline' => now()->subDay()->toDateString()]);
+
+    $owner->forceFill(['status' => $status])->save();
+    app(AccountLifecycleService::class)->reactivate($owner);
+
+    expectEligibility($eligible, true);
+    expectEligibility($closed, false);
+    expectEligibility($expired, false);
 })->with([
     AccountStatus::Suspended,
     AccountStatus::Deactivated,

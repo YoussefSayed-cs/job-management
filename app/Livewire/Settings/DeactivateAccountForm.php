@@ -4,11 +4,10 @@ namespace App\Livewire\Settings;
 
 use App\Concerns\PasswordValidationRules;
 use App\Livewire\Actions\Logout;
+use App\Services\AccountLifecycleService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
-use Shagalni\Shared\Enums\UserRole;
-use Shagalni\Shared\Services\AccountLifecycleService;
 
 class DeactivateAccountForm extends Component
 {
@@ -26,12 +25,6 @@ class DeactivateAccountForm extends Component
         ]);
 
         $user = Auth::user();
-
-        if ($user->role === UserRole::Admin) {
-            $this->addError('password', 'The administrator account cannot be deactivated.');
-
-            return;
-        }
 
         try {
             $service->deactivateOwnAccount($user);

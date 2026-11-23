@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\AccountLifecycleService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Shagalni\Shared\Enums\AccountStatus;
 use Shagalni\Shared\Models\User;
-use Shagalni\Shared\Services\AccountLifecycleService;
 
 class AccountDeletionController extends Controller
 {

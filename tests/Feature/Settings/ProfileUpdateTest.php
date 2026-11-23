@@ -159,7 +159,7 @@ test('profile picture can be removed', function () {
 test('user can request account deletion', function () {
     Notification::fake();
 
-    $user = User::factory()->create();
+    $user = approvedOwner();
 
     $this->actingAs($user);
 
@@ -183,7 +183,7 @@ test('user can request account deletion', function () {
 test('a failed deletion email remains queued for retries without losing the request', function () {
     Queue::fake();
 
-    $user = User::factory()->create();
+    $user = approvedOwner();
 
     $this->actingAs($user);
 
@@ -212,7 +212,7 @@ test('a failed deletion email remains queued for retries without losing the requ
 });
 
 test('correct password must be provided to request account deletion', function () {
-    $user = User::factory()->create();
+    $user = approvedOwner();
 
     $this->actingAs($user);
 

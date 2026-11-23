@@ -30,6 +30,36 @@ test('it does not touch accounts still inside the grace period', function () {
     expect($user->fresh()->anonymized_at)->toBeNull();
 });
 
+test('it anonymizes an account exactly at the 30-day cutoff', function () {
+    $requestedAt = now()->startOfSecond()->subDays(30);
+    $user = expiredDeletionUser(['deletion_requested_at' => $requestedAt]);
+
+    $this->travelTo($requestedAt->addDays(AccountAnonymizationService::GRACE_PERIOD_DAYS));
+    $this->artisan('accounts:anonymize-expired')->assertSuccessful();
+
+    expect($user->fresh()->anonymized_at)->not->toBeNull();
+});
+
+test('it does not anonymize immediately before the 30-day cutoff', function () {
+    $requestedAt = now()->startOfSecond()->subDays(30);
+    $user = expiredDeletionUser(['deletion_requested_at' => $requestedAt]);
+
+    $this->travelTo($requestedAt->addDays(AccountAnonymizationService::GRACE_PERIOD_DAYS)->subSecond());
+    $this->artisan('accounts:anonymize-expired')->assertSuccessful();
+
+    expect($user->fresh()->anonymized_at)->toBeNull();
+});
+
+test('it anonymizes immediately after the 30-day cutoff', function () {
+    $requestedAt = now()->startOfSecond()->subDays(30);
+    $user = expiredDeletionUser(['deletion_requested_at' => $requestedAt]);
+
+    $this->travelTo($requestedAt->addDays(AccountAnonymizationService::GRACE_PERIOD_DAYS)->addSecond());
+    $this->artisan('accounts:anonymize-expired')->assertSuccessful();
+
+    expect($user->fresh()->anonymized_at)->not->toBeNull();
+});
+
 test('it ignores accounts without a deletion request', function () {
     $user = expiredDeletionUser(['deletion_requested_at' => null]);
 

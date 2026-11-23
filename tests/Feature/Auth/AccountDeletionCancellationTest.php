@@ -103,6 +103,63 @@ test('the link expires when the 30-day grace period ends', function () {
     expect($user->fresh()->deletion_requested_at)->not->toBeNull();
 });
 
+test('cancellation succeeds immediately before the 30-day cutoff', function () {
+    $requestedAt = now()->startOfSecond();
+    $user = User::factory()->create(['deletion_requested_at' => $requestedAt]);
+
+    $this->travelTo($requestedAt->addDays(30)->subSecond());
+
+    $this->get(deletionCancelUrl($user))->assertRedirect(route('login'));
+
+    expect($user->fresh()->deletion_requested_at)->toBeNull();
+});
+
+test('cancellation fails exactly at and after the 30-day cutoff', function () {
+    $requestedAt = now()->startOfSecond();
+    $user = User::factory()->create(['deletion_requested_at' => $requestedAt]);
+    $url = URL::temporarySignedRoute(
+        'account-deletion.cancel',
+        $requestedAt->addDays(30)->addDay(),
+        [
+            'user' => $user->getRouteKey(),
+            'requested' => $requestedAt->getTimestamp(),
+        ]
+    );
+
+    $this->travelTo($requestedAt->addDays(30));
+
+    $this->get($url)
+        ->assertRedirect(route('login'))
+        ->assertSessionHas('status', 'The account recovery period has expired.');
+    expect($user->fresh()->deletion_requested_at)->not->toBeNull();
+
+    $this->travel(1)->second();
+    $this->get($url)
+        ->assertRedirect(route('login'))
+        ->assertSessionHas('status', 'The account recovery period has expired.');
+    expect($user->fresh()->deletion_requested_at)->not->toBeNull();
+});
+
+test('a request due for anonymization cannot be cancelled at the cutoff while anonymization succeeds', function () {
+    $requestedAt = now()->startOfSecond();
+    $user = User::factory()->create(['deletion_requested_at' => $requestedAt]);
+    $url = URL::temporarySignedRoute(
+        'account-deletion.cancel',
+        $requestedAt->addDays(31),
+        [
+            'user' => $user->getRouteKey(),
+            'requested' => $requestedAt->getTimestamp(),
+        ]
+    );
+
+    $this->travelTo($requestedAt->addDays(30));
+
+    $this->get($url)->assertRedirect(route('login'));
+    $this->artisan('accounts:anonymize-expired')->assertSuccessful();
+
+    expect($user->fresh()->anonymized_at)->not->toBeNull();
+});
+
 test('the grace period is checked on the server even with a valid signature', function () {
     $user = User::factory()->create(['deletion_requested_at' => now()->subDays(31)]);
 

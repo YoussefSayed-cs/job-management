@@ -4,9 +4,10 @@ namespace App\Livewire\Settings;
 
 use App\Concerns\PasswordValidationRules;
 use App\Livewire\Actions\Logout;
+use App\Services\AccountLifecycleService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 use Livewire\Component;
-use Shagalni\Shared\Enums\UserRole;
 use Shagalni\Shared\Notifications\AccountDeletionRequested;
 
 class DeleteUserForm extends Component
@@ -18,7 +19,7 @@ class DeleteUserForm extends Component
     /**
      * Submit an account deletion request.
      */
-    public function deleteUser(Logout $logout): void
+    public function deleteUser(Logout $logout, AccountLifecycleService $service): void
     {
         $this->validate([
             'password' => $this->currentPasswordRules(),
@@ -26,21 +27,13 @@ class DeleteUserForm extends Component
 
         $user = Auth::user();
 
-        if ($user->role === UserRole::Admin) {
-            $this->addError('password', 'The administrator account cannot be deleted.');
+        try {
+            $user = $service->requestDeletion($user);
+        } catch (ValidationException $exception) {
+            $this->addError('password', $exception->validator->errors()->first('account'));
 
             return;
         }
-
-        if ($user->deletion_requested_at !== null) {
-            $this->addError('password', 'An account deletion request already exists.');
-
-            return;
-        }
-
-        $user->forceFill([
-            'deletion_requested_at' => now(),
-        ])->save();
 
         $user->notify(new AccountDeletionRequested);
 
