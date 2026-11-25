@@ -40,4 +40,5 @@ yarn-error.log
 /opencode.jsonc
 /.qoder
 /.agents
+/.github
 .env.before_lerd
